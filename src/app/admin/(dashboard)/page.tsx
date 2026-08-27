@@ -1,0 +1,326 @@
+// ─── Admin Dashboard Page ──────────────────────────────────────────────────
+// Server component: fetches real counts & submissions directly from DB.
+
+import Link from 'next/link'
+import { prisma } from '@/lib/prisma'
+import StatCard from '@/components/admin/StatCard'
+import StatusBadge from '@/components/admin/StatusBadge'
+import { formatDate } from '@/lib/utils'
+
+export const dynamic = 'force-dynamic'
+
+async function getStats() {
+  try {
+    const [
+      totalContacts,
+      newContacts,
+      totalVolunteers,
+      newVolunteers,
+      totalSubscribers,
+      publishedPrograms,
+      publishedEvents,
+      publishedPosts,
+      totalPhotos,
+      recentContacts,
+      recentVolunteers,
+    ] = await Promise.all([
+      prisma.contactSubmission.count(),
+      prisma.contactSubmission.count({ where: { status: 'NEW' } }),
+      prisma.volunteerApplication.count(),
+      prisma.volunteerApplication.count({ where: { status: 'REVIEWING' } }),
+      prisma.newsletterSubscriber.count(),
+      prisma.program.count({ where: { status: 'PUBLISHED' } }),
+      prisma.event.count({ where: { published: true } }),
+      prisma.newsPost.count({ where: { published: true } }),
+      prisma.galleryItem.count(),
+      prisma.contactSubmission.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.volunteerApplication.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+      }),
+    ])
+
+    return {
+      totalContacts,
+      newContacts,
+      totalVolunteers,
+      newVolunteers,
+      totalSubscribers,
+      publishedPrograms,
+      publishedEvents,
+      publishedPosts,
+      totalPhotos,
+      recentContacts,
+      recentVolunteers,
+    }
+  } catch (err) {
+    console.error('[Admin Dashboard] DB stats query failed:', (err as Error)?.message)
+    return {
+      totalContacts:     0,
+      newContacts:       0,
+      totalVolunteers:   0,
+      newVolunteers:     0,
+      totalSubscribers:  0,
+      publishedPrograms: 0,
+      publishedEvents:   0,
+      publishedPosts:    0,
+      totalPhotos:       0,
+      recentContacts:    [],
+      recentVolunteers:  [],
+    }
+  }
+}
+
+export default async function AdminDashboardPage() {
+  const {
+    totalContacts,
+    newContacts,
+    totalVolunteers,
+    newVolunteers,
+    totalSubscribers,
+    publishedPrograms,
+    publishedEvents,
+    publishedPosts,
+    recentContacts,
+    recentVolunteers,
+  } = await getStats()
+
+  return (
+    <div className="space-y-8">
+      {/* Top Header & Search / Status Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-border-soft">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-brand-navy tracking-tight">
+            Dashboard
+          </h1>
+          <p className="text-text-secondary text-sm mt-1">
+            Bridge of Compassion operations &amp; environmental overview
+          </p>
+        </div>
+
+        {/* Search & notification simulated header controls */}
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search records…"
+              aria-label="Search records"
+              className="bg-brand-warm-white border border-border-soft rounded-xl px-3.5 py-2 text-xs sm:text-sm text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-brand-cyan w-48 sm:w-64 shadow-xs"
+            />
+          </div>
+          <div className="w-9 h-9 rounded-xl bg-brand-warm-white border border-border-soft flex items-center justify-center text-text-secondary hover:text-brand-navy shadow-xs cursor-pointer">
+            <span className="text-base" aria-hidden="true">🔔</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 5-Card Stat Row (Matching Mockup) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+        <StatCard
+          label="Active Programs"
+          value={publishedPrograms}
+          icon="🌱"
+          color="cyan"
+        />
+        <StatCard
+          label="Upcoming Events"
+          value={publishedEvents}
+          icon="📅"
+          color="green"
+        />
+        <StatCard
+          label="Volunteers"
+          value={totalVolunteers}
+          icon="🤝"
+          subLabel="in review"
+          subValue={newVolunteers}
+          color="orange"
+        />
+        <StatCard
+          label="Contact Inquiries"
+          value={totalContacts}
+          icon="✉️"
+          subLabel="new"
+          subValue={newContacts}
+          color="pink"
+        />
+        <StatCard
+          label="Newsletter Subs"
+          value={totalSubscribers}
+          icon="📬"
+          color="purple"
+        />
+      </div>
+
+      {/* Main Grid: Left (Recent Activity Table) & Right (Quick Actions & Overview) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        {/* Left 2 Columns: Recent Submissions / Table */}
+        <div className="lg:col-span-2 space-y-6">
+
+          {/* Recent Contact Submissions */}
+          <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-soft flex items-center justify-between">
+              <div>
+                <h2 className="font-bold text-brand-navy text-base">Recent Inquiries</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Direct messages and general questions</p>
+              </div>
+              <Link href="/admin/contacts" className="text-xs text-brand-green hover:text-brand-navy font-semibold transition-colors">
+                View all inquiries →
+              </Link>
+            </div>
+
+            {recentContacts.length === 0 ? (
+              <div className="px-6 py-10 text-center">
+                <p className="text-text-secondary text-sm">No inquiries yet.</p>
+                <p className="text-xs text-text-secondary/70 mt-1">New contact form messages will appear here.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-[#F8FAF6] text-text-secondary text-xs uppercase font-semibold border-b border-border-soft">
+                    <tr>
+                      <th className="px-6 py-3">Name</th>
+                      <th className="px-6 py-3">Subject</th>
+                      <th className="px-6 py-3">Date</th>
+                      <th className="px-6 py-3 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border-soft/60">
+                    {recentContacts.map((c) => (
+                      <tr key={c.id} className="hover:bg-brand-cream/30 transition-colors">
+                        <td className="px-6 py-3.5 font-medium text-brand-navy truncate max-w-[140px]">{c.name}</td>
+                        <td className="px-6 py-3.5 text-text-secondary truncate max-w-[180px]">{c.subject}</td>
+                        <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(c.createdAt)}</td>
+                        <td className="px-6 py-3.5 text-right">
+                          <StatusBadge status={c.status} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Recent Volunteer Applications */}
+          <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-soft flex items-center justify-between">
+              <div>
+                <h2 className="font-bold text-brand-navy text-base">Volunteer Applications</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Community members eager to participate</p>
+              </div>
+              <Link href="/admin/volunteers" className="text-xs text-brand-green hover:text-brand-navy font-semibold transition-colors">
+                View all volunteers →
+              </Link>
+            </div>
+
+            {recentVolunteers.length === 0 ? (
+              <div className="px-6 py-10 text-center">
+                <p className="text-text-secondary text-sm">No volunteer applications yet.</p>
+                <p className="text-xs text-text-secondary/70 mt-1">Applications from the volunteer page will show here.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-[#F8FAF6] text-text-secondary text-xs uppercase font-semibold border-b border-border-soft">
+                    <tr>
+                      <th className="px-6 py-3">Applicant</th>
+                      <th className="px-6 py-3">Interests</th>
+                      <th className="px-6 py-3">Date</th>
+                      <th className="px-6 py-3 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border-soft/60">
+                    {recentVolunteers.map((v) => (
+                      <tr key={v.id} className="hover:bg-brand-cream/30 transition-colors">
+                        <td className="px-6 py-3.5 font-medium text-brand-navy truncate max-w-[140px]">
+                          {v.firstName} {v.lastName}
+                        </td>
+                        <td className="px-6 py-3.5 text-text-secondary truncate max-w-[180px]">
+                          {v.interests.join(', ') || 'General'}
+                        </td>
+                        <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(v.createdAt)}</td>
+                        <td className="px-6 py-3.5 text-right">
+                          <StatusBadge status={v.status} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+        </div>
+
+        {/* Right 1 Column: Quick Actions & Status */}
+        <div className="space-y-6">
+
+          {/* Quick Actions Card */}
+          <div className="bg-brand-warm-white rounded-2xl p-6 shadow-card border border-border-soft">
+            <h2 className="text-base font-bold text-brand-navy mb-4">Quick Actions</h2>
+            <div className="space-y-3">
+              <Link
+                href="/admin/events"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-green text-brand-warm-white font-semibold text-sm hover:bg-brand-green/90 shadow-sm transition-all"
+              >
+                <span>Manage & Create Events</span>
+                <span className="text-xs opacity-75">📅</span>
+              </Link>
+              <Link
+                href="/admin/news/new"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-sky text-brand-navy font-semibold text-sm hover:bg-brand-sky/80 transition-all border border-brand-cyan/20"
+              >
+                <span>+ Post Story / News</span>
+                <span className="text-xs opacity-75">📰</span>
+              </Link>
+              <Link
+                href="/admin/volunteers"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white text-brand-navy font-medium text-sm border border-border-soft hover:border-brand-green/40 hover:bg-[#F8FAF6] transition-all"
+              >
+                <span>Review Volunteers</span>
+                <span className="text-xs opacity-75">🤝</span>
+              </Link>
+              <Link
+                href="/admin/contacts"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white text-brand-navy font-medium text-sm border border-border-soft hover:border-brand-green/40 hover:bg-[#F8FAF6] transition-all"
+              >
+                <span>View All Inquiries</span>
+                <span className="text-xs opacity-75">✉️</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Content Overview Card */}
+          <div className="bg-brand-warm-white rounded-2xl p-6 shadow-card border border-border-soft">
+            <h2 className="text-base font-bold text-brand-navy mb-4">Content Summary</h2>
+            <div className="space-y-3.5">
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
+                <span className="text-text-secondary">Published Events</span>
+                <span className="font-bold text-brand-navy">{publishedEvents}</span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
+                <span className="text-text-secondary">Published Stories</span>
+                <span className="font-bold text-brand-navy">{publishedPosts}</span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
+                <span className="text-text-secondary">Pending Inquiries</span>
+                <span className="font-bold text-brand-green">{newContacts}</span>
+              </div>
+              <div className="flex items-center justify-between py-2 text-sm">
+                <span className="text-text-secondary">Pending Volunteers</span>
+                <span className="font-bold text-accent-orange">{newVolunteers}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  )
+}

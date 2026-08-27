@@ -1,0 +1,219 @@
+// ─── Prisma Schema — Bridge of Compassion ────────────────────────────────────
+// Database: PostgreSQL via Neon (serverless)
+// ORM:      Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Admin Users ──────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // bcrypt hash — never store plaintext
+  name      String?
+  avatarUrl String?  // Cloudinary image URL
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}
+
+// ─── Contact Submissions ──────────────────────────────────────────────────────
+
+model ContactSubmission {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    ContactStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("contact_submissions")
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+// ─── Volunteer Applications ───────────────────────────────────────────────────
+
+model VolunteerApplication {
+  id           String          @id @default(cuid())
+  firstName    String
+  lastName     String
+  email        String
+  phone        String?
+  location     String?
+  interests    String[]        // areas of interest (stored as text array)
+  availability String
+  message      String?
+  consent      Boolean
+  status       VolunteerStatus @default(NEW)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@map("volunteer_applications")
+}
+
+enum VolunteerStatus {
+  NEW
+  REVIEWING
+  CONTACTED
+  ACTIVE
+  INACTIVE
+}
+
+// ─── Newsletter Subscribers ───────────────────────────────────────────────────
+
+model NewsletterSubscriber {
+  id             String           @id @default(cuid())
+  email          String           @unique
+  firstName      String?
+  status         SubscriberStatus @default(ACTIVE)
+  subscribedAt   DateTime         @default(now())
+  unsubscribedAt DateTime?
+
+  @@map("newsletter_subscribers")
+}
+
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+// ─── Programs ─────────────────────────────────────────────────────────────────
+
+model Program {
+  id               String        @id @default(cuid())
+  title            String
+  slug             String        @unique
+  category         String        // e.g. "Environmental Education", "Outdoor Learning", etc.
+  shortDescription String        // Summary for cards & previews
+  description      String        // Full rich description
+  imageUrl         String?       // Featured image URL
+  featured         Boolean       @default(false)
+  displayOrder     Int           @default(0)
+  status           ProgramStatus @default(DRAFT)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("programs")
+}
+
+enum ProgramStatus {
+  DRAFT
+  PUBLISHED
+}
+
+// ─── Events ───────────────────────────────────────────────────────────────────
+
+model Event {
+  id               String   @id @default(cuid())
+  title            String
+  category         String   @default("Environmental")
+  shortDescription String?
+  description      String
+  date             DateTime
+  startTime        String
+  endTime          String?
+  location         String
+  featuredImage    String?
+  registrationLink String?
+  registrationOpen Boolean  @default(true)
+  featured         Boolean  @default(false)
+  published        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("events")
+}
+
+// ─── News / Stories ───────────────────────────────────────────────────────────
+
+model NewsPost {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  excerpt       String
+  content       String
+  featuredImage String?
+  author        String?
+  publishedAt   DateTime?
+  published     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("news_posts")
+}
+
+// ─── Gallery ──────────────────────────────────────────────────────────────────
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  image     String   // URL or file path
+  caption   String?
+  category  String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("gallery_items")
+}
+
+// ─── Donations ────────────────────────────────────────────────────────────────
+// Payment provider is ABSTRACTED — no provider is connected yet.
+// The paymentProvider and paymentRef fields are populated
+// only when a real provider later confirms a transaction.
+
+model Donation {
+  id              String            @id @default(cuid())
+  amount          Decimal           @db.Decimal(10, 2)
+  currency        String            @default("CAD")
+  donorName       String?
+  donorEmail      String?
+  donorPhone      String?
+  isAnonymous     Boolean           @default(false)
+  message         String?
+  frequency       DonationFrequency @default(ONE_TIME)
+  // Status lifecycle: INTENT → PENDING → COMPLETED | FAILED | CANCELLED
+  // A donation is COMPLETED only when a real payment provider confirms the transaction.
+  status          DonationStatus    @default(INTENT)
+  paymentProvider String?           // e.g. "stripe", "paypal" — null until connected
+  paymentRef      String?           // external provider transaction/session ID
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@map("donations")
+}
+
+enum DonationFrequency {
+  ONE_TIME
+  MONTHLY
+  ANNUAL
+}
+
+enum DonationStatus {
+  INTENT      // User has expressed intent; no payment initiated
+  PENDING     // Payment initiated with provider, awaiting confirmation
+  COMPLETED   // Confirmed by payment provider
+  FAILED      // Payment provider reported failure
+  CANCELLED   // User or system cancelled before completion
+}

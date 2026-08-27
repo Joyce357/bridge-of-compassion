@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400;1,14..32,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Approved Brand CSS Variables ─────────────────────────────────────────── */
+:root {
+  --brand-navy:      #163B73;
+  --brand-navy-dark: #102D59;
+
+  --brand-cyan:      #1FA7D8;
+  --brand-sky:       #DCEFF6;
+
+  --brand-green:     #4F7F32;
+  --brand-leaf:      #72A83A;
+  --brand-sage:      #DDE8D2;
+  --section-sage:    #D1DFC4;
+
+  --brand-cream:     #F7F5EA;
+  --brand-warm-white:#FCFBF6;
+
+  --text-primary:    #253129;
+  --text-secondary:  #66706A;
+  --border-soft:     #DDE3DA;
+
+  /* Youth Accents */
+  --accent-orange:   #F39A22;
+  --accent-lime:     #82BD32;
+  --accent-pink:     #E83E78;
+  --accent-purple:   #8053A6;
+  --accent-blue:     #1C92C8;
+  --accent-teal:     #29A98B;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* Spacing scale */
+  --section-py: 5rem;
+  --section-py-sm: 3.5rem;
+
+  /* Transitions */
+  --transition-base: 200ms ease;
+  --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Base Styles ────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans bg-brand-warm-white text-text-primary;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+  }
+
+  /* Heading hierarchy — Navy anchored */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold text-brand-navy;
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+  }
+
+  h1 { @apply text-4xl sm:text-5xl md:text-6xl; }
+  h2 { @apply text-3xl md:text-4xl lg:text-5xl; }
+  h3 { @apply text-2xl md:text-3xl; }
+  h4 { @apply text-xl md:text-2xl; }
+  h5 { @apply text-lg md:text-xl; }
+  h6 { @apply text-base md:text-lg; }
+
+  p {
+    color: var(--text-secondary);
+  }
+
+  a {
+    @apply text-brand-cyan transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply text-brand-navy;
+  }
+
+  /* Focus styles — accessible navy/green */
+  :focus-visible {
+    outline: 2px solid var(--brand-navy);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  img {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* ─── Reusable Component Classes ─────────────────────────────────────────── */
+@layer components {
+  /* Standardized Container System */
+  .container-boc {
+    @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-10;
+  }
+
+  /* Consistent Section Vertical Spacing System */
+  .section-py {
+    @apply py-12 sm:py-16 lg:py-20 scroll-mt-20;
+  }
+
+  .section-py-sm {
+    @apply py-8 sm:py-10 lg:py-14 scroll-mt-20;
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    @apply text-brand-green text-xs sm:text-sm font-bold tracking-widest uppercase;
+  }
+
+  /* Section heading group */
+  .heading-group {
+    @apply space-y-2.5;
+  }
+
+  /* Card base */
+  .card {
+    @apply bg-brand-warm-white rounded-2xl shadow-card overflow-hidden transition-all duration-200 border border-border-soft;
+  }
+
+  .card:hover {
+    @apply shadow-card-hover border-brand-green/30 -translate-y-0.5;
+  }
+
+  /* Prose content */
+  .prose-boc p {
+    color: var(--text-secondary);
+    @apply text-base leading-relaxed mb-4 last:mb-0;
+  }
+
+  /* ─── Refined Button Sizing System ───────────────────────────────────────── */
+
+  /* Primary Button: Brand Navy fill with warm-white text */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-brand-navy text-brand-warm-white font-semibold
+           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           transition-all duration-200
+           hover:bg-brand-navy-dark hover:shadow-md hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
+           active:translate-y-0 active:shadow-none
+           select-none cursor-pointer whitespace-nowrap;
+  }
+
+  /* Environmental / Action Button: Brand Green fill */
+  .btn-environmental {
+    @apply inline-flex items-center justify-center gap-2
+           bg-brand-green text-brand-warm-white font-semibold
+           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           transition-all duration-200
+           hover:bg-brand-leaf hover:shadow-md hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2
+           active:translate-y-0 active:shadow-none
+           select-none cursor-pointer whitespace-nowrap;
+  }
+
+  /* Secondary / Outline Button: Green border, navy text */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+           border border-brand-green text-brand-navy font-semibold bg-transparent
+           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           transition-all duration-200
+           hover:bg-brand-sage/30 hover:border-brand-leaf hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2
+           active:translate-y-0
+           select-none cursor-pointer whitespace-nowrap;
+  }
+
+  /* Outline green alias */
+  .btn-outline-green {
+    @apply btn-secondary;
+  }
+
+  /* Soft Button */
+  .btn-soft {
+    @apply inline-flex items-center justify-center gap-2
+           bg-brand-sky text-brand-navy font-semibold
+           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           transition-all duration-200
+           hover:bg-brand-sky/80 hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
+           active:translate-y-0
+           select-none cursor-pointer whitespace-nowrap;
+  }
+
+  .btn-tertiary {
+    @apply btn-soft;
+  }
+
+  /* Ghost: Warm white outline */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           border border-brand-navy/30 text-brand-navy font-semibold bg-transparent
+           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           transition-all duration-200
+           hover:bg-brand-navy hover:text-brand-warm-white hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
+           active:translate-y-0
+           select-none cursor-pointer whitespace-nowrap;
+  }
+
+  /* Cyan Button */
+  .btn-cyan {
+    @apply inline-flex items-center justify-center gap-2
+           bg-brand-cyan text-brand-warm-white font-semibold
+           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           transition-all duration-200
+           hover:bg-brand-cyan/90 hover:shadow-md hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2
+           active:translate-y-0 active:shadow-none
+           select-none cursor-pointer whitespace-nowrap;
+  }
+
+  /* Small button variant (approx 36-40px height) */
+  .btn-sm {
+    @apply px-4 py-2 text-xs font-semibold rounded-xl;
+  }
+
+  /* Large hero button variant (approx 48-52px height) */
+  .btn-lg {
+    @apply px-6 sm:px-7 py-3 sm:py-3.5 text-sm sm:text-base font-semibold rounded-xl;
+  }
+
+  /* ─── Image Placeholder ────────────────────────────────────── */
+  .img-placeholder {
+    background: linear-gradient(135deg, #DDE8D2 0%, #F7F5EA 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  /* Green divider */
+  .divider-green {
+    @apply w-16 h-1 bg-brand-green rounded-full;
+  }
+  .divider-cyan {
+    @apply w-16 h-1 bg-brand-cyan rounded-full;
+  }
+
+  /* Aspect ratios */
+  .aspect-card   { aspect-ratio: 4 / 3; }
+  .aspect-hero   { aspect-ratio: 16 / 9; }
+  .aspect-square { aspect-ratio: 1 / 1; }
+
+  /* Scroll animation helpers */
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+}

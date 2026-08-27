@@ -1,0 +1,105 @@
+// ─── Shared TypeScript Types for Bridge of Compassion ────────────────────
+
+export interface NavItem {
+  label: string
+  href: string
+  children?: NavItem[]
+}
+
+export interface Program {
+  id: string
+  title: string
+  slug: string
+  category: string
+  shortDescription: string
+  description: string
+  imageUrl?: string | null
+  featured: boolean
+  displayOrder: number
+  status: 'DRAFT' | 'PUBLISHED'
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export interface Event {
+  id: string
+  title: string
+  category: string
+  shortDescription?: string | null
+  description: string
+  date: Date | string
+  startTime: string
+  endTime?: string | null
+  location: string
+  featuredImage?: string | null
+  registrationLink?: string | null
+  registrationOpen: boolean
+  featured: boolean
+  published: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export interface Story {
+  id: string
+  title: string
+  excerpt: string
+  category: string
+  date: string            // ISO date string
+  imagePlaceholder: string
+  href: string
+  readTime: string
+}
+
+export interface ImpactStat {
+  value: string           // e.g. "500+" — placeholder until client provides real data
+  label: string
+  description: string
+  icon: string
+}
+
+export interface TeamMember {
+  id: string
+  name: string
+  role: string
+  bio: string
+  imagePlaceholder: string
+}
+
+export interface GalleryImage {
+  id: string
+  src: string
+  alt: string
+  caption?: string
+  category: string
+  width: number
+  height: number
+}
+
+export interface ContactFormData {
+  firstName: string
+  lastName: string
+  email: string
+  phone?: string
+  subject: string
+  message: string
+}
+
+export interface VolunteerFormData {
+  firstName: string
+  lastName: string
+  email: string
+  phone?: string
+  interests: string[]
+  availability: string
+  experience?: string
+  message?: string
+}
+
+export interface NewsletterFormData {
+  email: string
+  firstName?: string
+}
+
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'cyan' | 'environmental' | 'outline-green' | 'soft' | 'tertiary'
+export type ButtonSize = 'sm' | 'md' | 'lg'
