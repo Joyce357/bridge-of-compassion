@@ -27,7 +27,7 @@ async function getStats() {
       prisma.contactSubmission.count(),
       prisma.contactSubmission.count({ where: { status: 'NEW' } }),
       prisma.volunteerApplication.count(),
-      prisma.volunteerApplication.count({ where: { status: 'REVIEWING' } }),
+      prisma.volunteerApplication.count({ where: { status: { in: ['NEW', 'REVIEWING'] } } }),
       prisma.newsletterSubscriber.count(),
       prisma.program.count({ where: { status: 'PUBLISHED' } }),
       prisma.event.count({ where: { published: true } }),

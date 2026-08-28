@@ -67,6 +67,7 @@ model VolunteerApplication {
   message      String?
   consent      Boolean
   status       VolunteerStatus @default(NEW)
+  adminNotes   String?
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
 

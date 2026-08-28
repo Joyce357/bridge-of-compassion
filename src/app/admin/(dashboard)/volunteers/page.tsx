@@ -3,74 +3,46 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import StatusBadge from '@/components/admin/StatusBadge'
-import EmptyState from '@/components/admin/EmptyState'
+import VolunteersManager from '@/components/admin/VolunteersManager'
 import type { Metadata } from 'next'
+import type { VolunteerApplication } from '@/types'
 
-export const metadata: Metadata = { title: 'Volunteers' }
+export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Volunteer Applications | Admin',
+  description: 'Manage community volunteer applications and applicant workflow.',
+}
 
 export default async function AdminVolunteersPage() {
   const session = await getServerSession(authOptions)
   if (!session) redirect('/admin/login')
 
-  const applications = await prisma.volunteerApplication.findMany({
+  const rawApplications = await prisma.volunteerApplication.findMany({
     orderBy: { createdAt: 'desc' },
-    take: 50,
+    take: 100,
   })
 
-  return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-text-dark">Volunteer Applications</h1>
-        <p className="text-ink-muted text-sm mt-1">{applications.length} total applications</p>
-      </div>
+  const initialApplications: VolunteerApplication[] = rawApplications.map((v) => ({
+    id: v.id,
+    firstName: v.firstName,
+    lastName: v.lastName,
+    email: v.email,
+    phone: v.phone,
+    location: v.location,
+    interests: v.interests,
+    availability: v.availability,
+    message: v.message,
+    consent: v.consent,
+    status: v.status,
+    adminNotes: v.adminNotes,
+    createdAt: v.createdAt.toISOString(),
+    updatedAt: v.updatedAt.toISOString(),
+  }))
 
-      <div className="bg-white rounded-2xl shadow-card overflow-hidden">
-        {applications.length === 0 ? (
-          <EmptyState
-            icon="🤝"
-            title="No volunteer applications yet"
-            message="When people submit the volunteer form, their applications will appear here."
-          />
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-100">
-                <tr>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-ink-muted uppercase tracking-wider">Name</th>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-ink-muted uppercase tracking-wider">Email</th>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-ink-muted uppercase tracking-wider">Interests</th>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-ink-muted uppercase tracking-wider">Availability</th>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-ink-muted uppercase tracking-wider">Status</th>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-ink-muted uppercase tracking-wider">Date</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {applications.map((v) => (
-                  <tr key={v.id} className="hover:bg-gray-50/60 transition-colors">
-                    <td className="px-5 py-3.5 font-medium text-ink">
-                      {v.firstName} {v.lastName}
-                    </td>
-                    <td className="px-5 py-3.5 text-ink-muted">
-                      <a href={`mailto:${v.email}`} className="hover:text-green-700">{v.email}</a>
-                    </td>
-                    <td className="px-5 py-3.5 text-ink-muted text-xs max-w-xs">
-                      {v.interests.join(', ')}
-                    </td>
-                    <td className="px-5 py-3.5 text-ink-muted">{v.availability}</td>
-                    <td className="px-5 py-3.5"><StatusBadge status={v.status} /></td>
-                    <td className="px-5 py-3.5 text-ink-subtle text-xs whitespace-nowrap">
-                      {new Date(v.createdAt).toLocaleDateString('en-CA', {
-                        year: 'numeric', month: 'short', day: 'numeric',
-                      })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    </div>
+  return (
+    <VolunteersManager
+      initialApplications={initialApplications}
+    />
   )
 }

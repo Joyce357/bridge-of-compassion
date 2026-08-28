@@ -97,21 +97,45 @@ export default function VolunteerForm() {
     setApiMsg(data.message)
   }
 
+  const resetForm = () => {
+    setFields({
+      firstName:    '',
+      lastName:     '',
+      email:        '',
+      phone:        '',
+      location:     '',
+      availability: '',
+      message:      '',
+    })
+    setInterests([])
+    setConsent(false)
+    setErrors({})
+    setStatus('idle')
+    setApiMsg('')
+  }
+
   if (status === 'success') {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
-        <div className="text-4xl mb-4">🤝</div>
-        <h3 className="text-xl font-bold text-forest-dark mb-2">Application Submitted!</h3>
-        <p className="text-ink-muted">{apiMsg}</p>
+      <div className="bg-brand-sage/20 border border-brand-green/30 rounded-2xl p-8 text-center space-y-4">
+        <div className="text-4xl">🤝</div>
+        <h3 className="text-xl font-bold text-brand-navy">Application Submitted!</h3>
+        <p className="text-text-secondary max-w-md mx-auto">{apiMsg}</p>
+        <button
+          type="button"
+          onClick={resetForm}
+          className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl border border-brand-green/30 text-brand-navy font-semibold text-sm hover:bg-brand-sage/30 transition-all mt-2"
+        >
+          Submit Another Application
+        </button>
       </div>
     )
   }
 
   const inputClass = (field: keyof FieldErrors) =>
-    `w-full px-4 py-3 border rounded-xl text-ink text-sm transition-all
-     focus:outline-none focus:ring-2 focus:ring-moss focus:border-transparent
-     placeholder:text-ink-subtle ${
-      errors[field] ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-gray-300'
+    `w-full px-4 py-3 border rounded-xl text-text-primary text-sm transition-all
+     focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent
+     placeholder:text-text-secondary/50 ${
+      errors[field] ? 'border-red-400 bg-red-50/50' : 'border-border-soft bg-white hover:border-text-secondary/40'
     }`
 
   return (
@@ -125,14 +149,14 @@ export default function VolunteerForm() {
       {/* Name */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="vf-first" className="block text-sm font-semibold text-forest-dark mb-2">
+          <label htmlFor="vf-first" className="block text-sm font-semibold text-brand-navy mb-2">
             First Name <span className="text-red-500">*</span>
           </label>
           <input id="vf-first" type="text" value={fields.firstName} onChange={set('firstName')} className={inputClass('firstName')} placeholder="First" required />
           {errors.firstName && <p className="mt-1 text-xs text-red-600">{errors.firstName}</p>}
         </div>
         <div>
-          <label htmlFor="vf-last" className="block text-sm font-semibold text-forest-dark mb-2">
+          <label htmlFor="vf-last" className="block text-sm font-semibold text-brand-navy mb-2">
             Last Name <span className="text-red-500">*</span>
           </label>
           <input id="vf-last" type="text" value={fields.lastName} onChange={set('lastName')} className={inputClass('lastName')} placeholder="Last" required />
@@ -143,15 +167,15 @@ export default function VolunteerForm() {
       {/* Email + Phone */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="vf-email" className="block text-sm font-semibold text-forest-dark mb-2">
+          <label htmlFor="vf-email" className="block text-sm font-semibold text-brand-navy mb-2">
             Email <span className="text-red-500">*</span>
           </label>
           <input id="vf-email" type="email" value={fields.email} onChange={set('email')} className={inputClass('email')} placeholder="your@email.com" required />
           {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
         </div>
         <div>
-          <label htmlFor="vf-phone" className="block text-sm font-semibold text-forest-dark mb-2">
-            Phone <span className="text-ink-subtle font-normal">(optional)</span>
+          <label htmlFor="vf-phone" className="block text-sm font-semibold text-brand-navy mb-2">
+            Phone <span className="text-text-secondary/70 font-normal">(optional)</span>
           </label>
           <input id="vf-phone" type="tel" value={fields.phone} onChange={set('phone')} className={inputClass('phone')} placeholder="+1 (555) 000-0000" />
         </div>
@@ -159,27 +183,27 @@ export default function VolunteerForm() {
 
       {/* Location */}
       <div>
-        <label htmlFor="vf-location" className="block text-sm font-semibold text-forest-dark mb-2">
-          Location <span className="text-ink-subtle font-normal">(city, province)</span>
+        <label htmlFor="vf-location" className="block text-sm font-semibold text-brand-navy mb-2">
+          Location <span className="text-text-secondary/70 font-normal">(city, province)</span>
         </label>
         <input id="vf-location" type="text" value={fields.location} onChange={set('location')} className={inputClass('location')} placeholder="e.g. Toronto, ON" />
       </div>
 
       {/* Areas of Interest */}
       <div>
-        <p className="text-sm font-semibold text-forest-dark mb-3">
+        <p className="text-sm font-semibold text-brand-navy mb-3">
           Areas of Interest <span className="text-red-500">*</span>
         </p>
-        <div className="grid sm:grid-cols-2 gap-2">
+        <div className="grid sm:grid-cols-2 gap-2.5">
           {INTERESTS.map((interest) => (
-            <label key={interest} className="flex items-center gap-3 cursor-pointer">
+            <label key={interest} className="flex items-center gap-3 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={interests.includes(interest)}
                 onChange={() => toggleInterest(interest)}
-                className="w-4 h-4 rounded border-gray-300 text-forest-dark focus:ring-moss"
+                className="w-4 h-4 rounded border-border-soft text-brand-green focus:ring-brand-cyan"
               />
-              <span className="text-sm text-ink">{interest}</span>
+              <span className="text-sm text-text-primary">{interest}</span>
             </label>
           ))}
         </div>
@@ -188,7 +212,7 @@ export default function VolunteerForm() {
 
       {/* Availability */}
       <div>
-        <label htmlFor="vf-avail" className="block text-sm font-semibold text-forest-dark mb-2">
+        <label htmlFor="vf-avail" className="block text-sm font-semibold text-brand-navy mb-2">
           Availability <span className="text-red-500">*</span>
         </label>
         <select
@@ -208,8 +232,8 @@ export default function VolunteerForm() {
 
       {/* Message */}
       <div>
-        <label htmlFor="vf-msg" className="block text-sm font-semibold text-forest-dark mb-2">
-          Additional Message <span className="text-ink-subtle font-normal">(optional)</span>
+        <label htmlFor="vf-msg" className="block text-sm font-semibold text-brand-navy mb-2">
+          Additional Message <span className="text-text-secondary/70 font-normal">(optional)</span>
         </label>
         <textarea
           id="vf-msg"
@@ -223,7 +247,7 @@ export default function VolunteerForm() {
 
       {/* Consent */}
       <div>
-        <label className="flex items-start gap-3 cursor-pointer">
+        <label className="flex items-start gap-3 cursor-pointer select-none">
           <input
             type="checkbox"
             checked={consent}
@@ -231,9 +255,9 @@ export default function VolunteerForm() {
               setConsent(e.target.checked)
               setErrors((prev) => ({ ...prev, consent: undefined }))
             }}
-            className="mt-0.5 w-4 h-4 rounded border-gray-300 text-forest-dark focus:ring-moss"
+            className="mt-1 w-4 h-4 rounded border-border-soft text-brand-green focus:ring-brand-cyan"
           />
-          <span className="text-sm text-ink-muted">
+          <span className="text-sm text-text-secondary">
             I consent to Bridge of Compassion storing my information to process this application
             and contact me about volunteer opportunities. <span className="text-red-500">*</span>
           </span>
@@ -244,7 +268,7 @@ export default function VolunteerForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+        className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       >
         {status === 'loading' ? 'Submitting…' : 'Submit Application'}
       </button>

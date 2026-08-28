@@ -12,9 +12,9 @@ const statusStyles: Record<string, string> = {
   ARCHIVED:     'bg-gray-100 text-gray-500',
   // Volunteer
   REVIEWING:    'bg-amber-100 text-amber-800 font-semibold border border-amber-200',
-  CONTACTED:    'bg-brand-sky text-brand-navy',
-  ACTIVE:       'bg-brand-sage/60 text-brand-green font-semibold border border-brand-green/20',
-  INACTIVE:     'bg-gray-100 text-gray-500',
+  CONTACTED:    'bg-sky-100 text-sky-800 font-semibold border border-sky-200',
+  ACTIVE:       'bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200',
+  INACTIVE:     'bg-gray-100 text-gray-600 font-medium border border-gray-200',
   // Newsletter
   UNSUBSCRIBED: 'bg-red-50 text-red-600 border border-red-200',
   // Donation

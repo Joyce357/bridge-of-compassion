@@ -89,6 +89,23 @@ export const volunteerSchema = z.object({
 
 export type VolunteerInput = z.infer<typeof volunteerSchema>
 
+export const VOLUNTEER_STATUSES = [
+  'NEW',
+  'REVIEWING',
+  'CONTACTED',
+  'ACTIVE',
+  'INACTIVE',
+] as const
+
+export type VolunteerStatusType = (typeof VOLUNTEER_STATUSES)[number]
+
+export const adminVolunteerUpdateSchema = z.object({
+  status: z.enum(VOLUNTEER_STATUSES).optional(),
+  adminNotes: z.string().max(3000, 'Admin notes must be under 3,000 characters.').optional().nullable().or(z.literal('')),
+})
+
+export type AdminVolunteerUpdateInput = z.infer<typeof adminVolunteerUpdateSchema>
+
 // ─── Newsletter ───────────────────────────────────────────────────────────────
 
 export const newsletterSchema = z.object({
