@@ -329,6 +329,52 @@ export const newsSchema = z.object({
 
 export type NewsInput = z.infer<typeof newsSchema>
 
+// ─── Gallery ──────────────────────────────────────────────────────────────────
+
+export const GALLERY_CATEGORIES = [
+  'Community',
+  'Conservation',
+  'Youth',
+  'Events',
+  'Education',
+  'Restoration',
+] as const
+
+export type GalleryCategory = (typeof GALLERY_CATEGORIES)[number]
+
+/**
+ * Generates gallery category badge color style.
+ */
+export function getGalleryCategoryStyle(category?: string | null): { bg: string; text: string; border: string } {
+  switch (category?.toLowerCase()) {
+    case 'conservation':
+    case 'restoration':
+      return { bg: 'bg-brand-green/10', text: 'text-brand-green', border: 'border-brand-green/20' }
+    case 'youth':
+    case 'education':
+      return { bg: 'bg-accent-blue/10', text: 'text-accent-blue', border: 'border-accent-blue/20' }
+    case 'events':
+      return { bg: 'bg-amber-500/10', text: 'text-amber-700', border: 'border-amber-500/20' }
+    case 'community':
+    default:
+      return { bg: 'bg-brand-navy/10', text: 'text-brand-navy', border: 'border-brand-navy/20' }
+  }
+}
+
+export const gallerySchema = z.object({
+  title: z.string().max(200, 'Title is too long.').optional().nullable().or(z.literal('')),
+  caption: z.string().max(500, 'Caption is too long.').optional().nullable().or(z.literal('')),
+  altText: z.string().max(200, 'Alt text is too long.').optional().nullable().or(z.literal('')),
+  imageUrl: z.string().min(1, 'Image URL is required.').max(1000),
+  imagePublicId: z.string().max(300).optional().nullable().or(z.literal('')),
+  category: z.string().max(100).optional().nullable().or(z.literal('')).default('Community'),
+  featured: z.boolean().default(false),
+  displayOrder: z.number().int().default(0),
+  published: z.boolean().default(false),
+})
+
+export type GalleryInput = z.infer<typeof gallerySchema>
+
 // ─── Admin: Change Password ───────────────────────────────────────────────────
 
 export const changePasswordSchema = z

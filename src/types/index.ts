@@ -83,6 +83,21 @@ export interface TeamMember {
   imagePlaceholder: string
 }
 
+export interface GalleryItem {
+  id: string
+  title?: string | null
+  caption?: string | null
+  altText?: string | null
+  imageUrl: string
+  imagePublicId?: string | null
+  category?: string | null
+  featured: boolean
+  displayOrder: number
+  published: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
 export interface GalleryImage {
   id: string
   src: string
