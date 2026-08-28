@@ -33,6 +33,11 @@ async function check() {
     const eventCount = await prisma.event.count();
     console.log('EVENT TABLE: PASS');
     console.log(`EVENT COUNT: ${eventCount}`);
+
+    // 4. NewsPost table query
+    const newsCount = await prisma.newsPost.count();
+    console.log('NEWS TABLE: PASS');
+    console.log(`NEWS COUNT: ${newsCount}`);
   } catch (err) {
     const safeMsg = (err.message || '').replace(/postgresql:\/\/[^@]*@[^\s]*/g, '[REDACTED]');
     console.error('DATABASE CHECK FAILED:', safeMsg);

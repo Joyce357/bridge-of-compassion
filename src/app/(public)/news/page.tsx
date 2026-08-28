@@ -1,106 +1,149 @@
-// ─── News Page ────────────────────────────────────────────────────────────
+// ─── News & Stories Listing Page ──────────────────────────────────────────
 import type { Metadata } from 'next'
-import { prisma } from '@/lib/prisma'
-import { stories as seedStories } from '@/data/stories'
+import Link from 'next/link'
+import Image from 'next/image'
+import Container from '@/components/ui/Container'
+import { getPublishedNews, getNewsCategoryStyle } from '@/lib/news'
+import { formatDate } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'News & Stories',
-  description: 'Read the latest news, stories, and updates from Bridge of Compassion.',
+  description: 'Read the latest environmental impact stories, community updates, and news from Bridge of Compassion.',
   alternates: { canonical: 'https://bridgeofcompassion.org/news' },
 }
 
-async function getNewsPosts() {
-  try {
-    return await prisma.newsPost.findMany({
-      where:   { published: true },
-      orderBy: { publishedAt: 'desc' },
-      select: {
-        id:           true,
-        title:        true,
-        slug:         true,
-        excerpt:      true,
-        featuredImage: true,
-        author:       true,
-        publishedAt:  true,
-      },
-    })
-  } catch {
-    return []
-  }
-}
-
-function formatDate(date: Date | string | null) {
-  if (!date) return ''
-  return new Date(date).toLocaleDateString('en-CA', {
-    year: 'numeric', month: 'long', day: 'numeric',
-  })
-}
+export const dynamic = 'force-dynamic'
 
 export default async function NewsPage() {
-  const dbPosts = await getNewsPosts()
-  const hasDatabasePosts = dbPosts.length > 0
+  const posts = await getPublishedNews()
 
   return (
     <>
+      {/* Hero Header */}
       <section className="bg-brand-navy-dark section-py text-brand-warm-white relative overflow-hidden">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="container-boc text-center relative z-10">
-          <p className="eyebrow text-brand-cyan mb-4">Latest Updates</p>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-brand-warm-white mb-4 tracking-tight">News &amp; Stories</h1>
-          <p className="text-brand-warm-white/80 text-lg max-w-xl mx-auto">
-            Stories of impact, community updates, and the voices behind our environmental work.
+        <Container className="text-center relative z-10">
+          <p className="eyebrow text-brand-cyan mb-3">Community &amp; Conservation</p>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-brand-warm-white mb-4 tracking-tight">
+            News &amp; Impact Stories
+          </h1>
+          <p className="text-brand-warm-white/80 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+            Stories of youth leadership, ecosystem restoration, and the community members driving positive environmental change.
           </p>
-        </div>
+        </Container>
       </section>
 
+      {/* Main Stories Grid */}
       <section className="section-py bg-brand-warm-white">
-        <div className="container-boc">
-          {!hasDatabasePosts && (
-            <div className="mb-8 bg-brand-sky/40 border border-brand-cyan/20 rounded-xl px-5 py-4 text-sm text-brand-navy">
-              <strong>Development note:</strong> Showing placeholder stories. Seed the database or add posts via the admin to show real content.
+        <Container>
+          {posts.length === 0 ? (
+            <div className="max-w-md mx-auto text-center py-16 px-6 bg-white rounded-3xl border border-border-soft shadow-xs">
+              <div className="w-16 h-16 rounded-2xl bg-brand-sage/40 flex items-center justify-center text-3xl mx-auto mb-4">
+                📰
+              </div>
+              <h2 className="text-xl font-extrabold text-brand-navy mb-2">No Stories Published Yet</h2>
+              <p className="text-sm text-text-secondary leading-relaxed mb-6">
+                Our team is currently preparing new community updates and impact articles. Please check back soon or join our newsletter to stay informed.
+              </p>
+              <Link
+                href="/volunteer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-navy hover:bg-brand-navy-dark transition-colors shadow-xs"
+              >
+                Get Involved as a Volunteer
+              </Link>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {posts.map((post) => {
+                const catStyle = getNewsCategoryStyle(post.category)
+                const dateStr = post.publishedAt || post.createdAt
+
+                return (
+                  <Link
+                    key={post.id}
+                    href={`/news/${post.slug}`}
+                    className="group card flex flex-col bg-white border border-border-soft hover:border-brand-green/40 hover:shadow-card-hover rounded-2xl overflow-hidden transition-all duration-200"
+                    aria-label={`Read story: ${post.title}`}
+                  >
+                    {/* Featured Image or Graphic Placeholder */}
+                    <div className="aspect-[16/9] relative overflow-hidden bg-brand-cream/60 border-b border-border-soft/60">
+                      {post.featuredImage ? (
+                        <Image
+                          src={post.featuredImage}
+                          alt={post.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-brand-green/30">
+                          <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                          </svg>
+                        </div>
+                      )}
+
+                      {/* Category Badge */}
+                      {post.category && (
+                        <div className="absolute top-3 left-3">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border backdrop-blur-xs bg-white/95 ${catStyle.text} ${catStyle.border} shadow-2xs`}
+                          >
+                            {post.category}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Featured Badge */}
+                      {post.featured && (
+                        <div className="absolute top-3 right-3">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-400 text-amber-950 shadow-xs">
+                            ★ Featured
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="flex flex-col flex-1 p-5 sm:p-6">
+                      <div className="flex items-center gap-2 mb-2 text-text-secondary text-xs font-medium">
+                        {dateStr && <time dateTime={typeof dateStr === 'string' ? dateStr : dateStr.toISOString()}>{formatDate(dateStr)}</time>}
+                        {post.author && (
+                          <>
+                            <span aria-hidden="true">·</span>
+                            <span className="truncate">{post.author}</span>
+                          </>
+                        )}
+                      </div>
+
+                      <h2 className="text-base sm:text-lg font-bold text-brand-navy leading-snug mb-2.5 group-hover:text-brand-green transition-colors duration-200 line-clamp-2">
+                        {post.title}
+                      </h2>
+
+                      {post.excerpt && (
+                        <p className="text-text-secondary text-xs sm:text-sm leading-relaxed flex-1 mb-4 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                      )}
+
+                      <div className="flex items-center gap-1.5 text-brand-green text-xs sm:text-sm font-bold group-hover:text-brand-navy transition-colors duration-200 mt-auto pt-2">
+                        <span>Read Full Story</span>
+                        <svg
+                          className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
             </div>
           )}
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {!hasDatabasePosts
-              ? seedStories.map((story) => (
-                  <article key={story.id} className="card group bg-brand-warm-white border border-border-soft hover:border-brand-green/40 hover:shadow-card-hover">
-                    <div className="img-placeholder aspect-card flex items-center justify-center text-5xl bg-brand-sage/30">
-                      📰
-                    </div>
-                    <div className="p-6">
-                      <span className="eyebrow text-xs">{story.category}</span>
-                      <h2 className="text-lg font-bold text-brand-navy mt-2 mb-2 group-hover:text-brand-green transition-colors line-clamp-2">
-                        <a href={story.href}>{story.title}</a>
-                      </h2>
-                      <p className="text-text-secondary text-sm mb-4 line-clamp-3 leading-relaxed">{story.excerpt}</p>
-                      <div className="flex items-center justify-between text-xs text-text-secondary">
-                        <span>{formatDate(story.date)}</span>
-                        <span>{story.readTime}</span>
-                      </div>
-                    </div>
-                  </article>
-                ))
-              : dbPosts.map((post) => (
-                  <article key={post.id} className="card group bg-brand-warm-white border border-border-soft hover:border-brand-green/40 hover:shadow-card-hover">
-                    <div className="img-placeholder aspect-card flex items-center justify-center text-5xl bg-brand-sage/30">
-                      📰
-                    </div>
-                    <div className="p-6">
-                      <h2 className="text-lg font-bold text-brand-navy mb-2 group-hover:text-brand-green transition-colors line-clamp-2">
-                        <a href={`/news/${post.slug}`}>{post.title}</a>
-                      </h2>
-                      <p className="text-text-secondary text-sm mb-4 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                      <div className="flex items-center justify-between text-xs text-text-secondary">
-                        <span>{formatDate(post.publishedAt)}</span>
-                        {post.author && <span>By {post.author}</span>}
-                      </div>
-                    </div>
-                  </article>
-                ))}
-          </div>
-        </div>
+        </Container>
       </section>
     </>
   )

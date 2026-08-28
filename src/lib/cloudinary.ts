@@ -70,4 +70,60 @@ export async function deleteAdminAvatar(userId: string): Promise<boolean> {
   }
 }
 
+/**
+ * Upload a News/Story hero or featured image to Cloudinary.
+ * Applies landscape 16:9 crop (1200x675), automatic quality, and WebP/auto format.
+ */
+export async function uploadNewsImage(
+  buffer: Buffer,
+  publicId?: string,
+): Promise<{ secure_url: string; public_id: string }> {
+  return new Promise((resolve, reject) => {
+    const uploadOptions: Record<string, unknown> = {
+      folder: CLOUDINARY_FOLDERS.news,
+      resource_type: 'image',
+      transformation: [
+        { width: 1200, height: 675, crop: 'fill', gravity: 'auto', quality: 'auto', fetch_format: 'auto' },
+      ],
+    }
+
+    if (publicId) {
+      uploadOptions.public_id = publicId
+      uploadOptions.overwrite = true
+      uploadOptions.invalidate = true
+    }
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      uploadOptions,
+      (error, result: UploadApiResponse | undefined) => {
+        if (error || !result) {
+          return reject(error || new Error('Upload to Cloudinary failed.'))
+        }
+        resolve({
+          secure_url: result.secure_url,
+          public_id: result.public_id,
+        })
+      },
+    )
+
+    uploadStream.end(buffer)
+  })
+}
+
+/**
+ * Safely delete a News image from Cloudinary by its public ID.
+ */
+export async function deleteNewsImage(publicId: string): Promise<boolean> {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId, {
+      invalidate: true,
+      resource_type: 'image',
+    })
+    return result.result === 'ok' || result.result === 'not found'
+  } catch (err) {
+    console.error('[Cloudinary] Failed to delete news image:', (err as Error)?.message)
+    return false
+  }
+}
+
 export { cloudinary }
