@@ -27,6 +27,11 @@ export async function GET(
     const { id } = await resolveParams(context)
     const application = await prisma.volunteerApplication.findUnique({
       where: { id },
+      include: {
+        communications: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
     })
 
     if (!application) {

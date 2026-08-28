@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import StatusBadge from '@/components/admin/StatusBadge'
 import EmptyState from '@/components/admin/EmptyState'
-import type { VolunteerApplication } from '@/types'
+import type { VolunteerApplication, VolunteerCommunication } from '@/types'
 
 interface VolunteersManagerProps {
   initialApplications: VolunteerApplication[]
@@ -20,6 +20,8 @@ const STATUS_TABS: { label: string; value: StatusFilter }[] = [
   { label: 'Inactive', value: 'INACTIVE' },
 ]
 
+const DEFAULT_REPLY_SUBJECT = 'Re: Your Volunteer Application — Bridge of Compassion'
+
 export default function VolunteersManager({
   initialApplications,
 }: VolunteersManagerProps) {
@@ -31,6 +33,12 @@ export default function VolunteersManager({
   const [selectedApp, setSelectedApp] = useState<VolunteerApplication | null>(null)
   const [notesInput, setNotesInput] = useState('')
   const [savingNotes, setSavingNotes] = useState(false)
+
+  // Reply by Email State
+  const [replySubject, setReplySubject] = useState(DEFAULT_REPLY_SUBJECT)
+  const [replyMessage, setReplyMessage] = useState('')
+  const [sendingReply, setSendingReply] = useState(false)
+  const [replyError, setReplyError] = useState<string | null>(null)
 
   // Status updating inline state
   const [updatingId, setUpdatingId] = useState<string | null>(null)
@@ -47,10 +55,13 @@ export default function VolunteersManager({
     setTimeout(() => setFeedback(null), 4000)
   }
 
-  // Sync selectedApp notesInput whenever selectedApp changes
+  // Sync selectedApp state whenever selectedApp changes
   useEffect(() => {
     if (selectedApp) {
       setNotesInput(selectedApp.adminNotes || '')
+      setReplySubject(DEFAULT_REPLY_SUBJECT)
+      setReplyMessage('')
+      setReplyError(null)
     }
   }, [selectedApp])
 
@@ -171,6 +182,75 @@ export default function VolunteersManager({
       showFeedback(msg, 'error')
     } finally {
       setSavingNotes(false)
+    }
+  }
+
+  // Send Email Reply
+  const handleSendReply = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedApp) return
+
+    if (!replySubject.trim()) {
+      setReplyError('Subject is required.')
+      return
+    }
+    if (!replyMessage.trim()) {
+      setReplyError('Message body is required.')
+      return
+    }
+
+    setSendingReply(true)
+    setReplyError(null)
+
+    try {
+      const res = await fetch(`/api/admin/volunteers/${selectedApp.id}/reply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subject: replySubject.trim(),
+          message: replyMessage.trim(),
+        }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send email reply.')
+      }
+
+      const newCommunication: VolunteerCommunication = data.communication
+      const updatedStatus: VolunteerApplication['status'] = data.newStatus || selectedApp.status
+
+      // Update selectedApp and applications list
+      setApplications((prev) =>
+        prev.map((app) =>
+          app.id === selectedApp.id
+            ? {
+                ...app,
+                status: updatedStatus,
+                communications: [newCommunication, ...(app.communications || [])],
+              }
+            : app,
+        ),
+      )
+
+      setSelectedApp((prev) =>
+        prev
+          ? {
+              ...prev,
+              status: updatedStatus,
+              communications: [newCommunication, ...(prev.communications || [])],
+            }
+          : null,
+      )
+
+      setReplyMessage('')
+      setReplySubject(DEFAULT_REPLY_SUBJECT)
+      showFeedback(`Reply sent to ${selectedApp.email}`)
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to send email reply'
+      setReplyError(msg)
+    } finally {
+      setSendingReply(false)
     }
   }
 
@@ -344,6 +424,11 @@ export default function VolunteersManager({
                           <span>📝</span> {app.adminNotes}
                         </div>
                       )}
+                      {app.communications && app.communications.length > 0 && (
+                        <div className="text-[11px] text-brand-green bg-brand-green/10 border border-brand-green/20 rounded px-1.5 py-0.5 inline-flex items-center gap-1 mt-1 ml-1">
+                          <span>✉️</span> {app.communications.length} {app.communications.length === 1 ? 'reply' : 'replies'}
+                        </div>
+                      )}
                     </td>
 
                     {/* Contact */}
@@ -418,7 +503,7 @@ export default function VolunteersManager({
                           onClick={() => setSelectedApp(app)}
                           className="px-3 py-1.5 rounded-lg bg-brand-sky text-brand-navy hover:bg-brand-sky/80 text-xs font-semibold transition-all border border-brand-cyan/20 cursor-pointer"
                         >
-                          View Details
+                          View &amp; Reply
                         </button>
 
                         <button
@@ -440,7 +525,7 @@ export default function VolunteersManager({
         )}
       </div>
 
-      {/* Application Detail Modal */}
+      {/* Application Detail & Email Reply Modal */}
       {selectedApp && (
         <div
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
@@ -448,7 +533,7 @@ export default function VolunteersManager({
           aria-modal="true"
           aria-labelledby="volunteer-detail-title"
         >
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-border-soft max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-border-soft max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-border-soft flex items-center justify-between bg-[#F8FAF6]">
               <div>
@@ -600,10 +685,141 @@ export default function VolunteersManager({
                 </div>
               </div>
 
-              {/* Consent & Verification */}
+              {/* Consent */}
               <div className="flex items-center gap-2 text-xs text-text-secondary">
                 <span className="text-brand-green font-bold">✓</span>
                 <span>Applicant consented to information storage and contact policy.</span>
+              </div>
+
+              {/* ─── Communication History ──────────────────────────── */}
+              <div className="border-t border-border-soft pt-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-bold text-brand-navy uppercase tracking-wider flex items-center gap-1.5">
+                    <span>📬</span> Communication History ({selectedApp.communications?.length || 0})
+                  </h3>
+                </div>
+
+                {selectedApp.communications && selectedApp.communications.length > 0 ? (
+                  <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
+                    {selectedApp.communications.map((comm) => (
+                      <div
+                        key={comm.id}
+                        className="bg-brand-warm-white border border-border-soft rounded-xl p-3.5 space-y-2 text-xs"
+                      >
+                        <div className="flex items-center justify-between gap-2 border-b border-border-soft/60 pb-2">
+                          <span className="font-bold text-brand-navy truncate">
+                            {comm.subject}
+                          </span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-brand-green border border-brand-green/20">
+                            Sent
+                          </span>
+                        </div>
+                        <p className="text-text-primary whitespace-pre-wrap leading-relaxed">
+                          {comm.message}
+                        </p>
+                        <div className="flex items-center justify-between text-[11px] text-text-secondary pt-1">
+                          <span>Sent to: <strong className="text-brand-navy">{comm.recipientEmail}</strong></span>
+                          <span>
+                            {new Date(comm.sentAt).toLocaleDateString('en-CA', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-4 bg-gray-50 border border-border-soft/60 rounded-xl text-center text-xs text-text-secondary">
+                    No email replies sent to this applicant yet.
+                  </div>
+                )}
+              </div>
+
+              {/* ─── Reply by Email ─────────────────────────────────── */}
+              <div className="border-t border-border-soft pt-4 space-y-3">
+                <h3 className="text-xs font-bold text-brand-navy uppercase tracking-wider flex items-center gap-1.5">
+                  <span>✉️</span> Reply by Email
+                </h3>
+
+                <form onSubmit={handleSendReply} className="space-y-3">
+                  {replyError && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 text-xs px-3.5 py-2.5 rounded-xl">
+                      {replyError}
+                    </div>
+                  )}
+
+                  {/* To (Read-only) */}
+                  <div>
+                    <label className="text-xs text-text-secondary block mb-1">
+                      To <span className="text-[11px] text-text-secondary/70">(Applicant Email)</span>
+                    </label>
+                    <input
+                      type="email"
+                      readOnly
+                      value={selectedApp.email}
+                      className="w-full bg-gray-100/80 border border-border-soft rounded-xl px-3.5 py-2 text-xs text-text-secondary cursor-not-allowed select-none"
+                    />
+                  </div>
+
+                  {/* Subject */}
+                  <div>
+                    <label htmlFor="reply-subject" className="text-xs text-brand-navy font-semibold block mb-1">
+                      Subject <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id="reply-subject"
+                      type="text"
+                      value={replySubject}
+                      onChange={(e) => setReplySubject(e.target.value)}
+                      placeholder="Subject line"
+                      required
+                      className="w-full bg-white border border-border-soft rounded-xl px-3.5 py-2 text-xs text-text-primary focus:ring-2 focus:ring-brand-cyan focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Message */}
+                  <div>
+                    <label htmlFor="reply-message" className="text-xs text-brand-navy font-semibold block mb-1">
+                      Message <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      id="reply-message"
+                      rows={4}
+                      value={replyMessage}
+                      onChange={(e) => setReplyMessage(e.target.value)}
+                      placeholder="Write your email response to the applicant…"
+                      required
+                      className="w-full bg-white border border-border-soft rounded-xl p-3 text-xs text-text-primary placeholder:text-text-secondary/50 focus:ring-2 focus:ring-brand-cyan focus:outline-none resize-y"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1">
+                    <p className="text-[11px] text-text-secondary">
+                      ℹ️ Replies update status to <strong className="text-brand-navy">Contacted</strong>.
+                    </p>
+                    <button
+                      type="submit"
+                      disabled={sendingReply}
+                      className="px-4 py-2 rounded-xl bg-brand-green text-brand-warm-white text-xs font-semibold hover:bg-brand-green/90 transition-all disabled:opacity-60 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      {sendingReply ? (
+                        <>
+                          <span className="animate-spin text-xs">⏳</span>
+                          <span>Sending Email…</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Send Email Reply</span>
+                          <span>↗</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
               </div>
 
               {/* Internal Admin Notes */}
@@ -618,20 +834,20 @@ export default function VolunteersManager({
                 </div>
                 <textarea
                   id="admin-notes"
-                  rows={3}
+                  rows={2}
                   value={notesInput}
                   onChange={(e) => setNotesInput(e.target.value)}
                   placeholder="Record review notes, interview feedback, schedule details, or follow-up tasks…"
-                  className="w-full bg-white border border-border-soft rounded-xl p-3 text-sm text-text-primary placeholder:text-text-secondary/50 focus:ring-2 focus:ring-brand-cyan focus:outline-none"
+                  className="w-full bg-white border border-border-soft rounded-xl p-3 text-xs text-text-primary placeholder:text-text-secondary/50 focus:ring-2 focus:ring-brand-cyan focus:outline-none"
                 />
                 <div className="flex justify-end mt-2">
                   <button
                     type="button"
                     onClick={handleSaveNotes}
                     disabled={savingNotes}
-                    className="px-4 py-2 rounded-xl bg-brand-green text-brand-warm-white text-xs font-semibold hover:bg-brand-green/90 transition-all disabled:opacity-60 cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-xl border border-border-soft bg-white text-brand-navy text-xs font-semibold hover:bg-gray-50 transition-all disabled:opacity-60 cursor-pointer"
                   >
-                    {savingNotes ? 'Saving Notes…' : 'Save Notes'}
+                    {savingNotes ? 'Saving…' : 'Save Notes'}
                   </button>
                 </div>
               </div>

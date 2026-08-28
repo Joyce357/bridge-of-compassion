@@ -20,6 +20,11 @@ export default async function AdminVolunteersPage() {
 
   const rawApplications = await prisma.volunteerApplication.findMany({
     orderBy: { createdAt: 'desc' },
+    include: {
+      communications: {
+        orderBy: { createdAt: 'desc' },
+      },
+    },
     take: 100,
   })
 
@@ -36,6 +41,19 @@ export default async function AdminVolunteersPage() {
     consent: v.consent,
     status: v.status,
     adminNotes: v.adminNotes,
+    communications: v.communications.map((c) => ({
+      id: c.id,
+      volunteerApplicationId: c.volunteerApplicationId,
+      subject: c.subject,
+      message: c.message,
+      recipientEmail: c.recipientEmail,
+      sentByUserId: c.sentByUserId,
+      sentByName: c.sentByName,
+      sentAt: c.sentAt.toISOString(),
+      deliveryStatus: c.deliveryStatus,
+      providerMessageId: c.providerMessageId,
+      createdAt: c.createdAt.toISOString(),
+    })),
     createdAt: v.createdAt.toISOString(),
     updatedAt: v.updatedAt.toISOString(),
   }))
