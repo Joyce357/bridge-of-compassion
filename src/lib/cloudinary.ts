@@ -126,4 +126,61 @@ export async function deleteNewsImage(publicId: string): Promise<boolean> {
   }
 }
 
+/**
+ * Upload a Gallery photo to Cloudinary.
+ * Preserves full original aspect ratio up to 1920x1080 limit with automatic quality and WebP/auto format.
+ */
+export async function uploadGalleryImage(
+  buffer: Buffer,
+  publicId?: string,
+): Promise<{ secure_url: string; public_id: string }> {
+  return new Promise((resolve, reject) => {
+    const uploadOptions: Record<string, unknown> = {
+      folder: CLOUDINARY_FOLDERS.gallery,
+      resource_type: 'image',
+      transformation: [
+        { width: 1920, height: 1080, crop: 'limit', quality: 'auto', fetch_format: 'auto' },
+      ],
+    }
+
+    if (publicId) {
+      uploadOptions.public_id = publicId
+      uploadOptions.overwrite = true
+      uploadOptions.invalidate = true
+    }
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      uploadOptions,
+      (error, result: UploadApiResponse | undefined) => {
+        if (error || !result) {
+          return reject(error || new Error('Upload to Cloudinary failed.'))
+        }
+        resolve({
+          secure_url: result.secure_url,
+          public_id: result.public_id,
+        })
+      },
+    )
+
+    uploadStream.end(buffer)
+  })
+}
+
+/**
+ * Safely delete a Gallery image from Cloudinary by its public ID.
+ */
+export async function deleteGalleryImage(publicId: string): Promise<boolean> {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId, {
+      invalidate: true,
+      resource_type: 'image',
+    })
+    return result.result === 'ok' || result.result === 'not found'
+  } catch (err) {
+    console.error('[Cloudinary] Failed to delete gallery image:', (err as Error)?.message)
+    return false
+  }
+}
+
 export { cloudinary }
+
