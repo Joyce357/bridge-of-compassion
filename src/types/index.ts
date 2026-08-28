@@ -40,6 +40,23 @@ export interface Event {
   updatedAt?: Date | string
 }
 
+export interface NewsPost {
+  id: string
+  title: string
+  slug: string
+  excerpt?: string | null
+  content: string
+  category?: string | null
+  featuredImage?: string | null
+  imagePublicId?: string | null
+  author?: string | null
+  featured: boolean
+  published: boolean
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
 export interface Story {
   id: string
   title: string

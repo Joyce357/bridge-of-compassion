@@ -242,6 +242,93 @@ export const eventSchema = z.object({
 
 export type EventInput = z.infer<typeof eventSchema>
 
+// ─── News & Stories ─────────────────────────────────────────────────────────
+
+export const NEWS_CATEGORIES = [
+  'Environmental',
+  'Youth',
+  'Community',
+  'Conservation',
+  'Education',
+  'Impact',
+  'Announcement',
+] as const
+
+export type NewsCategory = (typeof NEWS_CATEGORIES)[number]
+
+/**
+ * Generates category badge color style.
+ */
+export function getNewsCategoryStyle(category?: string | null): { bg: string; text: string; border: string } {
+  switch (category?.toLowerCase()) {
+    case 'environmental':
+    case 'conservation':
+      return { bg: 'bg-brand-green/10', text: 'text-brand-green', border: 'border-brand-green/20' }
+    case 'youth':
+    case 'education':
+      return { bg: 'bg-accent-blue/10', text: 'text-accent-blue', border: 'border-accent-blue/20' }
+    case 'community':
+    case 'impact':
+      return { bg: 'bg-brand-navy/10', text: 'text-brand-navy', border: 'border-brand-navy/20' }
+    default:
+      return { bg: 'bg-brand-leaf/10', text: 'text-brand-leaf', border: 'border-brand-leaf/20' }
+  }
+}
+
+export const newsSchema = z.object({
+  title: z
+    .string()
+    .min(2, 'Title must be at least 2 characters.')
+    .max(200, 'Title is too long.')
+    .trim(),
+  slug: z
+    .string()
+    .min(2, 'Slug must be at least 2 characters.')
+    .max(200, 'Slug is too long.')
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be URL-safe (lowercase letters, numbers, and hyphens).')
+    .trim(),
+  excerpt: z
+    .string()
+    .max(600, 'Excerpt must be under 600 characters.')
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  content: z
+    .string()
+    .min(10, 'Story content must be at least 10 characters.')
+    .max(50000, 'Story content is too long.')
+    .trim(),
+  category: z
+    .string()
+    .max(100, 'Category is too long.')
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  author: z
+    .string()
+    .max(100, 'Author name is too long.')
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  featuredImage: z
+    .string()
+    .max(1000)
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  imagePublicId: z
+    .string()
+    .max(300)
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  featured: z.boolean().default(false),
+  published: z.boolean().default(false),
+  publishedAt: z.union([z.string(), z.date()]).optional().nullable(),
+})
+
+export type NewsInput = z.infer<typeof newsSchema>
+
 // ─── Admin: Change Password ───────────────────────────────────────────────────
 
 export const changePasswordSchema = z
