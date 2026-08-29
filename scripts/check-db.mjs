@@ -48,6 +48,12 @@ async function check() {
     const volunteerCount = await prisma.volunteerApplication.count();
     console.log('VOLUNTEER TABLE: PASS');
     console.log(`VOLUNTEER COUNT: ${volunteerCount}`);
+
+    // 7. ContactSubmission table query
+    const contactCount = await prisma.contactSubmission.count();
+    console.log('CONTACT TABLE: PASS');
+    console.log(`CONTACT COUNT: ${contactCount}`);
+
   } catch (err) {
     const safeMsg = (err.message || '').replace(/postgresql:\/\/[^@]*@[^\s]*/g, '[REDACTED]');
     console.error('DATABASE CHECK FAILED:', safeMsg);

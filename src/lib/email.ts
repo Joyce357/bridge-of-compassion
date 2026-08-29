@@ -189,3 +189,70 @@ export async function sendVolunteerReplyEmail(data: {
   })
 }
 
+/**
+ * Send an email reply from Bridge of Compassion to a contact inquiry submitter.
+ * FROM: EMAIL_FROM env var (org sender)
+ * Reply-To: ADMIN_EMAIL env var (admin@bridgeofcompassion.org)
+ * TO: contact submitter's email — always sourced from the DB record, never from browser input
+ */
+export async function sendContactReplyEmail(data: {
+  recipientEmail: string
+  recipientName:  string
+  subject:        string
+  message:        string
+}): Promise<EmailResult> {
+  const replyTo = process.env.ADMIN_EMAIL ?? 'admin@bridgeofcompassion.org'
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${data.subject}</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1c2826; background-color: #fcfbf7; margin: 0; padding: 24px; line-height: 1.6; }
+          .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2ebd8; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+          .header { background-color: #122921; color: #fcfbf7; padding: 28px 24px; text-align: center; }
+          .header h1 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+          .header p { margin: 6px 0 0; font-size: 12px; color: #6ee7b7; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+          .content { padding: 28px 24px; font-size: 15px; color: #2d3748; }
+          .message-box { background: #f8faf6; border-left: 4px solid #2d6a4f; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 20px 0; font-size: 14.5px; color: #1c2826; }
+          .footer { background: #f8faf6; border-top: 1px solid #e2ebd8; padding: 20px 24px; font-size: 12px; color: #718096; text-align: center; }
+          .footer p { margin: 4px 0; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Bridge of Compassion</h1>
+            <p>Response to Your Inquiry</p>
+          </div>
+          <div class="content">
+            <p>Hello ${data.recipientName},</p>
+            <p>Thank you for reaching out to us. Here is our response to your message:</p>
+            <div class="message-box">
+              ${data.message.replace(/\n/g, '<br>')}
+            </div>
+            <p>If you have any further questions, please reply to this email or contact us directly.</p>
+            <p>Warm regards,<br><strong>Bridge of Compassion Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><strong>Bridge of Compassion</strong></p>
+            <p>Nurturing Children • Protecting Nature • Building Futures</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `
+
+  const text = `Bridge of Compassion — Response to Your Inquiry\n\nHello ${data.recipientName},\n\nThank you for reaching out to us. Here is our response:\n\n${data.message}\n\nIf you have further questions, please reply to this email or contact us directly.\n\nWarm regards,\nBridge of Compassion Team\n\n---\nBridge of Compassion\nNurturing Children • Protecting Nature • Building Futures`
+
+  return sendEmail({
+    to:      data.recipientEmail,
+    subject: data.subject,
+    html,
+    text,
+    replyTo,
+  })
+}
