@@ -134,7 +134,7 @@ export async function sendVolunteerReplyEmail(data: {
   subject:        string
   message:        string
 }): Promise<EmailResult> {
-  const replyTo = process.env.ADMIN_EMAIL ?? 'info@bridgeofcompassion.org'
+  const replyTo = process.env.ADMIN_EMAIL ?? 'admin@bridgeofcompassion.org'
 
   const html = `
     <!DOCTYPE html>

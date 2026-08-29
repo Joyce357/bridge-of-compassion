@@ -135,7 +135,7 @@ export default function Footer() {
             {/* Contact */}
             <address className="not-italic text-xs sm:text-sm text-brand-warm-white/65 space-y-1 mb-3.5">
               <p>📍 Toronto, Ontario</p>
-              <p>✉️ <a href="mailto:info@bridgeofcompassion.org" className="text-brand-cyan hover:text-brand-warm-white transition-colors">info@bridgeofcompassion.org</a></p>
+              <p>✉️ <a href="mailto:admin@bridgeofcompassion.org" className="text-brand-cyan hover:text-brand-warm-white transition-colors">admin@bridgeofcompassion.org</a></p>
             </address>
 
             {/* Social links */}

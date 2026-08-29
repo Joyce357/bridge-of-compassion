@@ -49,7 +49,7 @@ export default function ContactPage() {
                     <span className="text-lg mt-0.5">📧</span>
                     <div>
                       <p className="font-bold text-brand-navy">Email</p>
-                      <p className="text-text-secondary">info@bridgeofcompassion.org</p>
+                      <p className="text-text-secondary"><a href="mailto:admin@bridgeofcompassion.org" className="hover:text-brand-green transition-colors">admin@bridgeofcompassion.org</a></p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
