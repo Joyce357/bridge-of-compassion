@@ -35,7 +35,17 @@ interface FieldErrors {
   [key: string]: string | undefined
 }
 
-export default function VolunteerForm() {
+interface VolunteerFormProps {
+  onSuccess?: () => void
+  onClose?: () => void
+  isModal?: boolean
+}
+
+export default function VolunteerForm({
+  onSuccess,
+  onClose,
+  isModal = false,
+}: VolunteerFormProps = {}) {
   const [fields, setFields] = useState({
     firstName:    '',
     lastName:     '',
@@ -73,28 +83,36 @@ export default function VolunteerForm() {
     setErrors({})
     setApiMsg('')
 
-    const res = await fetch('/api/volunteer', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ ...fields, interests, consent }),
-    })
+    try {
+      const res = await fetch('/api/volunteer', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ ...fields, interests, consent }),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    if (res.status === 422 && data.fields) {
-      setErrors(data.fields)
-      setStatus('idle')
-      return
-    }
+      if (res.status === 422 && data.fields) {
+        setErrors(data.fields)
+        setStatus('idle')
+        return
+      }
 
-    if (!res.ok) {
-      setApiMsg(data.error ?? 'Something went wrong. Please try again.')
+      if (!res.ok) {
+        setApiMsg(data.error ?? 'Something went wrong. Please try again.')
+        setStatus('error')
+        return
+      }
+
+      setStatus('success')
+      setApiMsg(data.message ?? 'Thank you for volunteering with Bridge of Compassion. Your application has been received.')
+      if (onSuccess) {
+        onSuccess()
+      }
+    } catch {
+      setApiMsg('Network error. Please check your connection and try again.')
       setStatus('error')
-      return
     }
-
-    setStatus('success')
-    setApiMsg(data.message)
   }
 
   const resetForm = () => {
@@ -116,17 +134,39 @@ export default function VolunteerForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-brand-sage/20 border border-brand-green/30 rounded-2xl p-8 text-center space-y-4">
-        <div className="text-4xl">🤝</div>
-        <h3 className="text-xl font-bold text-brand-navy">Application Submitted!</h3>
-        <p className="text-text-secondary max-w-md mx-auto">{apiMsg}</p>
-        <button
-          type="button"
-          onClick={resetForm}
-          className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl border border-brand-green/30 text-brand-navy font-semibold text-sm hover:bg-brand-sage/30 transition-all mt-2"
-        >
-          Submit Another Application
-        </button>
+      <div className="bg-brand-sage/20 border border-brand-green/30 rounded-2xl p-6 sm:p-8 text-center space-y-4 animate-in fade-in zoom-in-95 duration-200">
+        <div className="w-16 h-16 bg-brand-green/10 text-brand-green border border-brand-green/20 rounded-2xl flex items-center justify-center text-3xl mx-auto shadow-xs">
+          🤝
+        </div>
+        <div className="space-y-1.5">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-brand-navy">
+            Application Received!
+          </h3>
+          <p className="text-text-secondary text-sm max-w-md mx-auto leading-relaxed">
+            {apiMsg || 'Thank you for volunteering with Bridge of Compassion. Your application has been received.'}
+          </p>
+        </div>
+        <p className="text-xs text-text-secondary/80">
+          Our team will review your application and be in touch soon.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-green text-brand-warm-white font-semibold text-xs sm:text-sm hover:bg-brand-green/90 transition-all cursor-pointer shadow-xs"
+            >
+              {isModal ? 'Close Window' : 'Return to Website'}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={resetForm}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-border-soft bg-white text-text-secondary hover:text-brand-navy font-semibold text-xs sm:text-sm hover:bg-brand-cream/50 transition-all cursor-pointer"
+          >
+            Submit Another Application
+          </button>
+        </div>
       </div>
     )
   }
