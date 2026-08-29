@@ -122,10 +122,43 @@ export interface VolunteerFormData {
   lastName: string
   email: string
   phone?: string
+  location?: string
   interests: string[]
   availability: string
-  experience?: string
   message?: string
+  consent: boolean
+}
+
+export interface VolunteerCommunication {
+  id: string
+  volunteerApplicationId: string
+  subject: string
+  message: string
+  recipientEmail: string
+  sentByUserId?: string | null
+  sentByName?: string | null
+  sentAt: Date | string
+  deliveryStatus: string
+  providerMessageId?: string | null
+  createdAt: Date | string
+}
+
+export interface VolunteerApplication {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  phone?: string | null
+  location?: string | null
+  interests: string[]
+  availability: string
+  message?: string | null
+  consent: boolean
+  status: 'NEW' | 'REVIEWING' | 'CONTACTED' | 'ACTIVE' | 'INACTIVE'
+  adminNotes?: string | null
+  communications?: VolunteerCommunication[]
+  createdAt: Date | string
+  updatedAt: Date | string
 }
 
 export interface NewsletterFormData {

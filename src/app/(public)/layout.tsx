@@ -1,5 +1,6 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { VolunteerModalProvider } from '@/context/VolunteerModalContext'
 
 export default function PublicLayout({
   children,
@@ -7,12 +8,12 @@ export default function PublicLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
+    <VolunteerModalProvider>
       <Header />
       <main id="main-content" className="flex-1 pt-16 sm:pt-[70px] lg:pt-[76px]" tabIndex={-1}>
         {children}
       </main>
       <Footer />
-    </>
+    </VolunteerModalProvider>
   )
 }

@@ -9,11 +9,12 @@
 //   const resend = new Resend(process.env.RESEND_API_KEY)
 
 export interface EmailPayload {
-  to:      string | string[]
-  subject: string
-  html:    string
-  text?:   string
-  from?:   string
+  to:       string | string[]
+  subject:  string
+  html:     string
+  text?:    string
+  from?:    string
+  replyTo?: string
 }
 
 export interface EmailResult {
@@ -29,10 +30,10 @@ const FROM_ADDRESS = process.env.EMAIL_FROM ?? 'no-reply@bridgeofcompassion.org'
  *
  * In development without RESEND_API_KEY: logs to console.
  * In production without RESEND_API_KEY: logs an error and returns failure.
- * When RESEND_API_KEY is set: sends via Resend (integrate below).
+ * When RESEND_API_KEY is set: sends via Resend.
  */
 export async function sendEmail(payload: EmailPayload): Promise<EmailResult> {
-  const { to, subject, html, text, from = FROM_ADDRESS } = payload
+  const { to, subject, html, text, from = FROM_ADDRESS, replyTo } = payload
 
   // ── Resend integration point ──────────────────────────────────────────────
   if (process.env.RESEND_API_KEY) {
@@ -40,7 +41,7 @@ export async function sendEmail(payload: EmailPayload): Promise<EmailResult> {
       // Uncomment and use once `resend` package is installed:
       // const { Resend } = await import('resend')
       // const resend = new Resend(process.env.RESEND_API_KEY)
-      // const result = await resend.emails.send({ from, to, subject, html, text })
+      // const result = await resend.emails.send({ from, to, subject, html, text, reply_to: replyTo })
       // return { success: true, messageId: result.data?.id }
       console.warn('[Email] RESEND_API_KEY is set but Resend integration is not yet wired up.')
       return { success: false, error: 'Email provider not yet integrated.' }
@@ -62,9 +63,12 @@ export async function sendEmail(payload: EmailPayload): Promise<EmailResult> {
 
   // Development: log to console
   console.log('\n──────────────── [DEV EMAIL] ────────────────')
-  console.log(`To:      ${Array.isArray(to) ? to.join(', ') : to}`)
-  console.log(`From:    ${from}`)
-  console.log(`Subject: ${subject}`)
+  console.log(`To:       ${Array.isArray(to) ? to.join(', ') : to}`)
+  console.log(`From:     ${from}`)
+  if (replyTo) {
+    console.log(`Reply-To: ${replyTo}`)
+  }
+  console.log(`Subject:  ${subject}`)
   console.log(`Body:\n${text ?? html}`)
   console.log('─────────────────────────────────────────────\n')
 
@@ -120,3 +124,68 @@ export async function notifyAdminVolunteer(data: {
     text: `New volunteer: ${data.firstName} ${data.lastName} (${data.email})\nInterests: ${data.interests.join(', ')}\nAvailability: ${data.availability}`,
   })
 }
+
+/**
+ * Send an email reply from Bridge of Compassion to a volunteer applicant.
+ */
+export async function sendVolunteerReplyEmail(data: {
+  recipientEmail: string
+  recipientName:  string
+  subject:        string
+  message:        string
+}): Promise<EmailResult> {
+  const replyTo = process.env.ADMIN_EMAIL ?? 'info@bridgeofcompassion.org'
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${data.subject}</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1c2826; background-color: #fcfbf7; margin: 0; padding: 24px; line-height: 1.6; }
+          .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2ebd8; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+          .header { background-color: #122921; color: #fcfbf7; padding: 28px 24px; text-align: center; }
+          .header h1 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+          .header p { margin: 6px 0 0; font-size: 12px; color: #6ee7b7; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+          .content { padding: 28px 24px; font-size: 15px; color: #2d3748; }
+          .message-box { background: #f8faf6; border-left: 4px solid #2d6a4f; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 20px 0; font-size: 14.5px; color: #1c2826; }
+          .footer { background: #f8faf6; border-top: 1px solid #e2ebd8; padding: 20px 24px; font-size: 12px; color: #718096; text-align: center; }
+          .footer p { margin: 4px 0; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Bridge of Compassion</h1>
+            <p>Volunteer Application Update</p>
+          </div>
+          <div class="content">
+            <p>Hello ${data.recipientName},</p>
+            <div class="message-box">
+              ${data.message.replace(/\n/g, '<br>')}
+            </div>
+            <p>Thank you for your interest and commitment to our community and the natural world.</p>
+            <p>Warm regards,<br><strong>Bridge of Compassion Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><strong>Bridge of Compassion</strong></p>
+            <p>Nurturing Children • Protecting Nature • Building Futures</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `
+
+  const text = `Bridge of Compassion — Volunteer Application Update\n\nHello ${data.recipientName},\n\n${data.message}\n\nThank you for your commitment to our community and the natural world.\n\nWarm regards,\nBridge of Compassion Team\n\n---\nBridge of Compassion\nNurturing Children • Protecting Nature • Building Futures`
+
+  return sendEmail({
+    to:      data.recipientEmail,
+    subject: data.subject,
+    html,
+    text,
+    replyTo,
+  })
+}
+

@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import Container from '@/components/ui/Container'
+import { useVolunteerModal } from '@/context/VolunteerModalContext'
 
 const pathways = [
   {
@@ -73,6 +76,8 @@ const pathways = [
 ]
 
 export default function GetInvolved() {
+  const { openVolunteerModal } = useVolunteerModal()
+
   return (
     <section
       className="section-py bg-brand-cream border-y border-border-soft/60 relative overflow-hidden"
@@ -100,43 +105,84 @@ export default function GetInvolved() {
 
         {/* Pathway cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {pathways.map((pathway) => (
-            <Link
-              key={pathway.id}
-              href={pathway.href}
-              className={`group flex flex-col p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white border border-border-soft
-                         hover:border-brand-green/40 hover:shadow-card-hover hover:-translate-y-0.5
-                         transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy ${pathway.borderColor}`}
-              aria-label={pathway.cta}
-            >
-              {/* Icon */}
-              <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${pathway.iconBg} ${pathway.iconColor} flex items-center justify-center mb-3 sm:mb-3.5 group-hover:scale-105 transition-transform duration-200`}>
-                {pathway.icon}
-              </div>
+          {pathways.map((pathway) => {
+            const isVolunteer = pathway.id === 'volunteer'
 
-              {/* Text */}
-              <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-1.5 group-hover:text-brand-green transition-colors">
-                {pathway.title}
-              </h3>
-              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed flex-1">
-                {pathway.description}
-              </p>
+            return isVolunteer ? (
+              <button
+                key={pathway.id}
+                type="button"
+                onClick={openVolunteerModal}
+                className={`group flex flex-col text-left p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white border border-border-soft
+                           hover:border-brand-green/40 hover:shadow-card-hover hover:-translate-y-0.5
+                           transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy cursor-pointer ${pathway.borderColor}`}
+                aria-label={pathway.cta}
+              >
+                {/* Icon */}
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${pathway.iconBg} ${pathway.iconColor} flex items-center justify-center mb-3 sm:mb-3.5 group-hover:scale-105 transition-transform duration-200`}>
+                  {pathway.icon}
+                </div>
 
-              {/* CTA arrow */}
-              <div className="flex items-center gap-1.5 mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-brand-green group-hover:text-brand-navy transition-colors duration-200">
-                {pathway.cta}
-                <svg
-                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </div>
-            </Link>
-          ))}
+                {/* Text */}
+                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-1.5 group-hover:text-brand-green transition-colors">
+                  {pathway.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed flex-1">
+                  {pathway.description}
+                </p>
+
+                {/* CTA arrow */}
+                <div className="flex items-center gap-1.5 mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-brand-green group-hover:text-brand-navy transition-colors duration-200">
+                  {pathway.cta}
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </button>
+            ) : (
+              <Link
+                key={pathway.id}
+                href={pathway.href}
+                className={`group flex flex-col p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white border border-border-soft
+                           hover:border-brand-green/40 hover:shadow-card-hover hover:-translate-y-0.5
+                           transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy ${pathway.borderColor}`}
+                aria-label={pathway.cta}
+              >
+                {/* Icon */}
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${pathway.iconBg} ${pathway.iconColor} flex items-center justify-center mb-3 sm:mb-3.5 group-hover:scale-105 transition-transform duration-200`}>
+                  {pathway.icon}
+                </div>
+
+                {/* Text */}
+                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-1.5 group-hover:text-brand-green transition-colors">
+                  {pathway.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed flex-1">
+                  {pathway.description}
+                </p>
+
+                {/* CTA arrow */}
+                <div className="flex items-center gap-1.5 mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-brand-green group-hover:text-brand-navy transition-colors duration-200">
+                  {pathway.cta}
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </Link>
+            )
+          })}
         </div>
 
       </Container>

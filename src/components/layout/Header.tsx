@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Button from '@/components/ui/Button'
+import { useVolunteerModal } from '@/context/VolunteerModalContext'
 
 const navItems = [
   { label: 'About Us',     href: '/about' },
@@ -19,6 +20,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled]     = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const pathname = usePathname()
+  const { openVolunteerModal } = useVolunteerModal()
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -95,7 +97,12 @@ export default function Header() {
 
             {/* ── Desktop CTA (Target: 44-46px height, 18-24px padding, 10-12px radius) ────────────────────── */}
             <div className="hidden lg:flex items-center gap-2.5">
-              <Button href="/volunteer" variant="secondary" size="sm" className="h-11 px-5 text-xs font-semibold rounded-xl">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={openVolunteerModal}
+                className="h-11 px-5 text-xs font-semibold rounded-xl cursor-pointer"
+              >
                 Volunteer
               </Button>
               <Button href="/donate" variant="primary" size="sm" className="h-11 px-5 text-xs font-semibold rounded-xl shadow-xs">
@@ -205,7 +212,14 @@ export default function Header() {
 
           {/* Panel CTA buttons */}
           <div className="p-5 border-t border-border-soft space-y-2.5">
-            <Button href="/volunteer" variant="secondary" className="w-full justify-center h-10 text-xs font-semibold rounded-xl">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setIsMobileOpen(false)
+                openVolunteerModal()
+              }}
+              className="w-full justify-center h-10 text-xs font-semibold rounded-xl cursor-pointer"
+            >
               Volunteer With Us
             </Button>
             <Button href="/donate" variant="primary" className="w-full justify-center h-10 text-xs font-semibold rounded-xl">

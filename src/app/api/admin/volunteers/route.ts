@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAdminSession } from '@/lib/adminAuth'
-import { VolunteerStatus } from '@prisma/client'
+import { VolunteerStatus, Prisma } from '@prisma/client'
 
 export async function GET(req: NextRequest) {
   const { error } = await requireAdminSession()
@@ -11,18 +11,33 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url)
-    const status = searchParams.get('status') as VolunteerStatus | null
-    const page   = Math.max(1, Number(searchParams.get('page') ?? '1'))
-    const limit  = 20
+    const statusParam = searchParams.get('status')
+    const search = searchParams.get('search')?.trim() || ''
+    const page = Math.max(1, Number(searchParams.get('page') ?? '1'))
+    const limit = Math.min(100, Math.max(1, Number(searchParams.get('limit') ?? '50')))
 
-    const where = status ? { status } : {}
+    const where: Prisma.VolunteerApplicationWhereInput = {}
+
+    if (statusParam && Object.values(VolunteerStatus).includes(statusParam as VolunteerStatus)) {
+      where.status = statusParam as VolunteerStatus
+    }
+
+    if (search) {
+      where.OR = [
+        { firstName: { contains: search, mode: 'insensitive' } },
+        { lastName: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { location: { contains: search, mode: 'insensitive' } },
+        { phone: { contains: search, mode: 'insensitive' } },
+      ]
+    }
 
     const [applications, total] = await Promise.all([
       prisma.volunteerApplication.findMany({
         where,
         orderBy: { createdAt: 'desc' },
-        skip:    (page - 1) * limit,
-        take:    limit,
+        skip: (page - 1) * limit,
+        take: limit,
       }),
       prisma.volunteerApplication.count({ where }),
     ])

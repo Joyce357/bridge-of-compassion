@@ -89,6 +89,38 @@ export const volunteerSchema = z.object({
 
 export type VolunteerInput = z.infer<typeof volunteerSchema>
 
+export const VOLUNTEER_STATUSES = [
+  'NEW',
+  'REVIEWING',
+  'CONTACTED',
+  'ACTIVE',
+  'INACTIVE',
+] as const
+
+export type VolunteerStatusType = (typeof VOLUNTEER_STATUSES)[number]
+
+export const adminVolunteerUpdateSchema = z.object({
+  status: z.enum(VOLUNTEER_STATUSES).optional(),
+  adminNotes: z.string().max(3000, 'Admin notes must be under 3,000 characters.').optional().nullable().or(z.literal('')),
+})
+
+export type AdminVolunteerUpdateInput = z.infer<typeof adminVolunteerUpdateSchema>
+
+export const volunteerReplySchema = z.object({
+  subject: z
+    .string()
+    .min(3, 'Subject must be at least 3 characters.')
+    .max(200, 'Subject is too long.')
+    .trim(),
+  message: z
+    .string()
+    .min(5, 'Message must be at least 5 characters.')
+    .max(10000, 'Message is too long.')
+    .trim(),
+})
+
+export type VolunteerReplyInput = z.infer<typeof volunteerReplySchema>
+
 // ─── Newsletter ───────────────────────────────────────────────────────────────
 
 export const newsletterSchema = z.object({

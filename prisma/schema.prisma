@@ -56,21 +56,40 @@ enum ContactStatus {
 // ─── Volunteer Applications ───────────────────────────────────────────────────
 
 model VolunteerApplication {
-  id           String          @id @default(cuid())
-  firstName    String
-  lastName     String
-  email        String
-  phone        String?
-  location     String?
-  interests    String[]        // areas of interest (stored as text array)
-  availability String
-  message      String?
-  consent      Boolean
-  status       VolunteerStatus @default(NEW)
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
+  id             String                   @id @default(cuid())
+  firstName      String
+  lastName       String
+  email          String
+  phone          String?
+  location       String?
+  interests      String[]                 // areas of interest (stored as text array)
+  availability   String
+  message        String?
+  consent        Boolean
+  status         VolunteerStatus          @default(NEW)
+  adminNotes     String?
+  communications VolunteerCommunication[]
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
 
   @@map("volunteer_applications")
+}
+
+model VolunteerCommunication {
+  id                     String               @id @default(cuid())
+  volunteerApplicationId String
+  volunteerApplication   VolunteerApplication @relation(fields: [volunteerApplicationId], references: [id], onDelete: Cascade)
+  subject                String
+  message                String
+  recipientEmail         String
+  sentByUserId           String?
+  sentByName             String?
+  sentAt                 DateTime             @default(now())
+  deliveryStatus         String               @default("SENT")
+  providerMessageId      String?
+  createdAt              DateTime             @default(now())
+
+  @@map("volunteer_communications")
 }
 
 enum VolunteerStatus {
