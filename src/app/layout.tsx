@@ -7,6 +7,11 @@ export const metadata: Metadata = {
     default: 'Bridge of Compassion — Building Bridges, Changing Lives',
     template: '%s | Bridge of Compassion',
   },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/icon.png',
+  },
   description:
     'Bridge of Compassion is a nonprofit organization dedicated to fostering compassion, strengthening communities, and protecting the natural world. Volunteer, donate, and get involved.',
   keywords: [
