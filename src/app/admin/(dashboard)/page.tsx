@@ -16,6 +16,7 @@ async function getStats() {
       newContacts,
       totalVolunteers,
       newVolunteers,
+      activeSubscribers,
       totalSubscribers,
       publishedPrograms,
       publishedEvents,
@@ -28,6 +29,7 @@ async function getStats() {
       prisma.contactSubmission.count({ where: { status: 'NEW' } }),
       prisma.volunteerApplication.count(),
       prisma.volunteerApplication.count({ where: { status: { in: ['NEW', 'REVIEWING'] } } }),
+      prisma.newsletterSubscriber.count({ where: { status: 'ACTIVE' } }),
       prisma.newsletterSubscriber.count(),
       prisma.program.count({ where: { status: 'PUBLISHED' } }),
       prisma.event.count({ where: { published: true } }),
@@ -48,6 +50,7 @@ async function getStats() {
       newContacts,
       totalVolunteers,
       newVolunteers,
+      activeSubscribers,
       totalSubscribers,
       publishedPrograms,
       publishedEvents,
@@ -63,6 +66,7 @@ async function getStats() {
       newContacts:       0,
       totalVolunteers:   0,
       newVolunteers:     0,
+      activeSubscribers: 0,
       totalSubscribers:  0,
       publishedPrograms: 0,
       publishedEvents:   0,
@@ -80,6 +84,7 @@ export default async function AdminDashboardPage() {
     newContacts,
     totalVolunteers,
     newVolunteers,
+    activeSubscribers,
     totalSubscribers,
     publishedPrograms,
     publishedEvents,
@@ -90,14 +95,18 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Top Header & Search / Status Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-border-soft">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-brand-navy tracking-tight">
-            Dashboard
+      {/* Top Banner / Welcome */}
+      <div className="bg-gradient-to-r from-brand-navy via-brand-navy-mid to-brand-green/80 rounded-3xl p-6 sm:p-8 text-brand-warm-white relative overflow-hidden shadow-card">
+        <div className="absolute -right-8 -bottom-8 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+        <div className="relative z-10 max-w-xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-cyan text-xs font-semibold uppercase tracking-wider mb-3">
+            <span>🌱</span> Live Platform Overview
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
+            Welcome to Bridge of Compassion
           </h1>
-          <p className="text-text-secondary text-sm mt-1">
-            Bridge of Compassion operations &amp; environmental overview
+          <p className="text-brand-warm-white/80 text-sm sm:text-base leading-relaxed">
+            Monitor community outreach, volunteer applications, and program impact from your unified mission hub.
           </p>
         </div>
 
@@ -149,8 +158,10 @@ export default async function AdminDashboardPage() {
         />
         <StatCard
           label="Newsletter Subs"
-          value={totalSubscribers}
+          value={activeSubscribers}
           icon="📬"
+          subLabel="total"
+          subValue={totalSubscribers}
           color="purple"
         />
       </div>

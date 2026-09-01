@@ -30,10 +30,16 @@ export default function AdminTopbar({ userName, userEmail, userAvatar, onToggleM
   const pathname = usePathname()
   const [signingOut, setSigningOut] = useState(false)
 
-  // Derive title from pathname
+  // Derive title from pathname with boundary / longest prefix match
   let pageTitle = 'Admin'
-  for (const [route, label] of Object.entries(pageTitles)) {
-    if (route === '/admin' ? pathname === '/admin' : pathname.startsWith(route)) {
+  const sortedRoutes = Object.entries(pageTitles).sort((a, b) => b[0].length - a[0].length)
+  for (const [route, label] of sortedRoutes) {
+    if (route === '/admin') {
+      if (pathname === '/admin') {
+        pageTitle = label
+        break
+      }
+    } else if (pathname === route || pathname.startsWith(`${route}/`)) {
       pageTitle = label
       break
     }

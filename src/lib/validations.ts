@@ -173,6 +173,16 @@ export const unsubscribeSchema = z.object({
   email: z.string().email().toLowerCase().trim(),
 })
 
+// ─── Admin Newsletter Update ──────────────────────────────────────────────────
+
+export const adminNewsletterUpdateSchema = z.object({
+  status: z.enum(['ACTIVE', 'UNSUBSCRIBED']).optional(),
+  firstName: z.string().max(50).optional().nullable(),
+})
+
+export type AdminNewsletterUpdateInput = z.infer<typeof adminNewsletterUpdateSchema>
+
+
 // ─── Donation ─────────────────────────────────────────────────────────────────
 
 export const donationSchema = z.object({

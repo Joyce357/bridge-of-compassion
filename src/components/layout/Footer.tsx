@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import NewsletterForm from '@/components/layout/NewsletterForm'
 
 const footerNav = {
   organization: [
@@ -78,33 +79,11 @@ export default function Footer() {
                 Receive updates on our environmental programs, youth workshops, and events.
               </p>
             </div>
-            <form
-              className="flex w-full md:w-auto gap-2.5"
-              onSubmit={(e) => e.preventDefault()}
-              aria-label="Newsletter signup"
-            >
-              <label htmlFor="footer-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="footer-email"
-                type="email"
-                placeholder="Your email address"
-                autoComplete="email"
-                required
-                className="flex-1 md:w-60 px-3.5 py-2 rounded-xl bg-white/10 border border-white/20 text-brand-warm-white placeholder-white/50 text-xs sm:text-sm
-                           focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition-all"
-              />
-              <button
-                type="submit"
-                className="bg-brand-green hover:bg-brand-leaf text-brand-warm-white font-semibold px-4 sm:px-5 py-2 text-xs sm:text-sm rounded-xl transition-all whitespace-nowrap shadow-xs"
-              >
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
       </div>
+
 
       {/* ── Main footer content ───────────────────────────────────────── */}
       <div className="container-boc py-8 sm:py-10 md:py-12">

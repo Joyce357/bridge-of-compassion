@@ -191,6 +191,15 @@ export interface VolunteerApplication {
   updatedAt: Date | string
 }
 
+export interface NewsletterSubscriber {
+  id: string
+  email: string
+  firstName?: string | null
+  status: 'ACTIVE' | 'UNSUBSCRIBED'
+  subscribedAt: Date | string
+  unsubscribedAt?: Date | string | null
+}
+
 export interface NewsletterFormData {
   email: string
   firstName?: string
@@ -198,3 +207,4 @@ export interface NewsletterFormData {
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'cyan' | 'environmental' | 'outline-green' | 'soft' | 'tertiary'
 export type ButtonSize = 'sm' | 'md' | 'lg'
+
