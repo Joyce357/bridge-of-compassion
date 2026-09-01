@@ -9,8 +9,9 @@ import type { SiteSettingsRecord } from '@/types'
 export const DEFAULT_SITE_SETTINGS: SiteSettingsRecord = {
   id:                    'site',
   organizationName:      'Bridge of Compassion',
-  publicEmail:           'admin@bridgeofcompassion.org',
+  publicEmail:           'admin.bridgeofcompassion@gmail.com',
   phone:                 null,
+
   addressLine1:          null,
   addressLine2:          null,
   city:                  'Toronto',

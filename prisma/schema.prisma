@@ -278,7 +278,7 @@ enum DonationStatus {
 model SiteSettings {
   id                    String   @id @default("site")
   organizationName      String   @default("Bridge of Compassion")
-  publicEmail           String   @default("admin@bridgeofcompassion.org")
+  publicEmail           String   @default("admin.bridgeofcompassion@gmail.com")
   phone                 String?
   addressLine1          String?
   addressLine2          String?
