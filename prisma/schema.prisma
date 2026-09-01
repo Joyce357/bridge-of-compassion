@@ -300,8 +300,9 @@ model SiteSettings {
   donationPresetAmounts Int[]    @default([25, 50, 100, 250, 500])
 
   // SEO Defaults
-  seoTitle              String?  @default("Bridge of Compassion — Building Bridges, Changing Lives")
-  seoDescription        String?  @default("Bridge of Compassion is a nonprofit organization dedicated to fostering compassion, strengthening communities, and protecting the natural world. Volunteer, donate, and get involved.")
+  seoTitle              String?  @default("Bridge of Compassion | Environmental Education & Youth Action")
+  seoDescription        String?  @default("Bridge of Compassion empowers children, young people, and communities through environmental education, sustainability programs, climate action, outdoor learning, and community initiatives.")
+
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt

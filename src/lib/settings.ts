@@ -32,9 +32,10 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsRecord = {
   donationPresetAmounts: [25, 50, 100, 250, 500],
 
   // SEO
-  seoTitle:              'Bridge of Compassion — Building Bridges, Changing Lives',
-  seoDescription:        'Bridge of Compassion is a nonprofit organization dedicated to fostering compassion, strengthening communities, and protecting the natural world. Volunteer, donate, and get involved.',
+  seoTitle:              'Bridge of Compassion | Environmental Education & Youth Action',
+  seoDescription:        'Bridge of Compassion empowers children, young people, and communities through environmental education, sustainability programs, climate action, outdoor learning, and community initiatives.',
 }
+
 
 /**
  * Fetch the singleton site settings record from Neon DB.
