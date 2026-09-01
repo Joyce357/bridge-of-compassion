@@ -242,3 +242,38 @@ export interface DonationSummaryStats {
   totalRecords: number
 }
 
+// ─── Site Settings ────────────────────────────────────────────────────────────
+
+export interface SiteSettingsRecord {
+  id: string
+  organizationName: string
+  publicEmail: string
+  phone?: string | null
+  addressLine1?: string | null
+  addressLine2?: string | null
+  city?: string | null
+  province?: string | null
+  postalCode?: string | null
+  country?: string | null
+  publicLocationLabel?: string | null
+
+  // Social
+  facebookUrl?: string | null
+  instagramUrl?: string | null
+  linkedinUrl?: string | null
+  youtubeUrl?: string | null
+
+  // Site & Donations
+  footerTagline?: string | null
+  defaultCurrency: string
+  donationPresetAmounts: number[]
+
+  // SEO
+  seoTitle?: string | null
+  seoDescription?: string | null
+
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+

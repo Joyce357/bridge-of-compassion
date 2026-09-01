@@ -271,3 +271,43 @@ enum DonationStatus {
   REFUNDED    // Verified payment provider refund
 }
 
+// ─── Site Settings ────────────────────────────────────────────────────────────
+// Singleton global configuration record (id = "site").
+// Manages organization contact info, social links, donation defaults, and SEO.
+
+model SiteSettings {
+  id                    String   @id @default("site")
+  organizationName      String   @default("Bridge of Compassion")
+  publicEmail           String   @default("admin.bridgeofcompassion@gmail.com")
+  phone                 String?
+  addressLine1          String?
+  addressLine2          String?
+  city                  String?  @default("Toronto")
+  province              String?  @default("Ontario")
+  postalCode            String?
+  country               String?  @default("Canada")
+  publicLocationLabel   String?  @default("Toronto, Ontario")
+
+  // Social Links (null/empty = not rendered publicly)
+  facebookUrl           String?
+  instagramUrl          String?
+  linkedinUrl           String?
+  youtubeUrl            String?
+
+  // Site & Content
+  footerTagline         String?  @default("Nurturing children, protecting nature, and building futures through hands-on environmental education and community action.")
+  defaultCurrency       String   @default("CAD")
+  donationPresetAmounts Int[]    @default([25, 50, 100, 250, 500])
+
+  // SEO Defaults
+  seoTitle              String?  @default("Bridge of Compassion | Environmental Education & Youth Action")
+  seoDescription        String?  @default("Bridge of Compassion empowers children, young people, and communities through environmental education, sustainability programs, climate action, outdoor learning, and community initiatives.")
+
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+

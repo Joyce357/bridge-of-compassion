@@ -85,7 +85,7 @@ export async function notifyAdminContact(data: {
   subject: string
   message: string
 }): Promise<EmailResult> {
-  const adminEmail = process.env.ADMIN_EMAIL ?? 'admin@bridgeofcompassion.org'
+  const adminEmail = process.env.ADMIN_EMAIL ?? 'admin.bridgeofcompassion@gmail.com'
   return sendEmail({
     to:      adminEmail,
     subject: `[Contact] ${data.subject} — from ${data.name}`,
@@ -111,7 +111,7 @@ export async function notifyAdminVolunteer(data: {
   interests:    string[]
   availability: string
 }): Promise<EmailResult> {
-  const adminEmail = process.env.ADMIN_EMAIL ?? 'admin@bridgeofcompassion.org'
+  const adminEmail = process.env.ADMIN_EMAIL ?? 'admin.bridgeofcompassion@gmail.com'
   return sendEmail({
     to:      adminEmail,
     subject: `[Volunteer] New application from ${data.firstName} ${data.lastName}`,
@@ -135,7 +135,7 @@ export async function sendVolunteerReplyEmail(data: {
   subject:        string
   message:        string
 }): Promise<EmailResult> {
-  const replyTo = process.env.ADMIN_EMAIL ?? 'admin@bridgeofcompassion.org'
+  const replyTo = process.env.ADMIN_EMAIL ?? 'admin.bridgeofcompassion@gmail.com'
 
   const html = `
     <!DOCTYPE html>
@@ -193,7 +193,7 @@ export async function sendVolunteerReplyEmail(data: {
 /**
  * Send an email reply from Bridge of Compassion to a contact inquiry submitter.
  * FROM: EMAIL_FROM env var (org sender)
- * Reply-To: ADMIN_EMAIL env var (admin@bridgeofcompassion.org)
+ * Reply-To: ADMIN_EMAIL env var (admin.bridgeofcompassion@gmail.com)
  * TO: contact submitter's email — always sourced from the DB record, never from browser input
  */
 export async function sendContactReplyEmail(data: {
@@ -202,7 +202,7 @@ export async function sendContactReplyEmail(data: {
   subject:        string
   message:        string
 }): Promise<EmailResult> {
-  const replyTo = process.env.ADMIN_EMAIL ?? 'admin@bridgeofcompassion.org'
+  const replyTo = process.env.ADMIN_EMAIL ?? 'admin.bridgeofcompassion@gmail.com'
 
   const html = `
     <!DOCTYPE html>
@@ -272,7 +272,8 @@ export async function sendDonationReceiptEmail(data: {
   paypalCaptureId?: string | null
   paypalOrderId?:   string | null
 }): Promise<EmailResult> {
-  const replyTo = process.env.ADMIN_EMAIL ?? 'admin@bridgeofcompassion.org'
+  const replyTo = process.env.ADMIN_EMAIL ?? 'admin.bridgeofcompassion@gmail.com'
+
   const displayDonor = data.donorName?.trim() || 'Valued Supporter'
   const formattedAmount = Number(data.amount).toFixed(2)
   const formattedDate = new Date(data.donationDate).toLocaleDateString('en-CA', {

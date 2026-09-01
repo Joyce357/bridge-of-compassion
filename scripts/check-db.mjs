@@ -66,6 +66,12 @@ async function check() {
     console.log(`DONATION COUNT: ${donationCount}`);
     console.log(`COMPLETED DONATIONS: ${completedCount}`);
 
+    // 10. SiteSettings table query
+    const settingsCount = await prisma.siteSettings.count();
+    console.log('SETTINGS TABLE: PASS');
+    console.log(`SETTINGS COUNT: ${settingsCount}`);
+
+
 
   } catch (err) {
     const safeMsg = (err.message || '').replace(/postgresql:\/\/[^@]*@[^\s]*/g, '[REDACTED]');
