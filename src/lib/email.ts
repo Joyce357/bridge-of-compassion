@@ -61,8 +61,8 @@ export async function sendEmail(payload: EmailPayload): Promise<EmailResult> {
     return { success: false, error: 'Email provider not configured.' }
   }
 
-  // Development: log to console
-  console.log('\n──────────────── [DEV EMAIL] ────────────────')
+  // Development: log to console for debugging, but report provider as not connected
+  console.log('\n──────────────── [DEV EMAIL (NO PROVIDER)] ────────────────')
   console.log(`To:       ${Array.isArray(to) ? to.join(', ') : to}`)
   console.log(`From:     ${from}`)
   if (replyTo) {
@@ -70,9 +70,10 @@ export async function sendEmail(payload: EmailPayload): Promise<EmailResult> {
   }
   console.log(`Subject:  ${subject}`)
   console.log(`Body:\n${text ?? html}`)
-  console.log('─────────────────────────────────────────────\n')
+  console.log('───────────────────────────────────────────────────────────\n')
 
-  return { success: true, messageId: `dev-${Date.now()}` }
+  return { success: false, error: 'Email provider not configured (logged to dev console).' }
+
 }
 
 /**

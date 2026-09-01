@@ -152,8 +152,9 @@ export default function DonationForm() {
             throw new Error(msg)
           }
 
-          // Store temporary donation ID for capture
+          // Store temporary donation and order IDs for capture or cancellation
           sessionStorage.setItem('pending_boc_donation_id', data.donationId)
+          sessionStorage.setItem('pending_boc_order_id', data.orderId)
           setStatus('idle')
           return data.orderId
         },
@@ -182,6 +183,7 @@ export default function DonationForm() {
             }
 
             sessionStorage.removeItem('pending_boc_donation_id')
+            sessionStorage.removeItem('pending_boc_order_id')
             setCompletedDetails({
               donationId: captureData.donationId,
               captureId: captureData.captureId,
@@ -201,10 +203,28 @@ export default function DonationForm() {
           setStatus('error')
           setErrorMessage('Payment could not be processed. Please check your details or try again.')
         },
-        onCancel: () => {
+        onCancel: async () => {
           setStatus('cancelled')
+          const donationId = sessionStorage.getItem('pending_boc_donation_id')
+          const orderId = sessionStorage.getItem('pending_boc_order_id')
+
+          if (donationId && orderId) {
+            try {
+              await fetch('/api/donations/cancel-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ donationId, orderId }),
+              })
+            } catch (cancelErr) {
+              console.warn('[Donation Cancel] Failed to notify server of cancellation:', cancelErr)
+            } finally {
+              sessionStorage.removeItem('pending_boc_donation_id')
+              sessionStorage.removeItem('pending_boc_order_id')
+            }
+          }
         },
       })
+
 
       button.render(paypalContainerRef.current)
     } catch (renderErr) {

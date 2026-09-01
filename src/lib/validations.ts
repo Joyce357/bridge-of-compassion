@@ -221,6 +221,14 @@ export const captureDonationOrderSchema = z.object({
 
 export type CaptureDonationOrderInput = z.infer<typeof captureDonationOrderSchema>
 
+export const cancelDonationOrderSchema = z.object({
+  orderId: z.string().min(1, 'PayPal Order ID is required.').max(100),
+  donationId: z.string().min(1, 'Donation ID is required.').max(100),
+})
+
+export type CancelDonationOrderInput = z.infer<typeof cancelDonationOrderSchema>
+
+
 
 // ─── Programs ─────────────────────────────────────────────────────────────────
 
