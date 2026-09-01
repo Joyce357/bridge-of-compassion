@@ -42,7 +42,9 @@ export default function DonationForm() {
     amount?: number
     currency?: string
     donorName?: string
+    receiptSent?: boolean
   } | null>(null)
+
 
   const [sdkReady, setSdkReady] = useState(false)
   const paypalContainerRef = useRef<HTMLDivElement>(null)
@@ -190,6 +192,7 @@ export default function DonationForm() {
               amount: selectedAmount,
               currency: DEFAULT_DONATION_CURRENCY,
               donorName: anonymous ? 'Valued Supporter' : name.trim(),
+              receiptSent: Boolean(captureData.receiptSent),
             })
             setStatus('success')
           } catch (err) {
@@ -263,10 +266,13 @@ export default function DonationForm() {
         </div>
 
         <p className="text-xs text-text-secondary/80 max-w-md mx-auto mb-6 leading-relaxed">
-          A donation acknowledgement receipt has been sent to your email.
+          {completedDetails.receiptSent
+            ? 'A donation acknowledgement receipt has been sent to your email.'
+            : 'Your donation was successfully received. Your donation acknowledgement email is pending.'}
           <br />
           <em>This acknowledgement confirms your payment and is not represented as an official charitable tax receipt.</em>
         </p>
+
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button

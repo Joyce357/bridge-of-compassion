@@ -75,8 +75,10 @@ export async function POST(req: NextRequest) {
         alreadyCaptured: true,
         donationId:      donation.id,
         captureId:       donation.paypalCaptureId,
+        receiptSent:     donation.receiptSent,
       })
     }
+
 
     // 7. Server-to-server PayPal Capture
     let captureResult
@@ -149,7 +151,9 @@ export async function POST(req: NextRequest) {
 
     // 11. Trigger Donor Email Receipt Workflow
     // Payment success must NEVER be reversed if email delivery fails.
+    let receiptDelivered = false
     if (updatedDonation.donorEmail) {
+
       try {
         const emailRes = await sendDonationReceiptEmail({
           recipientEmail:  updatedDonation.donorEmail,
@@ -162,6 +166,7 @@ export async function POST(req: NextRequest) {
         })
 
         if (emailRes.success) {
+          receiptDelivered = true
           await prisma.donation.update({
             where: { id: updatedDonation.id },
             data:  { receiptSent: true, receiptSentAt: new Date() },
@@ -175,11 +180,13 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({
-      success:    true,
-      donationId: updatedDonation.id,
-      captureId:  updatedDonation.paypalCaptureId,
-      status:     'COMPLETED',
+      success:     true,
+      donationId:  updatedDonation.id,
+      captureId:   updatedDonation.paypalCaptureId,
+      status:      'COMPLETED',
+      receiptSent: receiptDelivered,
     })
+
   } catch (err) {
     console.error('[Donation Capture] Unexpected error:', err)
     return NextResponse.json(
