@@ -33,17 +33,36 @@ enum Role {
 // ─── Contact Submissions ──────────────────────────────────────────────────────
 
 model ContactSubmission {
-  id        String        @id @default(cuid())
-  name      String
-  email     String
-  phone     String?
-  subject   String
-  message   String
-  status    ContactStatus @default(NEW)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id             String                  @id @default(cuid())
+  name           String
+  email          String
+  phone          String?
+  subject        String
+  message        String
+  status         ContactStatus           @default(NEW)
+  adminNotes     String?
+  communications ContactCommunication[]
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
 
   @@map("contact_submissions")
+}
+
+model ContactCommunication {
+  id                  String            @id @default(cuid())
+  contactSubmissionId String
+  contactSubmission   ContactSubmission @relation(fields: [contactSubmissionId], references: [id], onDelete: Cascade)
+  subject             String
+  message             String
+  recipientEmail      String
+  sentByUserId        String?
+  sentByName          String?
+  sentAt              DateTime          @default(now())
+  deliveryStatus      String            @default("SENT")
+  providerMessageId   String?
+  createdAt           DateTime          @default(now())
+
+  @@map("contact_communications")
 }
 
 enum ContactStatus {

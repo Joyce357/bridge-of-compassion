@@ -108,6 +108,35 @@ export interface GalleryImage {
   height: number
 }
 
+export interface ContactCommunication {
+  id: string
+  contactSubmissionId: string
+  subject: string
+  message: string
+  recipientEmail: string
+  sentByUserId?: string | null
+  sentByName?: string | null
+  sentAt: Date | string
+  deliveryStatus: string
+  providerMessageId?: string | null
+  createdAt: Date | string
+}
+
+export interface ContactSubmission {
+  id: string
+  name: string
+  email: string
+  phone?: string | null
+  subject: string
+  message: string
+  status: 'NEW' | 'READ' | 'REPLIED' | 'ARCHIVED'
+  adminNotes?: string | null
+  communications?: ContactCommunication[]
+  createdAt: Date | string
+  updatedAt: Date | string
+}
+
+// Legacy form-only type (kept for backward compatibility)
 export interface ContactFormData {
   firstName: string
   lastName: string
@@ -116,6 +145,7 @@ export interface ContactFormData {
   subject: string
   message: string
 }
+
 
 export interface VolunteerFormData {
   firstName: string

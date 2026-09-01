@@ -37,7 +37,39 @@ export const contactSchema = z.object({
 
 export type ContactInput = z.infer<typeof contactSchema>
 
-// ─── Volunteer Application ────────────────────────────────────────────────────
+// ─── Contact Admin ────────────────────────────────────────────────────────────
+
+export const CONTACT_STATUSES = ['NEW', 'READ', 'REPLIED', 'ARCHIVED'] as const
+export type ContactStatusType = (typeof CONTACT_STATUSES)[number]
+
+export const adminContactUpdateSchema = z.object({
+  status: z.enum(CONTACT_STATUSES).optional(),
+  adminNotes: z
+    .string()
+    .max(3000, 'Admin notes must be under 3,000 characters.')
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+})
+
+export type AdminContactUpdateInput = z.infer<typeof adminContactUpdateSchema>
+
+export const contactReplySchema = z.object({
+  subject: z
+    .string()
+    .min(3, 'Subject must be at least 3 characters.')
+    .max(200, 'Subject is too long.')
+    .trim(),
+  message: z
+    .string()
+    .min(5, 'Message must be at least 5 characters.')
+    .max(10000, 'Message is too long.')
+    .trim(),
+})
+
+export type ContactReplyInput = z.infer<typeof contactReplySchema>
+
+
 
 export const VOLUNTEER_INTERESTS = [
   'Community Development',
