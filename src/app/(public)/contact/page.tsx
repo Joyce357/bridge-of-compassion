@@ -2,6 +2,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import ContactForm from '@/components/forms/ContactForm'
+import { getSiteSettings } from '@/lib/settings'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://bridgeofcompassion.org/contact' },
 }
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSiteSettings()
+
   return (
     <>
       {/* Hero */}
@@ -45,20 +48,41 @@ export default function ContactPage() {
               <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft p-6">
                 <h3 className="font-bold text-brand-navy mb-4 text-lg">Other Ways to Reach Us</h3>
                 <ul className="space-y-4 text-sm">
-                  <li className="flex items-start gap-3">
-                    <span className="text-lg mt-0.5">📧</span>
-                    <div>
-                      <p className="font-bold text-brand-navy">Email</p>
-                      <p className="text-text-secondary"><a href="mailto:admin@bridgeofcompassion.org" className="hover:text-brand-green transition-colors">admin@bridgeofcompassion.org</a></p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-lg mt-0.5">📍</span>
-                    <div>
-                      <p className="font-bold text-brand-navy">Location</p>
-                      <p className="text-text-secondary">[Location TBC]</p>
-                    </div>
-                  </li>
+                  {settings.publicEmail && (
+                    <li className="flex items-start gap-3">
+                      <span className="text-lg mt-0.5">📧</span>
+                      <div>
+                        <p className="font-bold text-brand-navy">Email</p>
+                        <p className="text-text-secondary">
+                          <a href={`mailto:${settings.publicEmail}`} className="hover:text-brand-green transition-colors">
+                            {settings.publicEmail}
+                          </a>
+                        </p>
+                      </div>
+                    </li>
+                  )}
+                  {settings.phone && (
+                    <li className="flex items-start gap-3">
+                      <span className="text-lg mt-0.5">📞</span>
+                      <div>
+                        <p className="font-bold text-brand-navy">Phone</p>
+                        <p className="text-text-secondary">
+                          <a href={`tel:${settings.phone}`} className="hover:text-brand-green transition-colors">
+                            {settings.phone}
+                          </a>
+                        </p>
+                      </div>
+                    </li>
+                  )}
+                  {settings.publicLocationLabel && (
+                    <li className="flex items-start gap-3">
+                      <span className="text-lg mt-0.5">📍</span>
+                      <div>
+                        <p className="font-bold text-brand-navy">Location</p>
+                        <p className="text-text-secondary">{settings.publicLocationLabel}</p>
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </div>
 

@@ -498,6 +498,52 @@ export const updateProfileSchema = z.object({
 
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
 
+// ─── Site Settings ────────────────────────────────────────────────────────────
+
+const optionalUrl = z
+  .string()
+  .url('Must be a valid URL (e.g. https://instagram.com/your-org)')
+  .optional()
+  .nullable()
+  .or(z.literal(''))
+
+export const siteSettingsSchema = z.object({
+  organizationName: z.string().min(1, 'Organization name is required.').max(150).trim(),
+  publicEmail: z
+    .string()
+    .email('Please enter a valid public email address.')
+    .max(254)
+    .toLowerCase()
+    .trim(),
+  phone: z.string().max(30).optional().nullable().or(z.literal('')),
+  addressLine1: z.string().max(200).optional().nullable().or(z.literal('')),
+  addressLine2: z.string().max(200).optional().nullable().or(z.literal('')),
+  city: z.string().max(100).optional().nullable().or(z.literal('')),
+  province: z.string().max(100).optional().nullable().or(z.literal('')),
+  postalCode: z.string().max(30).optional().nullable().or(z.literal('')),
+  country: z.string().max(100).optional().nullable().or(z.literal('')),
+  publicLocationLabel: z.string().max(150).optional().nullable().or(z.literal('')),
+
+  facebookUrl: optionalUrl,
+  instagramUrl: optionalUrl,
+  linkedinUrl: optionalUrl,
+  youtubeUrl: optionalUrl,
+
+  footerTagline: z.string().max(300).optional().nullable().or(z.literal('')),
+  defaultCurrency: z.enum(['CAD', 'USD']).default('CAD'),
+  donationPresetAmounts: z
+    .array(z.number().int().positive().max(100000))
+    .min(1, 'Provide at least one preset amount.')
+    .max(10, 'Maximum 10 preset amounts.')
+    .default([25, 50, 100, 250, 500]),
+
+  seoTitle: z.string().max(150).optional().nullable().or(z.literal('')),
+  seoDescription: z.string().max(400).optional().nullable().or(z.literal('')),
+})
+
+export type SiteSettingsInput = z.infer<typeof siteSettingsSchema>
+
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /**
