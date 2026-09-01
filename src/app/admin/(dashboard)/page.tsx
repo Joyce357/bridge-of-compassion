@@ -1,5 +1,5 @@
 // ─── Admin Dashboard Page ──────────────────────────────────────────────────
-// Server component: fetches real counts & submissions directly from DB.
+// Server component: fetches real counts & submissions directly from Neon DB.
 
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
@@ -22,8 +22,11 @@ async function getStats() {
       publishedEvents,
       publishedPosts,
       totalPhotos,
+      completedDonations,
+      completedDonationAgg,
       recentContacts,
       recentVolunteers,
+      recentDonations,
     ] = await Promise.all([
       prisma.contactSubmission.count(),
       prisma.contactSubmission.count({ where: { status: 'NEW' } }),
@@ -35,11 +38,20 @@ async function getStats() {
       prisma.event.count({ where: { published: true } }),
       prisma.newsPost.count({ where: { published: true } }),
       prisma.galleryItem.count(),
+      prisma.donation.count({ where: { status: 'COMPLETED' } }),
+      prisma.donation.aggregate({
+        _sum: { amount: true },
+        where: { status: 'COMPLETED' },
+      }),
       prisma.contactSubmission.findMany({
         take: 5,
         orderBy: { createdAt: 'desc' },
       }),
       prisma.volunteerApplication.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.donation.findMany({
         take: 5,
         orderBy: { createdAt: 'desc' },
       }),
@@ -56,24 +68,30 @@ async function getStats() {
       publishedEvents,
       publishedPosts,
       totalPhotos,
+      completedDonations,
+      totalRaised: Number(completedDonationAgg._sum.amount || 0),
       recentContacts,
       recentVolunteers,
+      recentDonations,
     }
   } catch (err) {
     console.error('[Admin Dashboard] DB stats query failed:', (err as Error)?.message)
     return {
-      totalContacts:     0,
-      newContacts:       0,
-      totalVolunteers:   0,
-      newVolunteers:     0,
-      activeSubscribers: 0,
-      totalSubscribers:  0,
-      publishedPrograms: 0,
-      publishedEvents:   0,
-      publishedPosts:    0,
-      totalPhotos:       0,
-      recentContacts:    [],
-      recentVolunteers:  [],
+      totalContacts:      0,
+      newContacts:        0,
+      totalVolunteers:    0,
+      newVolunteers:      0,
+      activeSubscribers:  0,
+      totalSubscribers:   0,
+      publishedPrograms:  0,
+      publishedEvents:    0,
+      publishedPosts:     0,
+      totalPhotos:        0,
+      completedDonations: 0,
+      totalRaised:        0,
+      recentContacts:     [],
+      recentVolunteers:   [],
+      recentDonations:    [],
     }
   }
 }
@@ -89,8 +107,11 @@ export default async function AdminDashboardPage() {
     publishedPrograms,
     publishedEvents,
     publishedPosts,
+    completedDonations,
+    totalRaised,
     recentContacts,
     recentVolunteers,
+    recentDonations,
   } = await getStats()
 
   return (
@@ -106,28 +127,21 @@ export default async function AdminDashboardPage() {
             Welcome to Bridge of Compassion
           </h1>
           <p className="text-brand-warm-white/80 text-sm sm:text-base leading-relaxed">
-            Monitor community outreach, volunteer applications, and program impact from your unified mission hub.
+            Monitor community outreach, donations, volunteer applications, and program impact from your unified mission hub.
           </p>
-        </div>
-
-        {/* Search & notification simulated header controls */}
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search records…"
-              aria-label="Search records"
-              className="bg-brand-warm-white border border-border-soft rounded-xl px-3.5 py-2 text-xs sm:text-sm text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-brand-cyan w-48 sm:w-64 shadow-xs"
-            />
-          </div>
-          <div className="w-9 h-9 rounded-xl bg-brand-warm-white border border-border-soft flex items-center justify-center text-text-secondary hover:text-brand-navy shadow-xs cursor-pointer">
-            <span className="text-base" aria-hidden="true">🔔</span>
-          </div>
         </div>
       </div>
 
-      {/* 5-Card Stat Row (Matching Mockup) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+      {/* 6-Card Stat Grid (Including Real Donation KPIs) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
+        <StatCard
+          label="Total Raised"
+          value={`$${totalRaised.toFixed(2)}`}
+          icon="💰"
+          subLabel="CAD (completed)"
+          subValue={`${completedDonations} gifts`}
+          color="green"
+        />
         <StatCard
           label="Active Programs"
           value={publishedPrograms}
@@ -166,11 +180,60 @@ export default async function AdminDashboardPage() {
         />
       </div>
 
-      {/* Main Grid: Left (Recent Activity Table) & Right (Quick Actions & Overview) */}
+      {/* Main Grid: Left (Recent Activity) & Right (Quick Actions & Overview) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* Left 2 Columns: Recent Submissions / Table */}
         <div className="lg:col-span-2 space-y-6">
+
+          {/* Recent Donations */}
+          <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-soft flex items-center justify-between">
+              <div>
+                <h2 className="font-bold text-brand-navy text-base">Recent Donations</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Real-time payment ledger & donor gifts</p>
+              </div>
+              <Link href="/admin/donations" className="text-xs text-brand-green hover:text-brand-navy font-semibold transition-colors">
+                View all donations →
+              </Link>
+            </div>
+
+            {recentDonations.length === 0 ? (
+              <div className="px-6 py-10 text-center">
+                <p className="text-text-secondary text-sm">No donations recorded yet.</p>
+                <p className="text-xs text-text-secondary/70 mt-1">Confirmed PayPal donations will show here.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-[#F8FAF6] text-text-secondary text-xs uppercase font-semibold border-b border-border-soft">
+                    <tr>
+                      <th className="px-6 py-3">Donor</th>
+                      <th className="px-6 py-3">Amount</th>
+                      <th className="px-6 py-3">Date</th>
+                      <th className="px-6 py-3 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border-soft/60">
+                    {recentDonations.map((d) => (
+                      <tr key={d.id} className="hover:bg-brand-cream/30 transition-colors">
+                        <td className="px-6 py-3.5 font-medium text-brand-navy truncate max-w-[140px]">
+                          {d.isAnonymous ? 'Anonymous' : (d.donorName || 'Supporter')}
+                        </td>
+                        <td className="px-6 py-3.5 font-bold text-brand-navy">
+                          {d.currency} ${Number(d.amount).toFixed(2)}
+                        </td>
+                        <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(d.createdAt)}</td>
+                        <td className="px-6 py-3.5 text-right">
+                          <StatusBadge status={d.status} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
 
           {/* Recent Contact Submissions */}
           <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft overflow-hidden">
@@ -276,8 +339,15 @@ export default async function AdminDashboardPage() {
             <h2 className="text-base font-bold text-brand-navy mb-4">Quick Actions</h2>
             <div className="space-y-3">
               <Link
-                href="/admin/events"
+                href="/admin/donations"
                 className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-green text-brand-warm-white font-semibold text-sm hover:bg-brand-green/90 shadow-sm transition-all"
+              >
+                <span>Manage Donations</span>
+                <span className="text-xs opacity-75">💰</span>
+              </Link>
+              <Link
+                href="/admin/events"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white text-brand-navy font-medium text-sm border border-border-soft hover:border-brand-green/40 hover:bg-[#F8FAF6] transition-all"
               >
                 <span>Manage & Create Events</span>
                 <span className="text-xs opacity-75">📅</span>
@@ -310,6 +380,10 @@ export default async function AdminDashboardPage() {
           <div className="bg-brand-warm-white rounded-2xl p-6 shadow-card border border-border-soft">
             <h2 className="text-base font-bold text-brand-navy mb-4">Content Summary</h2>
             <div className="space-y-3.5">
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
+                <span className="text-text-secondary">Completed Donations</span>
+                <span className="font-bold text-brand-green">{completedDonations}</span>
+              </div>
               <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
                 <span className="text-text-secondary">Published Events</span>
                 <span className="font-bold text-brand-navy">{publishedEvents}</span>

@@ -18,6 +18,8 @@ export async function GET() {
       posts,
       gallery,
       donations,
+      completedDonations,
+      completedDonationAgg,
     ] = await Promise.all([
       prisma.contactSubmission.count(),
       prisma.volunteerApplication.count(),
@@ -26,6 +28,11 @@ export async function GET() {
       prisma.newsPost.count({ where: { published: true } }),
       prisma.galleryItem.count({ where: { published: true } }),
       prisma.donation.count(),
+      prisma.donation.count({ where: { status: 'COMPLETED' } }),
+      prisma.donation.aggregate({
+        _sum: { amount: true },
+        where: { status: 'COMPLETED' },
+      }),
     ])
 
     const newContacts   = await prisma.contactSubmission.count({ where: { status: 'NEW' } })
@@ -38,8 +45,13 @@ export async function GET() {
       events,
       posts,
       gallery,
-      donations,
+      donations: {
+        total:       donations,
+        completed:   completedDonations,
+        totalRaised: Number(completedDonationAgg._sum.amount || 0),
+      },
     })
+
   } catch (err) {
     console.error('[Admin Stats API] Error:', err)
     return NextResponse.json({ error: 'Failed to load stats.' }, { status: 500 })
