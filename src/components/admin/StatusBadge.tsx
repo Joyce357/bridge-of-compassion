@@ -23,6 +23,7 @@ const statusStyles: Record<string, string> = {
   COMPLETED:    'bg-brand-sage/60 text-brand-green font-semibold',
   FAILED:       'bg-red-100 text-red-800 font-semibold',
   CANCELLED:    'bg-gray-100 text-gray-500',
+  REFUNDED:     'bg-purple-100 text-purple-800 font-semibold border border-purple-200',
   // Published / Draft
   PUBLISHED:    'bg-emerald-50 text-brand-green font-semibold border border-brand-green/20',
   DRAFT:        'bg-amber-50 text-amber-700 font-semibold border border-amber-200',

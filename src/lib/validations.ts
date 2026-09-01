@@ -185,28 +185,50 @@ export type AdminNewsletterUpdateInput = z.infer<typeof adminNewsletterUpdateSch
 
 // ─── Donation ─────────────────────────────────────────────────────────────────
 
-export const donationSchema = z.object({
+export const DEFAULT_DONATION_CURRENCY = 'CAD' as const
+export const DONATION_PRESET_AMOUNTS = [25, 50, 100, 250, 500] as const
+
+export const createDonationOrderSchema = z.object({
   amount: z
     .number({ error: 'Amount must be a number.' })
-    .positive('Amount must be greater than zero.')
+    .min(1, 'Minimum donation amount is $1.')
     .max(100000, 'Please contact us for donations over $100,000.'),
   currency: z.enum(['CAD', 'USD']).default('CAD'),
-  donorName:  z.string().max(150).optional().or(z.literal('')),
+  donorName: z.string().max(150).optional().or(z.literal('')).nullable(),
   donorEmail: z
-    .string()
-    .email('Please enter a valid email address.')
-    .max(254)
-    .toLowerCase()
+    .string({ error: 'Email is required for donation receipt and verification.' })
     .trim()
-    .optional()
-    .or(z.literal('')),
-  donorPhone: z.string().max(30).optional().or(z.literal('')),
+    .toLowerCase()
+    .min(1, 'Please enter your email address.')
+    .email('Please enter a valid email address.')
+    .max(254),
+  donorPhone: z.string().max(30).optional().or(z.literal('')).nullable(),
   isAnonymous: z.boolean().default(false),
-  message: z.string().max(500).optional().or(z.literal('')),
+  message: z.string().max(500).optional().or(z.literal('')).nullable(),
   frequency: z.enum(['ONE_TIME', 'MONTHLY', 'ANNUAL']).default('ONE_TIME'),
 })
 
-export type DonationInput = z.infer<typeof donationSchema>
+export type CreateDonationOrderInput = z.infer<typeof createDonationOrderSchema>
+
+// Backward compatibility alias for legacy references
+export const donationSchema = createDonationOrderSchema
+export type DonationInput = CreateDonationOrderInput
+
+export const captureDonationOrderSchema = z.object({
+  orderId: z.string().min(1, 'PayPal Order ID is required.').max(100),
+  donationId: z.string().min(1, 'Donation ID is required.').max(100),
+})
+
+export type CaptureDonationOrderInput = z.infer<typeof captureDonationOrderSchema>
+
+export const cancelDonationOrderSchema = z.object({
+  orderId: z.string().min(1, 'PayPal Order ID is required.').max(100),
+  donationId: z.string().min(1, 'Donation ID is required.').max(100),
+})
+
+export type CancelDonationOrderInput = z.infer<typeof cancelDonationOrderSchema>
+
+
 
 // ─── Programs ─────────────────────────────────────────────────────────────────
 

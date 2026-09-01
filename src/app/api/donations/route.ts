@@ -46,15 +46,16 @@ export async function POST(req: NextRequest) {
         amount:      data.amount,
         currency:    data.currency,
         donorName:   data.isAnonymous ? null : (data.donorName || null),
-        donorEmail:  data.isAnonymous ? null : (data.donorEmail || null),
-        donorPhone:  data.isAnonymous ? null : (data.donorPhone || null),
+        donorEmail:  data.donorEmail,
+        donorPhone:  data.donorPhone || null,
         isAnonymous: data.isAnonymous,
         message:     data.message || null,
         frequency:   data.frequency,
         status:      'INTENT',
-        // paymentProvider and paymentRef are null until a provider is connected
+        paymentProvider: 'paypal',
       },
     })
+
 
     // ── Payment provider integration point ────────────────────────────────
     // TODO: When a payment provider is chosen:

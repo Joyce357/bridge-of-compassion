@@ -208,3 +208,37 @@ export interface NewsletterFormData {
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'cyan' | 'environmental' | 'outline-green' | 'soft' | 'tertiary'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
+export type DonationStatusType = 'INTENT' | 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'REFUNDED'
+
+export interface DonationRecord {
+  id: string
+  amount: number | string
+  currency: string
+  donorName?: string | null
+  donorEmail?: string | null
+  donorPhone?: string | null
+  isAnonymous: boolean
+  message?: string | null
+  frequency: 'ONE_TIME' | 'MONTHLY' | 'ANNUAL'
+  status: DonationStatusType
+  paymentProvider?: string | null
+  paymentRef?: string | null
+  paypalOrderId?: string | null
+  paypalCaptureId?: string | null
+  paypalPayerId?: string | null
+  paypalPayerEmail?: string | null
+  receiptSent: boolean
+  receiptSentAt?: Date | string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+}
+
+export interface DonationSummaryStats {
+  totalRaised: number
+  completedCount: number
+  pendingCount: number
+  refundedCount: number
+  failedCount: number
+  totalRecords: number
+}
+

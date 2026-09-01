@@ -225,28 +225,34 @@ model GalleryItem {
 }
 
 // ─── Donations ────────────────────────────────────────────────────────────────
-// Payment provider is ABSTRACTED — no provider is connected yet.
-// The paymentProvider and paymentRef fields are populated
-// only when a real provider later confirms a transaction.
+// Server-authoritative donation records backed by PayPal Sandbox / Live.
+// Status lifecycle: INTENT → PENDING → COMPLETED | FAILED | CANCELLED | REFUNDED
+// A donation is COMPLETED only when PayPal server-to-server capture is verified.
 
 model Donation {
-  id              String            @id @default(cuid())
-  amount          Decimal           @db.Decimal(10, 2)
-  currency        String            @default("CAD")
-  donorName       String?
-  donorEmail      String?
-  donorPhone      String?
-  isAnonymous     Boolean           @default(false)
-  message         String?
-  frequency       DonationFrequency @default(ONE_TIME)
-  // Status lifecycle: INTENT → PENDING → COMPLETED | FAILED | CANCELLED
-  // A donation is COMPLETED only when a real payment provider confirms the transaction.
-  status          DonationStatus    @default(INTENT)
-  paymentProvider String?           // e.g. "stripe", "paypal" — null until connected
-  paymentRef      String?           // external provider transaction/session ID
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id               String            @id @default(cuid())
+  amount           Decimal           @db.Decimal(10, 2)
+  currency         String            @default("CAD")
+  donorName        String?
+  donorEmail       String?
+  donorPhone       String?
+  isAnonymous      Boolean           @default(false)
+  message          String?
+  frequency        DonationFrequency @default(ONE_TIME)
+  status           DonationStatus    @default(INTENT)
+  paymentProvider  String?           @default("paypal")
+  paymentRef       String?           // external provider transaction/session ID
+  paypalOrderId    String?           @unique
+  paypalCaptureId  String?           @unique
+  paypalPayerId    String?
+  paypalPayerEmail String?
+  receiptSent      Boolean           @default(false)
+  receiptSentAt    DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
+  @@index([status])
+  @@index([createdAt])
   @@map("donations")
 }
 
@@ -262,4 +268,6 @@ enum DonationStatus {
   COMPLETED   // Confirmed by payment provider
   FAILED      // Payment provider reported failure
   CANCELLED   // User or system cancelled before completion
+  REFUNDED    // Verified payment provider refund
 }
+

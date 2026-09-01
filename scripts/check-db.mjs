@@ -59,6 +59,13 @@ async function check() {
     console.log('NEWSLETTER TABLE: PASS');
     console.log(`NEWSLETTER COUNT: ${subscriberCount}`);
 
+    // 9. Donation table query
+    const donationCount = await prisma.donation.count();
+    const completedCount = await prisma.donation.count({ where: { status: 'COMPLETED' } });
+    console.log('DONATION TABLE: PASS');
+    console.log(`DONATION COUNT: ${donationCount}`);
+    console.log(`COMPLETED DONATIONS: ${completedCount}`);
+
 
   } catch (err) {
     const safeMsg = (err.message || '').replace(/postgresql:\/\/[^@]*@[^\s]*/g, '[REDACTED]');
