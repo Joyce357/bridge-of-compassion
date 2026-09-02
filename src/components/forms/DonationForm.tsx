@@ -369,8 +369,8 @@ export default function DonationForm() {
             max="100000"
             step="any"
             aria-label="Custom donation amount in CAD"
-            className={`w-full pl-9 pr-4 py-3 border rounded-xl text-brand-navy text-sm bg-brand-warm-white
-              focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent
+            className={`w-full pl-9 pr-4 py-2.5 border rounded-xl text-brand-navy text-sm bg-white shadow-2xs
+              focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green
               placeholder:text-text-secondary/60 ${
                 formErrors.amount
                   ? 'border-red-400 bg-red-50/50 ring-1 ring-red-400'
@@ -388,7 +388,7 @@ export default function DonationForm() {
       </div>
 
       {/* Anonymous Checkbox */}
-      <div className="bg-[#F8FAF6] p-4 rounded-xl border border-border-soft">
+      <div className="bg-[#F8FAF6] p-3.5 rounded-xl border border-border-soft">
         <label className="flex items-start gap-3 cursor-pointer select-none">
           <input
             type="checkbox"
@@ -399,11 +399,11 @@ export default function DonationForm() {
                 setFormErrors((prev) => ({ ...prev, name: '' }))
               }
             }}
-            className="w-4 h-4 mt-0.5 rounded border-border-soft text-brand-green focus:ring-brand-cyan"
+            className="w-4 h-4 mt-0.5 rounded border-border-soft text-brand-green focus:ring-brand-green"
           />
           <div>
-            <span className="text-sm font-semibold text-brand-navy">Make this donation anonymous</span>
-            <p className="text-xs text-text-secondary mt-0.5">
+            <span className="text-xs sm:text-sm font-semibold text-brand-navy">Make this donation anonymous</span>
+            <p className="text-[11px] sm:text-xs text-text-secondary mt-0.5">
               Your name will not be published or displayed publicly. Your email is required and kept private for receipt delivery.
             </p>
           </div>
@@ -426,7 +426,7 @@ export default function DonationForm() {
                 setFormErrors((prev) => ({ ...prev, name: '' }))
               }}
               placeholder="e.g. Jane Doe"
-              className={`w-full px-4 py-3 border rounded-xl text-brand-navy text-sm bg-brand-warm-white focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent ${
+              className={`w-full px-4 py-2.5 border rounded-xl text-brand-navy text-sm bg-white shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green ${
                 formErrors.name ? 'border-red-400 bg-red-50/50' : 'border-border-soft'
               }`}
             />
@@ -451,7 +451,7 @@ export default function DonationForm() {
               setFormErrors((prev) => ({ ...prev, email: '' }))
             }}
             placeholder="you@example.com"
-            className={`w-full px-4 py-3 border rounded-xl text-brand-navy text-sm bg-brand-warm-white focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent ${
+            className={`w-full px-4 py-2.5 border rounded-xl text-brand-navy text-sm bg-white shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green ${
               formErrors.email ? 'border-red-400 bg-red-50/50' : 'border-border-soft'
             }`}
           />
@@ -460,7 +460,7 @@ export default function DonationForm() {
               {formErrors.email}
             </p>
           )}
-          <p className="text-xs text-text-secondary mt-1">
+          <p className="text-[11px] text-text-secondary mt-1">
             We will email your official payment acknowledgement directly to this address.
           </p>
         </div>
@@ -476,10 +476,11 @@ export default function DonationForm() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Leave a message or dedication with your gift…"
-            className="w-full px-4 py-2.5 border border-border-soft rounded-xl text-brand-navy text-sm bg-brand-warm-white focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent placeholder:text-text-secondary/60"
+            className="w-full px-4 py-2.5 border border-border-soft rounded-xl text-brand-navy text-sm bg-white shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green placeholder:text-text-secondary/60"
           />
         </div>
       </div>
+
 
       {/* Error and Status Alerts */}
       {status === 'error' && errorMessage && (

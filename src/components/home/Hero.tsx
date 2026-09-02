@@ -18,7 +18,7 @@ export default function Hero() {
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
       <div className="container-boc relative z-10">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center pt-7 sm:pt-9 md:pt-10 lg:pt-12 pb-3 sm:pb-4 lg:pb-5">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center pt-6 sm:pt-8 md:pt-9 lg:pt-10 pb-6 sm:pb-8 lg:pb-10">
 
           {/* ── Left: Text content (7 cols on lg) ───────────────────────── */}
           <div className="lg:col-span-7 max-w-2xl">

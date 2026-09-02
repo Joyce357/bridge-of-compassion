@@ -108,13 +108,13 @@
     @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-10;
   }
 
-  /* Consistent Section Vertical Spacing System */
+  /* Consistent Section Vertical Spacing System — Tightened & Professional */
   .section-py {
-    @apply py-12 sm:py-16 lg:py-20 scroll-mt-20;
+    @apply py-10 sm:py-14 lg:py-16 scroll-mt-20;
   }
 
   .section-py-sm {
-    @apply py-8 sm:py-10 lg:py-14 scroll-mt-20;
+    @apply py-6 sm:py-8 lg:py-10 scroll-mt-20;
   }
 
   /* Eyebrow label */
@@ -124,12 +124,12 @@
 
   /* Section heading group */
   .heading-group {
-    @apply space-y-2.5;
+    @apply space-y-2;
   }
 
-  /* Card base */
+  /* Standardized Card Base */
   .card {
-    @apply bg-brand-warm-white rounded-2xl shadow-card overflow-hidden transition-all duration-200 border border-border-soft;
+    @apply bg-brand-warm-white rounded-2xl shadow-2xs overflow-hidden transition-all duration-200 border border-border-soft/90;
   }
 
   .card:hover {
@@ -148,9 +148,9 @@
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
            bg-brand-navy text-brand-warm-white font-semibold
-           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
-           hover:bg-brand-navy-dark hover:shadow-md hover:-translate-y-0.5
+           hover:bg-brand-navy-dark hover:shadow-xs hover:-translate-y-0.5
            focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
            active:translate-y-0 active:shadow-none
            select-none cursor-pointer whitespace-nowrap;
@@ -160,9 +160,9 @@
   .btn-environmental {
     @apply inline-flex items-center justify-center gap-2
            bg-brand-green text-brand-warm-white font-semibold
-           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
-           hover:bg-brand-leaf hover:shadow-md hover:-translate-y-0.5
+           hover:bg-brand-leaf hover:shadow-xs hover:-translate-y-0.5
            focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2
            active:translate-y-0 active:shadow-none
            select-none cursor-pointer whitespace-nowrap;
@@ -172,7 +172,7 @@
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2
            border border-brand-green text-brand-navy font-semibold bg-transparent
-           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
            hover:bg-brand-sage/30 hover:border-brand-leaf hover:-translate-y-0.5
            focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2
@@ -189,7 +189,7 @@
   .btn-soft {
     @apply inline-flex items-center justify-center gap-2
            bg-brand-sky text-brand-navy font-semibold
-           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
            hover:bg-brand-sky/80 hover:-translate-y-0.5
            focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
@@ -205,7 +205,7 @@
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2
            border border-brand-navy/30 text-brand-navy font-semibold bg-transparent
-           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
            hover:bg-brand-navy hover:text-brand-warm-white hover:-translate-y-0.5
            focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
@@ -217,22 +217,22 @@
   .btn-cyan {
     @apply inline-flex items-center justify-center gap-2
            bg-brand-cyan text-brand-warm-white font-semibold
-           px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm
+           px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
-           hover:bg-brand-cyan/90 hover:shadow-md hover:-translate-y-0.5
+           hover:bg-brand-cyan/90 hover:shadow-xs hover:-translate-y-0.5
            focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2
            active:translate-y-0 active:shadow-none
            select-none cursor-pointer whitespace-nowrap;
   }
 
-  /* Small button variant (approx 36-40px height) */
+  /* Small button variant (approx 34-36px height) */
   .btn-sm {
-    @apply px-4 py-2 text-xs font-semibold rounded-xl;
+    @apply px-3.5 py-1.5 text-xs font-semibold rounded-lg sm:rounded-xl;
   }
 
-  /* Large hero button variant (approx 48-52px height) */
+  /* Large hero button variant (approx 44-48px height) */
   .btn-lg {
-    @apply px-6 sm:px-7 py-3 sm:py-3.5 text-sm sm:text-base font-semibold rounded-xl;
+    @apply px-6 sm:px-7 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-xl;
   }
 
   /* ─── Image Placeholder ────────────────────────────────────── */
@@ -242,6 +242,7 @@
     align-items: center;
     justify-content: center;
   }
+
 }
 
 /* ─── Utilities ──────────────────────────────────────────────────────────── */

@@ -110,7 +110,10 @@ const config: Config = {
         'card':       '0 1px 3px 0 rgba(22, 59, 115, 0.04), 0 4px 16px 0 rgba(22, 59, 115, 0.05)',
         'card-hover': '0 4px 6px -1px rgba(22, 59, 115, 0.07), 0 12px 32px -4px rgba(22, 59, 115, 0.10)',
         'nav':        '0 1px 0 0 rgba(22, 59, 115, 0.06), 0 4px 12px -2px rgba(22, 59, 115, 0.03)',
+        'xs':         '0 1px 2px 0 rgba(16, 45, 89, 0.05)',
+        '2xs':        '0 1px 2px 0 rgba(16, 45, 89, 0.03)',
       },
+
       backgroundImage: {
         'gradient-hero':   'linear-gradient(135deg, #FCFBF6 0%, #F7F5EA 100%)',
         'gradient-cta':    'linear-gradient(135deg, #163B73 0%, #102D59 100%)',

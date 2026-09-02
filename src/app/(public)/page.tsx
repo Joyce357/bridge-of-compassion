@@ -25,11 +25,12 @@ export default function HomePage() {
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999]
-                   focus:px-4 focus:py-2 focus:bg-pale-sage focus:text-forest-dark focus:rounded-lg
-                   focus:font-semibold focus:shadow-lg focus:border focus:border-forest"
+                   focus:px-4 focus:py-2 focus:bg-brand-sage focus:text-brand-navy focus:rounded-lg
+                   focus:font-semibold focus:shadow-lg focus:border focus:border-brand-green"
       >
         Skip to main content
       </a>
+
 
       {/* Homepage sections in order */}
       <Hero />
