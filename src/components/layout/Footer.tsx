@@ -8,10 +8,10 @@ import { getSiteSettings } from '@/lib/settings'
 
 const footerNav = {
   organization: [
-    { label: 'About Us',       href: '/about' },
-    { label: 'Our Mission',    href: '/about#mission' },
-    { label: 'Leadership',     href: '/about#team' },
+    { label: 'About Us',       href: '/#about' },
+    { label: 'Our Mission',    href: '/#about' },
     { label: 'News & Stories', href: '/news' },
+    { label: 'Photo Gallery',  href: '/gallery' },
     { label: 'Contact',        href: '/contact' },
   ],
   programs: [
@@ -22,18 +22,19 @@ const footerNav = {
     { label: 'All Programs',                  href: '/programs' },
   ],
   getInvolved: [
-    { label: 'Volunteer With Us', href: '/volunteer' },
-    { label: 'Make a Donation',   href: '/donate' },
-    { label: 'Upcoming Events',   href: '/events' },
-    { label: 'Partner With Us',   href: '/get-involved#partner' },
-    { label: 'Photo Gallery',     href: '/gallery' },
+    { label: 'Get Involved Overview', href: '/get-involved' },
+    { label: 'Volunteer With Us',     href: '/volunteer' },
+    { label: 'Make a Donation',       href: '/donate' },
+    { label: 'Upcoming Events',       href: '/events' },
+    { label: 'Partner With Us',       href: '/get-involved#partner' },
   ],
   legal: [
-    { label: 'Privacy Policy',   href: '/privacy' },
-    { label: 'Terms of Use',     href: '/terms' },
-    { label: 'Accessibility',    href: '/accessibility' },
+    { label: 'Contact & Inquiries', href: '/contact' },
+    { label: 'Volunteer Info',     href: '/volunteer' },
+    { label: 'Donate Support',     href: '/donate' },
   ],
 }
+
 
 export default async function Footer() {
   const settings = await getSiteSettings()

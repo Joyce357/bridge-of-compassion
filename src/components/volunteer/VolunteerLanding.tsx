@@ -33,12 +33,13 @@ export default function VolunteerLanding() {
               Apply to Volunteer
             </button>
             <Button
-              href="/about"
+              href="/#about"
               variant="outline-green"
               className="w-full sm:w-auto px-6 py-3.5 rounded-xl text-brand-warm-white border-white/30 hover:bg-white/10 text-sm font-semibold"
             >
               Learn Our Mission
             </Button>
+
           </div>
         </Container>
       </section>

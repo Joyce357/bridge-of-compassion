@@ -10,7 +10,7 @@ import Button from '@/components/ui/Button'
 import { useVolunteerModal } from '@/context/VolunteerModalContext'
 
 const navItems = [
-  { label: 'About Us',     href: '/about' },
+  { label: 'About Us',     href: '/#about' },
   { label: 'Programs',     href: '/programs' },
   { label: 'Get Involved', href: '/get-involved' },
   { label: 'Events',       href: '/events' },
@@ -42,8 +42,11 @@ export default function Header() {
     return () => { document.body.style.overflow = '' }
   }, [isMobileOpen])
 
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(href + '/')
+  const isActive = (href: string) => {
+    if (href.startsWith('/#')) return false
+    return pathname === href || (href !== '/' && pathname.startsWith(href + '/'))
+  }
+
 
   return (
     <>
