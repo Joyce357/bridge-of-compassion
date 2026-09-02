@@ -15,7 +15,7 @@ export default function AdminLayoutClient({ userName, userEmail, userAvatar, chi
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-brand-warm-white">
+    <div className="flex min-h-screen bg-brand-warm-white dark:bg-dark-bg">
       <AdminSidebar
         userName={userName}
         userEmail={userEmail}
@@ -24,7 +24,7 @@ export default function AdminLayoutClient({ userName, userEmail, userAvatar, chi
         onCloseMobile={() => setMobileOpen(false)}
       />
 
-      <div className="flex-1 flex flex-col min-w-0 bg-[#F4F6F2]">
+      <div className="flex-1 flex flex-col min-w-0 bg-[#F4F6F2] dark:bg-dark-bg transition-colors duration-200">
         <AdminTopbar
           userName={userName}
           userEmail={userEmail}
@@ -38,4 +38,5 @@ export default function AdminLayoutClient({ userName, userEmail, userAvatar, chi
       </div>
     </div>
   )
+
 }

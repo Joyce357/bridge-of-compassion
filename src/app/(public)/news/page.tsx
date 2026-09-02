@@ -20,9 +20,9 @@ export default async function NewsPage() {
   return (
     <>
       {/* Hero Header */}
-      <section className="bg-brand-navy-dark section-py text-brand-warm-white relative overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl" aria-hidden="true" />
+      <section className="bg-brand-navy-dark dark:bg-dark-bg section-py text-brand-warm-white relative overflow-hidden transition-colors duration-200">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
         <Container className="text-center relative z-10">
           <p className="eyebrow text-brand-cyan mb-3">Community &amp; Conservation</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-brand-warm-white mb-4 tracking-tight">
@@ -35,20 +35,20 @@ export default async function NewsPage() {
       </section>
 
       {/* Main Stories Grid */}
-      <section className="section-py bg-brand-warm-white">
+      <section className="section-py bg-brand-warm-white dark:bg-dark-bg transition-colors duration-200">
         <Container>
           {posts.length === 0 ? (
-            <div className="max-w-md mx-auto text-center py-16 px-6 bg-white rounded-3xl border border-border-soft shadow-xs">
-              <div className="w-16 h-16 rounded-2xl bg-brand-sage/40 flex items-center justify-center text-3xl mx-auto mb-4">
+            <div className="max-w-md mx-auto text-center py-16 px-6 bg-white dark:bg-dark-card rounded-3xl border border-border-soft dark:border-dark-border shadow-xs">
+              <div className="w-16 h-16 rounded-2xl bg-brand-sage/40 dark:bg-dark-surface flex items-center justify-center text-3xl mx-auto mb-4">
                 📰
               </div>
-              <h2 className="text-xl font-extrabold text-brand-navy mb-2">No Stories Published Yet</h2>
-              <p className="text-sm text-text-secondary leading-relaxed mb-6">
+              <h2 className="text-xl font-extrabold text-brand-navy dark:text-dark-text-primary mb-2">No Stories Published Yet</h2>
+              <p className="text-sm text-text-secondary dark:text-dark-text-secondary leading-relaxed mb-6">
                 Our team is currently preparing new community updates and impact articles. Please check back soon or join our newsletter to stay informed.
               </p>
               <Link
                 href="/volunteer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-navy hover:bg-brand-navy-dark transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white dark:text-brand-navy-dark bg-brand-navy dark:bg-brand-cyan hover:bg-brand-navy-dark dark:hover:bg-brand-cyan/90 transition-colors shadow-xs"
               >
                 Get Involved as a Volunteer
               </Link>
@@ -63,11 +63,11 @@ export default async function NewsPage() {
                   <Link
                     key={post.id}
                     href={`/news/${post.slug}`}
-                    className="group card flex flex-col bg-white border border-border-soft hover:border-brand-green/40 hover:shadow-card-hover rounded-2xl overflow-hidden transition-all duration-200"
+                    className="group card flex flex-col bg-white dark:bg-dark-card border border-border-soft dark:border-dark-border hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:shadow-card-hover rounded-2xl overflow-hidden transition-all duration-200"
                     aria-label={`Read story: ${post.title}`}
                   >
                     {/* Featured Image or Graphic Placeholder */}
-                    <div className="aspect-[16/9] relative overflow-hidden bg-brand-cream/60 border-b border-border-soft/60">
+                    <div className="aspect-[16/9] relative overflow-hidden bg-brand-cream/60 dark:bg-dark-surface border-b border-border-soft/60 dark:border-dark-border">
                       {post.featuredImage ? (
                         <Image
                           src={post.featuredImage}
@@ -76,7 +76,7 @@ export default async function NewsPage() {
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center text-brand-green/30">
+                        <div className="absolute inset-0 flex items-center justify-center text-brand-green/30 dark:text-brand-cyan/30">
                           <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                           </svg>
@@ -87,7 +87,7 @@ export default async function NewsPage() {
                       {post.category && (
                         <div className="absolute top-3 left-3">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border backdrop-blur-xs bg-white/95 ${catStyle.text} ${catStyle.border} shadow-2xs`}
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border backdrop-blur-xs bg-white/95 dark:bg-dark-surface/95 ${catStyle.text} ${catStyle.border} shadow-2xs`}
                           >
                             {post.category}
                           </span>
@@ -106,7 +106,7 @@ export default async function NewsPage() {
 
                     {/* Card Content */}
                     <div className="flex flex-col flex-1 p-5 sm:p-6">
-                      <div className="flex items-center gap-2 mb-2 text-text-secondary text-xs font-medium">
+                      <div className="flex items-center gap-2 mb-2 text-text-secondary dark:text-dark-text-secondary text-xs font-medium">
                         {dateStr && <time dateTime={typeof dateStr === 'string' ? dateStr : dateStr.toISOString()}>{formatDate(dateStr)}</time>}
                         {post.author && (
                           <>
@@ -116,17 +116,17 @@ export default async function NewsPage() {
                         )}
                       </div>
 
-                      <h2 className="text-base sm:text-lg font-bold text-brand-navy leading-snug mb-2.5 group-hover:text-brand-green transition-colors duration-200 line-clamp-2">
+                      <h2 className="text-base sm:text-lg font-bold text-brand-navy dark:text-dark-text-primary leading-snug mb-2.5 group-hover:text-brand-green dark:group-hover:text-brand-cyan transition-colors duration-200 line-clamp-2">
                         {post.title}
                       </h2>
 
                       {post.excerpt && (
-                        <p className="text-text-secondary text-xs sm:text-sm leading-relaxed flex-1 mb-4 line-clamp-3">
+                        <p className="text-text-secondary dark:text-dark-text-secondary text-xs sm:text-sm leading-relaxed flex-1 mb-4 line-clamp-3">
                           {post.excerpt}
                         </p>
                       )}
 
-                      <div className="flex items-center gap-1.5 text-brand-green text-xs sm:text-sm font-bold group-hover:text-brand-navy transition-colors duration-200 mt-auto pt-2">
+                      <div className="flex items-center gap-1.5 text-brand-green dark:text-brand-cyan text-xs sm:text-sm font-bold group-hover:text-brand-navy dark:group-hover:text-dark-text-primary transition-colors duration-200 mt-auto pt-2">
                         <span>Read Full Story</span>
                         <svg
                           className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"

@@ -80,7 +80,7 @@ export default function GetInvolved() {
 
   return (
     <section
-      className="section-py bg-brand-cream border-y border-border-soft/60 relative overflow-hidden"
+      className="section-py bg-brand-cream dark:bg-dark-bg border-y border-border-soft/60 dark:border-dark-border relative overflow-hidden transition-colors duration-200"
       aria-labelledby="get-involved-heading"
     >
       <Container className="relative z-10">
@@ -92,12 +92,12 @@ export default function GetInvolved() {
           </span>
           <h2
             id="get-involved-heading"
-            className="text-brand-navy text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2.5 text-balance tracking-tight"
+            className="text-brand-navy dark:text-dark-text-primary text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2.5 text-balance tracking-tight"
           >
             Be Part of the Environmental Movement
           </h2>
           <div className="divider-green mx-auto mb-2.5" />
-          <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
+          <p className="text-text-secondary dark:text-dark-text-secondary text-sm sm:text-base leading-relaxed">
             There are many ways to support young people, community sustainability, and the
             natural world. Find the path that fits you.
           </p>
@@ -113,26 +113,26 @@ export default function GetInvolved() {
                 key={pathway.id}
                 type="button"
                 onClick={openVolunteerModal}
-                className={`group flex flex-col text-left p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white border border-border-soft
-                           hover:border-brand-green/40 hover:shadow-card-hover hover:-translate-y-0.5
-                           transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy cursor-pointer ${pathway.borderColor}`}
+                className={`group flex flex-col text-left p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white dark:bg-dark-card border border-border-soft dark:border-dark-border
+                           hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:shadow-card-hover hover:-translate-y-0.5
+                           transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy dark:focus-visible:ring-brand-cyan cursor-pointer ${pathway.borderColor}`}
                 aria-label={pathway.cta}
               >
                 {/* Icon */}
-                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${pathway.iconBg} ${pathway.iconColor} flex items-center justify-center mb-3 sm:mb-3.5 group-hover:scale-105 transition-transform duration-200`}>
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${pathway.iconBg} dark:bg-dark-surface ${pathway.iconColor} flex items-center justify-center mb-3 sm:mb-3.5 group-hover:scale-105 transition-transform duration-200`}>
                   {pathway.icon}
                 </div>
 
                 {/* Text */}
-                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-1.5 group-hover:text-brand-green transition-colors">
+                <h3 className="text-base sm:text-lg font-bold text-brand-navy dark:text-dark-text-primary mb-1.5 group-hover:text-brand-green dark:group-hover:text-brand-cyan transition-colors">
                   {pathway.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed flex-1">
+                <p className="text-xs sm:text-sm text-text-secondary dark:text-dark-text-secondary leading-relaxed flex-1">
                   {pathway.description}
                 </p>
 
                 {/* CTA arrow */}
-                <div className="flex items-center gap-1.5 mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-brand-green group-hover:text-brand-navy transition-colors duration-200">
+                <div className="flex items-center gap-1.5 mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-brand-green dark:text-brand-cyan group-hover:text-brand-navy dark:group-hover:text-dark-text-primary transition-colors duration-200">
                   {pathway.cta}
                   <svg
                     className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
@@ -149,26 +149,26 @@ export default function GetInvolved() {
               <Link
                 key={pathway.id}
                 href={pathway.href}
-                className={`group flex flex-col p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white border border-border-soft
-                           hover:border-brand-green/40 hover:shadow-card-hover hover:-translate-y-0.5
-                           transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy ${pathway.borderColor}`}
+                className={`group flex flex-col p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white dark:bg-dark-card border border-border-soft dark:border-dark-border
+                           hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:shadow-card-hover hover:-translate-y-0.5
+                           transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy dark:focus-visible:ring-brand-cyan ${pathway.borderColor}`}
                 aria-label={pathway.cta}
               >
                 {/* Icon */}
-                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${pathway.iconBg} ${pathway.iconColor} flex items-center justify-center mb-3 sm:mb-3.5 group-hover:scale-105 transition-transform duration-200`}>
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${pathway.iconBg} dark:bg-dark-surface ${pathway.iconColor} flex items-center justify-center mb-3 sm:mb-3.5 group-hover:scale-105 transition-transform duration-200`}>
                   {pathway.icon}
                 </div>
 
                 {/* Text */}
-                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-1.5 group-hover:text-brand-green transition-colors">
+                <h3 className="text-base sm:text-lg font-bold text-brand-navy dark:text-dark-text-primary mb-1.5 group-hover:text-brand-green dark:group-hover:text-brand-cyan transition-colors">
                   {pathway.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed flex-1">
+                <p className="text-xs sm:text-sm text-text-secondary dark:text-dark-text-secondary leading-relaxed flex-1">
                   {pathway.description}
                 </p>
 
                 {/* CTA arrow */}
-                <div className="flex items-center gap-1.5 mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-brand-green group-hover:text-brand-navy transition-colors duration-200">
+                <div className="flex items-center gap-1.5 mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-brand-green dark:text-brand-cyan group-hover:text-brand-navy dark:group-hover:text-dark-text-primary transition-colors duration-200">
                   {pathway.cta}
                   <svg
                     className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
@@ -184,6 +184,7 @@ export default function GetInvolved() {
             )
           })}
         </div>
+
 
       </Container>
     </section>

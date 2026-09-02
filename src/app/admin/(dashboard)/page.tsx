@@ -117,10 +117,10 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Top Banner / Welcome */}
-      <div className="bg-gradient-to-r from-brand-navy via-brand-navy-mid to-brand-green/80 rounded-3xl p-6 sm:p-8 text-brand-warm-white relative overflow-hidden shadow-card">
+      <div className="bg-gradient-to-r from-brand-navy via-brand-navy-mid to-brand-green/80 dark:from-dark-card dark:via-dark-surface dark:to-dark-card rounded-3xl p-6 sm:p-8 text-brand-warm-white relative overflow-hidden shadow-card border border-transparent dark:border-dark-border">
         <div className="absolute -right-8 -bottom-8 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />
         <div className="relative z-10 max-w-xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-cyan text-xs font-semibold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 dark:bg-white/5 text-brand-cyan text-xs font-semibold uppercase tracking-wider mb-3">
             <span>🌱</span> Live Platform Overview
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
@@ -187,26 +187,26 @@ export default async function AdminDashboardPage() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* Recent Donations */}
-          <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft overflow-hidden">
-            <div className="px-6 py-4 border-b border-border-soft flex items-center justify-between">
+          <div className="bg-brand-warm-white dark:bg-dark-card rounded-2xl shadow-card border border-border-soft dark:border-dark-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-soft dark:border-dark-border flex items-center justify-between">
               <div>
-                <h2 className="font-bold text-brand-navy text-base">Recent Donations</h2>
-                <p className="text-xs text-text-secondary mt-0.5">Real-time payment ledger & donor gifts</p>
+                <h2 className="font-bold text-brand-navy dark:text-dark-text-primary text-base">Recent Donations</h2>
+                <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-0.5">Real-time payment ledger & donor gifts</p>
               </div>
-              <Link href="/admin/donations" className="text-xs text-brand-green hover:text-brand-navy font-semibold transition-colors">
+              <Link href="/admin/donations" className="text-xs text-brand-green dark:text-brand-cyan hover:text-brand-navy dark:hover:text-dark-text-primary font-semibold transition-colors">
                 View all donations →
               </Link>
             </div>
 
             {recentDonations.length === 0 ? (
               <div className="px-6 py-10 text-center">
-                <p className="text-text-secondary text-sm">No donations recorded yet.</p>
-                <p className="text-xs text-text-secondary/70 mt-1">Confirmed PayPal donations will show here.</p>
+                <p className="text-text-secondary dark:text-dark-text-secondary text-sm">No donations recorded yet.</p>
+                <p className="text-xs text-text-secondary/70 dark:text-dark-text-secondary/70 mt-1">Confirmed PayPal donations will show here.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-[#F8FAF6] text-text-secondary text-xs uppercase font-semibold border-b border-border-soft">
+                  <thead className="bg-[#F8FAF6] dark:bg-dark-surface text-text-secondary dark:text-dark-text-secondary text-xs uppercase font-semibold border-b border-border-soft dark:border-dark-border">
                     <tr>
                       <th className="px-6 py-3">Donor</th>
                       <th className="px-6 py-3">Amount</th>
@@ -214,16 +214,16 @@ export default async function AdminDashboardPage() {
                       <th className="px-6 py-3 text-right">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border-soft/60">
+                  <tbody className="divide-y divide-border-soft/60 dark:divide-dark-border">
                     {recentDonations.map((d) => (
-                      <tr key={d.id} className="hover:bg-brand-cream/30 transition-colors">
-                        <td className="px-6 py-3.5 font-medium text-brand-navy truncate max-w-[140px]">
+                      <tr key={d.id} className="hover:bg-brand-cream/30 dark:hover:bg-dark-card-hover transition-colors">
+                        <td className="px-6 py-3.5 font-medium text-brand-navy dark:text-dark-text-primary truncate max-w-[140px]">
                           {d.isAnonymous ? 'Anonymous' : (d.donorName || 'Supporter')}
                         </td>
-                        <td className="px-6 py-3.5 font-bold text-brand-navy">
+                        <td className="px-6 py-3.5 font-bold text-brand-navy dark:text-dark-text-primary">
                           {d.currency} ${Number(d.amount).toFixed(2)}
                         </td>
-                        <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(d.createdAt)}</td>
+                        <td className="px-6 py-3.5 text-text-secondary dark:text-dark-text-secondary text-xs">{formatDate(d.createdAt)}</td>
                         <td className="px-6 py-3.5 text-right">
                           <StatusBadge status={d.status} />
                         </td>
@@ -236,26 +236,26 @@ export default async function AdminDashboardPage() {
           </div>
 
           {/* Recent Contact Submissions */}
-          <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft overflow-hidden">
-            <div className="px-6 py-4 border-b border-border-soft flex items-center justify-between">
+          <div className="bg-brand-warm-white dark:bg-dark-card rounded-2xl shadow-card border border-border-soft dark:border-dark-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-soft dark:border-dark-border flex items-center justify-between">
               <div>
-                <h2 className="font-bold text-brand-navy text-base">Recent Inquiries</h2>
-                <p className="text-xs text-text-secondary mt-0.5">Direct messages and general questions</p>
+                <h2 className="font-bold text-brand-navy dark:text-dark-text-primary text-base">Recent Inquiries</h2>
+                <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-0.5">Direct messages and general questions</p>
               </div>
-              <Link href="/admin/contacts" className="text-xs text-brand-green hover:text-brand-navy font-semibold transition-colors">
+              <Link href="/admin/contacts" className="text-xs text-brand-green dark:text-brand-cyan hover:text-brand-navy dark:hover:text-dark-text-primary font-semibold transition-colors">
                 View all inquiries →
               </Link>
             </div>
 
             {recentContacts.length === 0 ? (
               <div className="px-6 py-10 text-center">
-                <p className="text-text-secondary text-sm">No inquiries yet.</p>
-                <p className="text-xs text-text-secondary/70 mt-1">New contact form messages will appear here.</p>
+                <p className="text-text-secondary dark:text-dark-text-secondary text-sm">No inquiries yet.</p>
+                <p className="text-xs text-text-secondary/70 dark:text-dark-text-secondary/70 mt-1">New contact form messages will appear here.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-[#F8FAF6] text-text-secondary text-xs uppercase font-semibold border-b border-border-soft">
+                  <thead className="bg-[#F8FAF6] dark:bg-dark-surface text-text-secondary dark:text-dark-text-secondary text-xs uppercase font-semibold border-b border-border-soft dark:border-dark-border">
                     <tr>
                       <th className="px-6 py-3">Name</th>
                       <th className="px-6 py-3">Subject</th>
@@ -263,12 +263,12 @@ export default async function AdminDashboardPage() {
                       <th className="px-6 py-3 text-right">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border-soft/60">
+                  <tbody className="divide-y divide-border-soft/60 dark:divide-dark-border">
                     {recentContacts.map((c) => (
-                      <tr key={c.id} className="hover:bg-brand-cream/30 transition-colors">
-                        <td className="px-6 py-3.5 font-medium text-brand-navy truncate max-w-[140px]">{c.name}</td>
-                        <td className="px-6 py-3.5 text-text-secondary truncate max-w-[180px]">{c.subject}</td>
-                        <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(c.createdAt)}</td>
+                      <tr key={c.id} className="hover:bg-brand-cream/30 dark:hover:bg-dark-card-hover transition-colors">
+                        <td className="px-6 py-3.5 font-medium text-brand-navy dark:text-dark-text-primary truncate max-w-[140px]">{c.name}</td>
+                        <td className="px-6 py-3.5 text-text-secondary dark:text-dark-text-secondary truncate max-w-[180px]">{c.subject}</td>
+                        <td className="px-6 py-3.5 text-text-secondary dark:text-dark-text-secondary text-xs">{formatDate(c.createdAt)}</td>
                         <td className="px-6 py-3.5 text-right">
                           <StatusBadge status={c.status} />
                         </td>
@@ -281,26 +281,26 @@ export default async function AdminDashboardPage() {
           </div>
 
           {/* Recent Volunteer Applications */}
-          <div className="bg-brand-warm-white rounded-2xl shadow-card border border-border-soft overflow-hidden">
-            <div className="px-6 py-4 border-b border-border-soft flex items-center justify-between">
+          <div className="bg-brand-warm-white dark:bg-dark-card rounded-2xl shadow-card border border-border-soft dark:border-dark-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-soft dark:border-dark-border flex items-center justify-between">
               <div>
-                <h2 className="font-bold text-brand-navy text-base">Volunteer Applications</h2>
-                <p className="text-xs text-text-secondary mt-0.5">Community members eager to participate</p>
+                <h2 className="font-bold text-brand-navy dark:text-dark-text-primary text-base">Volunteer Applications</h2>
+                <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-0.5">Community members eager to participate</p>
               </div>
-              <Link href="/admin/volunteers" className="text-xs text-brand-green hover:text-brand-navy font-semibold transition-colors">
+              <Link href="/admin/volunteers" className="text-xs text-brand-green dark:text-brand-cyan hover:text-brand-navy dark:hover:text-dark-text-primary font-semibold transition-colors">
                 View all volunteers →
               </Link>
             </div>
 
             {recentVolunteers.length === 0 ? (
               <div className="px-6 py-10 text-center">
-                <p className="text-text-secondary text-sm">No volunteer applications yet.</p>
-                <p className="text-xs text-text-secondary/70 mt-1">Applications from the volunteer page will show here.</p>
+                <p className="text-text-secondary dark:text-dark-text-secondary text-sm">No volunteer applications yet.</p>
+                <p className="text-xs text-text-secondary/70 dark:text-dark-text-secondary/70 mt-1">Applications from the volunteer page will show here.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-[#F8FAF6] text-text-secondary text-xs uppercase font-semibold border-b border-border-soft">
+                  <thead className="bg-[#F8FAF6] dark:bg-dark-surface text-text-secondary dark:text-dark-text-secondary text-xs uppercase font-semibold border-b border-border-soft dark:border-dark-border">
                     <tr>
                       <th className="px-6 py-3">Applicant</th>
                       <th className="px-6 py-3">Interests</th>
@@ -308,16 +308,16 @@ export default async function AdminDashboardPage() {
                       <th className="px-6 py-3 text-right">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border-soft/60">
+                  <tbody className="divide-y divide-border-soft/60 dark:divide-dark-border">
                     {recentVolunteers.map((v) => (
-                      <tr key={v.id} className="hover:bg-brand-cream/30 transition-colors">
-                        <td className="px-6 py-3.5 font-medium text-brand-navy truncate max-w-[140px]">
+                      <tr key={v.id} className="hover:bg-brand-cream/30 dark:hover:bg-dark-card-hover transition-colors">
+                        <td className="px-6 py-3.5 font-medium text-brand-navy dark:text-dark-text-primary truncate max-w-[140px]">
                           {v.firstName} {v.lastName}
                         </td>
-                        <td className="px-6 py-3.5 text-text-secondary truncate max-w-[180px]">
+                        <td className="px-6 py-3.5 text-text-secondary dark:text-dark-text-secondary truncate max-w-[180px]">
                           {v.interests.join(', ') || 'General'}
                         </td>
-                        <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(v.createdAt)}</td>
+                        <td className="px-6 py-3.5 text-text-secondary dark:text-dark-text-secondary text-xs">{formatDate(v.createdAt)}</td>
                         <td className="px-6 py-3.5 text-right">
                           <StatusBadge status={v.status} />
                         </td>
@@ -335,40 +335,40 @@ export default async function AdminDashboardPage() {
         <div className="space-y-6">
 
           {/* Quick Actions Card */}
-          <div className="bg-brand-warm-white rounded-2xl p-6 shadow-card border border-border-soft">
-            <h2 className="text-base font-bold text-brand-navy mb-4">Quick Actions</h2>
+          <div className="bg-brand-warm-white dark:bg-dark-card rounded-2xl p-6 shadow-card border border-border-soft dark:border-dark-border">
+            <h2 className="text-base font-bold text-brand-navy dark:text-dark-text-primary mb-4">Quick Actions</h2>
             <div className="space-y-3">
               <Link
                 href="/admin/donations"
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-green text-brand-warm-white font-semibold text-sm hover:bg-brand-green/90 shadow-sm transition-all"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-green dark:bg-brand-cyan text-brand-warm-white dark:text-brand-navy-dark font-semibold text-sm hover:bg-brand-green/90 dark:hover:bg-brand-cyan/90 shadow-sm transition-all"
               >
                 <span>Manage Donations</span>
                 <span className="text-xs opacity-75">💰</span>
               </Link>
               <Link
                 href="/admin/events"
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white text-brand-navy font-medium text-sm border border-border-soft hover:border-brand-green/40 hover:bg-[#F8FAF6] transition-all"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white dark:bg-dark-surface text-brand-navy dark:text-dark-text-primary font-medium text-sm border border-border-soft dark:border-dark-border hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:bg-[#F8FAF6] dark:hover:bg-dark-card transition-all"
               >
                 <span>Manage & Create Events</span>
                 <span className="text-xs opacity-75">📅</span>
               </Link>
               <Link
                 href="/admin/news/new"
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-sky text-brand-navy font-semibold text-sm hover:bg-brand-sky/80 transition-all border border-brand-cyan/20"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-sky dark:bg-dark-surface text-brand-navy dark:text-dark-text-primary font-semibold text-sm hover:bg-brand-sky/80 dark:hover:bg-dark-card transition-all border border-brand-cyan/20 dark:border-dark-border"
               >
                 <span>+ Post Story / News</span>
                 <span className="text-xs opacity-75">📰</span>
               </Link>
               <Link
                 href="/admin/volunteers"
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white text-brand-navy font-medium text-sm border border-border-soft hover:border-brand-green/40 hover:bg-[#F8FAF6] transition-all"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white dark:bg-dark-surface text-brand-navy dark:text-dark-text-primary font-medium text-sm border border-border-soft dark:border-dark-border hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:bg-[#F8FAF6] dark:hover:bg-dark-card transition-all"
               >
                 <span>Review Volunteers</span>
                 <span className="text-xs opacity-75">🤝</span>
               </Link>
               <Link
                 href="/admin/contacts"
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white text-brand-navy font-medium text-sm border border-border-soft hover:border-brand-green/40 hover:bg-[#F8FAF6] transition-all"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-brand-warm-white dark:bg-dark-surface text-brand-navy dark:text-dark-text-primary font-medium text-sm border border-border-soft dark:border-dark-border hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:bg-[#F8FAF6] dark:hover:bg-dark-card transition-all"
               >
                 <span>View All Inquiries</span>
                 <span className="text-xs opacity-75">✉️</span>
@@ -377,27 +377,27 @@ export default async function AdminDashboardPage() {
           </div>
 
           {/* Content Overview Card */}
-          <div className="bg-brand-warm-white rounded-2xl p-6 shadow-card border border-border-soft">
-            <h2 className="text-base font-bold text-brand-navy mb-4">Content Summary</h2>
+          <div className="bg-brand-warm-white dark:bg-dark-card rounded-2xl p-6 shadow-card border border-border-soft dark:border-dark-border">
+            <h2 className="text-base font-bold text-brand-navy dark:text-dark-text-primary mb-4">Content Summary</h2>
             <div className="space-y-3.5">
-              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
-                <span className="text-text-secondary">Completed Donations</span>
-                <span className="font-bold text-brand-green">{completedDonations}</span>
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 dark:border-dark-border text-sm">
+                <span className="text-text-secondary dark:text-dark-text-secondary">Completed Donations</span>
+                <span className="font-bold text-brand-green dark:text-brand-cyan">{completedDonations}</span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
-                <span className="text-text-secondary">Published Events</span>
-                <span className="font-bold text-brand-navy">{publishedEvents}</span>
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 dark:border-dark-border text-sm">
+                <span className="text-text-secondary dark:text-dark-text-secondary">Published Events</span>
+                <span className="font-bold text-brand-navy dark:text-dark-text-primary">{publishedEvents}</span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
-                <span className="text-text-secondary">Published Stories</span>
-                <span className="font-bold text-brand-navy">{publishedPosts}</span>
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 dark:border-dark-border text-sm">
+                <span className="text-text-secondary dark:text-dark-text-secondary">Published Stories</span>
+                <span className="font-bold text-brand-navy dark:text-dark-text-primary">{publishedPosts}</span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 text-sm">
-                <span className="text-text-secondary">Pending Inquiries</span>
-                <span className="font-bold text-brand-green">{newContacts}</span>
+              <div className="flex items-center justify-between py-2 border-b border-border-soft/60 dark:border-dark-border text-sm">
+                <span className="text-text-secondary dark:text-dark-text-secondary">Pending Inquiries</span>
+                <span className="font-bold text-brand-green dark:text-brand-cyan">{newContacts}</span>
               </div>
               <div className="flex items-center justify-between py-2 text-sm">
-                <span className="text-text-secondary">Pending Volunteers</span>
+                <span className="text-text-secondary dark:text-dark-text-secondary">Pending Volunteers</span>
                 <span className="font-bold text-accent-orange">{newVolunteers}</span>
               </div>
             </div>

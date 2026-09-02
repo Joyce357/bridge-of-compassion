@@ -178,19 +178,19 @@ export default function AdminAccountManager() {
     }
   }
 
-  const inputClass = `w-full px-4 py-2.5 border border-border-soft rounded-xl text-text-primary text-sm
-    bg-white focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green transition-all shadow-2xs`
+  const inputClass = `w-full px-4 py-2.5 border border-border-soft dark:border-dark-border rounded-xl text-text-primary dark:text-dark-text-primary text-sm
+    bg-white dark:bg-dark-surface focus:outline-none focus:ring-2 focus:ring-brand-green/40 dark:focus:ring-brand-cyan/40 focus:border-brand-green dark:focus:border-brand-cyan transition-all shadow-2xs`
 
   return (
     <div className="space-y-8 max-w-3xl">
       {/* ── Admin Profile & Avatar ── */}
-      <div className="bg-white rounded-2xl border border-border-soft shadow-xs p-6 sm:p-7">
-        <div className="flex items-center justify-between border-b border-border-soft/60 pb-4 mb-6">
+      <div className="bg-white dark:bg-dark-card rounded-2xl border border-border-soft dark:border-dark-border shadow-xs p-6 sm:p-7 transition-colors duration-200">
+        <div className="flex items-center justify-between border-b border-border-soft/60 dark:border-dark-border pb-4 mb-6">
           <div>
-            <h2 className="text-lg font-bold text-brand-navy">Admin Profile</h2>
-            <p className="text-xs text-text-secondary mt-0.5">Profile photo and basic account credentials</p>
+            <h2 className="text-lg font-bold text-brand-navy dark:text-dark-text-primary">Admin Profile</h2>
+            <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-0.5">Profile photo and basic account credentials</p>
           </div>
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-navy/10 text-brand-navy border border-brand-navy/20">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-navy/10 dark:bg-brand-cyan/10 text-brand-navy dark:text-brand-cyan border border-brand-navy/20 dark:border-brand-cyan/20">
             {role}
           </span>
         </div>
@@ -200,8 +200,8 @@ export default function AdminAccountManager() {
           <div
             className={`text-sm px-4 py-3 rounded-xl mb-6 font-medium ${
               avatarMsg.type === 'success'
-                ? 'bg-green-50 border border-green-200 text-green-800'
-                : 'bg-red-50 border border-red-200 text-red-700'
+                ? 'bg-green-50 dark:bg-emerald-950/40 border border-green-200 dark:border-emerald-800 text-green-800 dark:text-emerald-300'
+                : 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300'
             }`}
           >
             {avatarMsg.text}
@@ -209,11 +209,11 @@ export default function AdminAccountManager() {
         )}
 
         {/* Profile Picture Upload Section */}
-        <div className="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-xl bg-brand-cream/50 border border-border-soft/80 mb-6">
+        <div className="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-xl bg-brand-cream/50 dark:bg-dark-surface border border-border-soft/80 dark:border-dark-border mb-6">
           {/* Avatar Preview */}
           <div className="relative shrink-0">
             {currentAvatar ? (
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-brand-green/30 shadow-xs bg-white">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-brand-green/30 dark:border-brand-cyan/30 shadow-xs bg-white dark:bg-dark-surface">
                 <Image
                   src={currentAvatar}
                   alt={session?.user?.name ?? 'Admin Avatar'}
@@ -223,7 +223,7 @@ export default function AdminAccountManager() {
                 />
               </div>
             ) : (
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-brand-navy text-brand-cyan text-2xl sm:text-3xl font-extrabold flex items-center justify-center border-2 border-brand-cyan/40 shadow-xs">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-brand-navy dark:bg-dark-surface text-brand-cyan text-2xl sm:text-3xl font-extrabold flex items-center justify-center border-2 border-brand-cyan/40 shadow-xs">
                 {initial}
               </div>
             )}
@@ -236,8 +236,8 @@ export default function AdminAccountManager() {
 
           {/* Avatar Controls */}
           <div className="flex-1 text-center sm:text-left space-y-2">
-            <h3 className="text-sm font-bold text-brand-navy">Profile Photo</h3>
-            <p className="text-xs text-text-secondary leading-relaxed">
+            <h3 className="text-sm font-bold text-brand-navy dark:text-dark-text-primary">Profile Photo</h3>
+            <p className="text-xs text-text-secondary dark:text-dark-text-secondary leading-relaxed">
               JPEG, PNG, or WebP. Max 3 MB. Stored securely on Cloudinary.
             </p>
 
@@ -254,7 +254,7 @@ export default function AdminAccountManager() {
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadingAvatar || removingAvatar}
-                className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-brand-navy hover:bg-brand-navy-dark transition-colors disabled:opacity-50 cursor-pointer shadow-2xs"
+                className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white dark:text-brand-navy-dark bg-brand-navy dark:bg-brand-cyan hover:bg-brand-navy-dark dark:hover:bg-brand-cyan/90 transition-colors disabled:opacity-50 cursor-pointer shadow-2xs"
               >
                 {uploadingAvatar ? 'Uploading…' : currentAvatar ? 'Change Photo' : 'Upload Photo'}
               </button>
@@ -264,7 +264,7 @@ export default function AdminAccountManager() {
                   type="button"
                   onClick={handleRemoveAvatar}
                   disabled={uploadingAvatar || removingAvatar}
-                  className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors disabled:opacity-50 cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-950/70 border border-red-200 dark:border-red-800 transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   {removingAvatar ? 'Removing…' : 'Remove Photo'}
                 </button>
@@ -279,15 +279,15 @@ export default function AdminAccountManager() {
             <div
               className={`text-sm px-4 py-3 rounded-xl font-medium ${
                 profileMsg.type === 'success'
-                  ? 'bg-green-50 border border-green-200 text-green-800'
-                  : 'bg-red-50 border border-red-200 text-red-700'
+                  ? 'bg-green-50 dark:bg-emerald-950/40 border border-green-200 dark:border-emerald-800 text-green-800 dark:text-emerald-300'
+                  : 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300'
               }`}
             >
               {profileMsg.text}
             </div>
           )}
           <div>
-            <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
               Full Name
             </label>
             <input
@@ -299,7 +299,7 @@ export default function AdminAccountManager() {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
               Login Email Address
             </label>
             <input
@@ -314,7 +314,7 @@ export default function AdminAccountManager() {
             <button
               type="submit"
               disabled={savingProfile}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-brand-green hover:bg-brand-green/90 transition-colors disabled:opacity-50 shadow-xs cursor-pointer"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-white dark:text-brand-navy-dark bg-brand-green dark:bg-brand-cyan hover:bg-brand-green/90 dark:hover:bg-brand-cyan/90 transition-colors disabled:opacity-50 shadow-xs cursor-pointer"
             >
               {savingProfile ? 'Saving Changes…' : 'Save Profile Details'}
             </button>
@@ -323,10 +323,10 @@ export default function AdminAccountManager() {
       </div>
 
       {/* ── Change Password ── */}
-      <div className="bg-white rounded-2xl border border-border-soft shadow-xs p-6 sm:p-7">
-        <div className="border-b border-border-soft/60 pb-4 mb-6">
-          <h2 className="text-lg font-bold text-brand-navy">Change Password</h2>
-          <p className="text-xs text-text-secondary mt-0.5">Ensure your account uses a strong, unique password</p>
+      <div className="bg-white dark:bg-dark-card rounded-2xl border border-border-soft dark:border-dark-border shadow-xs p-6 sm:p-7 transition-colors duration-200">
+        <div className="border-b border-border-soft/60 dark:border-dark-border pb-4 mb-6">
+          <h2 className="text-lg font-bold text-brand-navy dark:text-dark-text-primary">Change Password</h2>
+          <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-0.5">Ensure your account uses a strong, unique password</p>
         </div>
 
         <form onSubmit={handlePasswordChange} className="space-y-4">
@@ -334,15 +334,15 @@ export default function AdminAccountManager() {
             <div
               className={`text-sm px-4 py-3 rounded-xl font-medium ${
                 passwordMsg.type === 'success'
-                  ? 'bg-green-50 border border-green-200 text-green-800'
-                  : 'bg-red-50 border border-red-200 text-red-700'
+                  ? 'bg-green-50 dark:bg-emerald-950/40 border border-green-200 dark:border-emerald-800 text-green-800 dark:text-emerald-300'
+                  : 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300'
               }`}
             >
               {passwordMsg.text}
             </div>
           )}
           <div>
-            <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
               Current Password
             </label>
             <input
@@ -355,7 +355,7 @@ export default function AdminAccountManager() {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
               New Password
             </label>
             <input
@@ -366,10 +366,10 @@ export default function AdminAccountManager() {
               className={inputClass}
               required
             />
-            <p className="text-[11px] text-text-secondary mt-1 font-medium">Minimum 10 characters.</p>
+            <p className="text-[11px] text-text-secondary dark:text-dark-text-secondary mt-1 font-medium">Minimum 10 characters.</p>
           </div>
           <div>
-            <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
               Confirm New Password
             </label>
             <input
@@ -385,7 +385,7 @@ export default function AdminAccountManager() {
             <button
               type="submit"
               disabled={savingPw}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-brand-navy bg-brand-cream hover:bg-brand-cream/80 border border-border-soft transition-colors disabled:opacity-50 shadow-2xs cursor-pointer"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-brand-navy dark:text-dark-text-primary bg-brand-cream dark:bg-dark-surface hover:bg-brand-cream/80 dark:hover:bg-dark-card border border-border-soft dark:border-dark-border transition-colors disabled:opacity-50 shadow-2xs cursor-pointer"
             >
               {savingPw ? 'Updating Password…' : 'Update Password'}
             </button>

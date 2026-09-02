@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 export default function FinalCTA() {
   return (
     <section
-      className="section-py bg-brand-sky/40 border-t border-brand-sky/70 relative overflow-hidden"
+      className="section-py bg-brand-sky/40 dark:bg-dark-surface border-t border-brand-sky/70 dark:border-dark-border relative overflow-hidden transition-colors duration-200"
       aria-labelledby="final-cta-heading"
     >
       <Container className="relative z-10">
@@ -18,13 +18,13 @@ export default function FinalCTA() {
           {/* Heading */}
           <h2
             id="final-cta-heading"
-            className="text-brand-navy text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight text-balance mb-3 tracking-tight"
+            className="text-brand-navy dark:text-dark-text-primary text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight text-balance mb-3 tracking-tight"
           >
-            Start Something <span className="text-brand-green">That Matters</span>
+            Start Something <span className="text-brand-green dark:text-brand-cyan">That Matters</span>
           </h2>
 
           {/* Supporting text */}
-          <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-6 max-w-xl mx-auto">
+          <p className="text-text-secondary dark:text-dark-text-secondary text-sm sm:text-base leading-relaxed mb-6 max-w-xl mx-auto">
             Whether you volunteer your time, support our programmes, or help spread
             the word — you are helping young people connect with the environment and
             build the skills to lead real change in their communities.
@@ -41,9 +41,10 @@ export default function FinalCTA() {
           </div>
 
           {/* Domain */}
-          <p className="text-text-secondary/70 text-xs mt-6 font-semibold tracking-wider uppercase">
+          <p className="text-text-secondary/70 dark:text-dark-text-secondary/70 text-xs mt-6 font-semibold tracking-wider uppercase">
             bridgeofcompassion.org
           </p>
+
 
         </div>
       </Container>

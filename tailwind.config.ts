@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -25,6 +26,17 @@ const config: Config = {
         'brand-cream':      '#F7F5EA',
         'brand-warm-white': '#FCFBF6',
 
+        // ─── Dark Mode Brand Palette ──────────────────────────────────────
+        'dark-bg':          '#0B1628', // Deep Navy Canvas
+        'dark-surface':     '#10203A', // Elevated Dark Navy Surface
+        'dark-card':        '#142846', // Dark Card Container
+        'dark-card-hover':  '#182E50', // Dark Card Hover Elevation
+        'dark-border':      '#1E3A5F', // Dark Navy Border
+        'dark-border-soft': '#25446E', // Softer Dark Border
+        'dark-text-primary':   '#FCFBF6', // Warm Off-White Primary Text
+        'dark-text-secondary': '#94A3B8', // Cool Slate Muted Text
+        'dark-text-muted':     '#64748B', // Subdued Dark Text
+
         // ─── Text Colors ──────────────────────────────────────────────────
         'text-primary':    '#253129',
         'text-secondary':  '#66706A',
@@ -37,6 +49,7 @@ const config: Config = {
         'surface':         '#FCFBF6',
         'surface-warm':    '#F7F5EA',
         'surface-soft':    '#DDE8D2',
+
 
         // ─── Youth Accent Colors ──────────────────────────────────────────
         'accent-orange':   '#F39A22',

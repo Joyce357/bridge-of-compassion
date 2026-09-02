@@ -20,8 +20,8 @@ export default function SectionHeading({
   light = false,
 }: SectionHeadingProps) {
   const alignClass = align === 'center' ? 'text-center items-center' : 'text-left items-start'
-  const titleColor = light ? 'text-brand-warm-white' : 'text-brand-navy'
-  const subtitleColor = light ? 'text-brand-warm-white/80' : 'text-text-secondary'
+  const titleColor = light ? 'text-brand-warm-white' : 'text-brand-navy dark:text-dark-text-primary'
+  const subtitleColor = light ? 'text-brand-warm-white/80' : 'text-text-secondary dark:text-dark-text-secondary'
 
   return (
     <div id={id} className={`flex flex-col ${alignClass} ${className}`}>
