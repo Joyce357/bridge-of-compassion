@@ -10,7 +10,7 @@ export default function PublicLayout({
   return (
     <VolunteerModalProvider>
       <Header />
-      <main id="main-content" className="flex-1 pt-16 sm:pt-[70px] lg:pt-[76px]" tabIndex={-1}>
+      <main id="main-content" className="flex-1 pt-14 sm:pt-16 lg:pt-[68px]" tabIndex={-1}>
         {children}
       </main>
       <Footer />

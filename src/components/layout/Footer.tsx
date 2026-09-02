@@ -8,10 +8,10 @@ import { getSiteSettings } from '@/lib/settings'
 
 const footerNav = {
   organization: [
-    { label: 'About Us',       href: '/about' },
-    { label: 'Our Mission',    href: '/about#mission' },
-    { label: 'Leadership',     href: '/about#team' },
+    { label: 'About Us',       href: '/#about' },
+    { label: 'Our Mission',    href: '/#about' },
     { label: 'News & Stories', href: '/news' },
+    { label: 'Photo Gallery',  href: '/gallery' },
     { label: 'Contact',        href: '/contact' },
   ],
   programs: [
@@ -22,18 +22,19 @@ const footerNav = {
     { label: 'All Programs',                  href: '/programs' },
   ],
   getInvolved: [
-    { label: 'Volunteer With Us', href: '/volunteer' },
-    { label: 'Make a Donation',   href: '/donate' },
-    { label: 'Upcoming Events',   href: '/events' },
-    { label: 'Partner With Us',   href: '/get-involved#partner' },
-    { label: 'Photo Gallery',     href: '/gallery' },
+    { label: 'Get Involved Overview', href: '/get-involved' },
+    { label: 'Volunteer With Us',     href: '/volunteer' },
+    { label: 'Make a Donation',       href: '/donate' },
+    { label: 'Upcoming Events',       href: '/events' },
+    { label: 'Partner With Us',       href: '/get-involved#partner' },
   ],
   legal: [
-    { label: 'Privacy Policy',   href: '/privacy' },
-    { label: 'Terms of Use',     href: '/terms' },
-    { label: 'Accessibility',    href: '/accessibility' },
+    { label: 'Contact & Inquiries', href: '/contact' },
+    { label: 'Volunteer Info',     href: '/volunteer' },
+    { label: 'Donate Support',     href: '/donate' },
   ],
 }
+
 
 export default async function Footer() {
   const settings = await getSiteSettings()
@@ -83,10 +84,10 @@ export default async function Footer() {
 
       {/* ── Newsletter bar ────────────────────────────────────────────── */}
       <div className="border-b border-white/10">
-        <div className="container-boc py-5 sm:py-6">
+        <div className="container-boc py-4 sm:py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
             <div>
-              <h3 className="text-brand-warm-white text-base sm:text-lg font-bold mb-0.5">
+              <h3 className="text-brand-warm-white text-base font-bold mb-0.5">
                 Stay Connected with Nature &amp; Community
               </h3>
               <p className="text-brand-warm-white/70 text-xs sm:text-sm">
@@ -99,33 +100,33 @@ export default async function Footer() {
       </div>
 
       {/* ── Main footer content ───────────────────────────────────────── */}
-      <div className="container-boc py-8 sm:py-10 md:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
+      <div className="container-boc py-7 sm:py-9 md:py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-7 lg:gap-8">
 
           {/* Brand column (4 cols) */}
           <div className="lg:col-span-4">
             <Link
               href="/"
-              className="inline-flex items-center mb-3.5 focus-visible:ring-2 focus-visible:ring-brand-cyan rounded-lg"
+              className="inline-flex items-center mb-3 focus-visible:ring-2 focus-visible:ring-brand-cyan rounded-lg"
               aria-label={`${settings.organizationName} home`}
             >
-              <div className="relative w-44 h-12 bg-white/95 rounded-xl p-1.5 shadow-xs">
+              <div className="relative w-40 h-10 bg-white/95 rounded-xl p-1 shadow-2xs">
                 <Image
                   src="/images/bridgeofcompassion-logo.png"
                   alt={settings.organizationName}
                   fill
                   className="object-contain p-0.5"
-                  sizes="180px"
+                  sizes="160px"
                 />
               </div>
             </Link>
 
-            <p className="text-brand-warm-white/75 text-xs sm:text-sm leading-relaxed mb-3.5 max-w-xs">
+            <p className="text-brand-warm-white/75 text-xs sm:text-sm leading-relaxed mb-3 max-w-xs">
               {settings.footerTagline || 'Nurturing children, protecting nature, and building futures through hands-on environmental education and community action.'}
             </p>
 
             {/* Contact */}
-            <address className="not-italic text-xs sm:text-sm text-brand-warm-white/65 space-y-1 mb-3.5">
+            <address className="not-italic text-xs text-brand-warm-white/65 space-y-1 mb-3">
               {settings.publicLocationLabel && (
                 <p>📍 {settings.publicLocationLabel}</p>
               )}
@@ -139,7 +140,7 @@ export default async function Footer() {
 
             {/* Social links (only shown if configured) */}
             {activeSocialLinks.length > 0 && (
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 {activeSocialLinks.map((social) => (
                   <a
                     key={social.name}
@@ -147,7 +148,7 @@ export default async function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Follow us on ${social.name}`}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/10
+                    className="w-7 h-7 flex items-center justify-center rounded-lg bg-white/10
                                text-brand-warm-white/80 hover:bg-brand-cyan hover:text-brand-navy-dark
                                transition-all duration-200"
                   >
@@ -160,10 +161,10 @@ export default async function Footer() {
 
           {/* Nav column 1: Organization (2 cols) */}
           <div className="lg:col-span-2 lg:col-start-6">
-            <h4 className="text-brand-warm-white text-xs font-bold tracking-widest uppercase mb-3 text-brand-cyan">
+            <h4 className="text-brand-warm-white text-xs font-bold tracking-widest uppercase mb-2.5 text-brand-cyan">
               Organization
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {footerNav.organization.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -179,10 +180,10 @@ export default async function Footer() {
 
           {/* Nav column 2: Programs (3 cols) */}
           <div className="lg:col-span-3">
-            <h4 className="text-brand-warm-white text-xs font-bold tracking-widest uppercase mb-3 text-brand-cyan">
+            <h4 className="text-brand-warm-white text-xs font-bold tracking-widest uppercase mb-2.5 text-brand-cyan">
               Programs
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {footerNav.programs.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -198,10 +199,10 @@ export default async function Footer() {
 
           {/* Nav column 3: Get Involved (2 cols) */}
           <div className="lg:col-span-2">
-            <h4 className="text-brand-warm-white text-xs font-bold tracking-widest uppercase mb-3 text-brand-cyan">
+            <h4 className="text-brand-warm-white text-xs font-bold tracking-widest uppercase mb-2.5 text-brand-cyan">
               Get Involved
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {footerNav.getInvolved.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -218,9 +219,9 @@ export default async function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 mt-6 sm:mt-8 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-brand-warm-white/50">
+        <div className="border-t border-white/10 mt-5 sm:mt-7 pt-3.5 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-brand-warm-white/50">
           <p>© {new Date().getFullYear()} {settings.organizationName}. All rights reserved.</p>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             {footerNav.legal.map((item) => (
               <Link
                 key={item.href}

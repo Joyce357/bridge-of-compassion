@@ -27,7 +27,7 @@ const values = [
 
 export default function WhoWeAre() {
   return (
-    <section className="section-py bg-brand-warm-white" aria-labelledby="who-we-are-heading">
+    <section id="about" className="section-py bg-brand-warm-white scroll-mt-16" aria-labelledby="who-we-are-heading">
       <Container>
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
