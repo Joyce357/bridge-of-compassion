@@ -27,7 +27,7 @@ const values = [
 
 export default function WhoWeAre() {
   return (
-    <section id="about" className="section-py bg-brand-warm-white dark:bg-dark-bg scroll-mt-16 transition-colors duration-200" aria-labelledby="who-we-are-heading">
+    <section id="about" className="section-py bg-brand-warm-white dark:bg-dark-bg scroll-mt-16 overflow-hidden transition-colors duration-200" aria-labelledby="who-we-are-heading">
       <Container>
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
@@ -101,8 +101,8 @@ export default function WhoWeAre() {
             </div>
 
             {/* Decorative soft accent elements */}
-            <div className="absolute -top-3 -right-3 w-20 h-20 bg-brand-sky/50 rounded-full opacity-40 -z-10" aria-hidden="true" />
-            <div className="absolute top-6 -right-6 w-10 h-10 bg-brand-sage/50 rounded-full opacity-60 -z-10" aria-hidden="true" />
+            <div className="absolute -top-3 right-0 w-20 h-20 bg-brand-sky/50 rounded-full opacity-40 -z-10" aria-hidden="true" />
+            <div className="absolute top-6 right-0 w-10 h-10 bg-brand-sage/50 rounded-full opacity-60 -z-10" aria-hidden="true" />
           </div>
 
         </div>
