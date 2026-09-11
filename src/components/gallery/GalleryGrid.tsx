@@ -48,8 +48,8 @@ export default function GalleryGrid({ initialItems }: GalleryGridProps) {
                 onClick={() => setSelectedCategory(cat as string)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-brand-navy text-white shadow-xs'
-                    : 'bg-white text-text-secondary hover:text-brand-navy hover:bg-brand-cream/60 border border-border-soft'
+                    ? 'bg-brand-navy dark:bg-brand-cyan text-white dark:text-brand-navy-dark shadow-xs'
+                    : 'bg-white dark:bg-dark-surface text-text-secondary dark:text-dark-text-secondary hover:text-brand-navy dark:hover:text-dark-text-primary hover:bg-brand-cream/60 dark:hover:bg-dark-card border border-border-soft dark:border-dark-border'
                 }`}
               >
                 {cat === 'ALL' ? 'All Photos' : cat}
@@ -61,12 +61,12 @@ export default function GalleryGrid({ initialItems }: GalleryGridProps) {
 
       {/* Grid or Empty state */}
       {filteredItems.length === 0 ? (
-        <div className="max-w-md mx-auto text-center py-16 px-6 bg-white rounded-3xl border border-border-soft shadow-xs">
-          <div className="w-16 h-16 rounded-2xl bg-brand-sage/40 flex items-center justify-center text-3xl mx-auto mb-4">
+        <div className="max-w-md mx-auto text-center py-16 px-6 bg-white dark:bg-dark-card rounded-3xl border border-border-soft dark:border-dark-border shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-brand-sage/40 dark:bg-dark-surface flex items-center justify-center text-3xl mx-auto mb-4">
             🖼️
           </div>
-          <h2 className="text-xl font-extrabold text-brand-navy mb-2">No Photos Found</h2>
-          <p className="text-sm text-text-secondary leading-relaxed">
+          <h2 className="text-xl font-extrabold text-brand-navy dark:text-dark-text-primary mb-2">No Photos Found</h2>
+          <p className="text-sm text-text-secondary dark:text-dark-text-secondary leading-relaxed">
             {selectedCategory === 'ALL'
               ? 'Our team is currently preparing new community and project photos. Check back soon!'
               : `No photos found in category "${selectedCategory}". Try selecting another category.`}
@@ -74,7 +74,7 @@ export default function GalleryGrid({ initialItems }: GalleryGridProps) {
           {selectedCategory !== 'ALL' && (
             <button
               onClick={() => setSelectedCategory('ALL')}
-              className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-brand-green hover:bg-brand-green/90 transition-colors shadow-xs cursor-pointer"
+              className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white dark:text-brand-navy-dark bg-brand-green dark:bg-brand-cyan hover:bg-brand-green/90 dark:hover:bg-brand-cyan/90 transition-colors shadow-xs cursor-pointer"
             >
               Show All Photos
             </button>
@@ -97,10 +97,10 @@ export default function GalleryGrid({ initialItems }: GalleryGridProps) {
                 tabIndex={0}
                 role="button"
                 aria-label={`View photo: ${item.title || item.caption || 'Gallery photo'}`}
-                className="group relative flex flex-col bg-white rounded-2xl border border-border-soft hover:border-brand-green/40 hover:shadow-card-hover overflow-hidden transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-green"
+                className="group relative flex flex-col bg-white dark:bg-dark-card rounded-2xl border border-border-soft dark:border-dark-border hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:shadow-card-hover overflow-hidden transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-green dark:focus:ring-brand-cyan"
               >
                 {/* Photo Thumbnail */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-brand-cream/40">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-brand-cream/40 dark:bg-dark-surface">
                   <Image
                     src={item.imageUrl}
                     alt={item.altText || item.caption || item.title || 'Bridge of Compassion Gallery'}
@@ -123,7 +123,7 @@ export default function GalleryGrid({ initialItems }: GalleryGridProps) {
                   {item.category && (
                     <div className="absolute top-3 left-3 z-10">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border backdrop-blur-xs bg-white/95 ${catStyle.text} ${catStyle.border} shadow-2xs`}
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border backdrop-blur-xs bg-white/95 dark:bg-dark-surface/95 ${catStyle.text} ${catStyle.border} shadow-2xs`}
                       >
                         {item.category}
                       </span>
@@ -142,14 +142,14 @@ export default function GalleryGrid({ initialItems }: GalleryGridProps) {
 
                 {/* Details Footer */}
                 {(item.title || item.caption) && (
-                  <div className="p-4 flex flex-col flex-1 bg-white border-t border-border-soft/60">
+                  <div className="p-4 flex flex-col flex-1 bg-white dark:bg-dark-card border-t border-border-soft/60 dark:border-dark-border">
                     {item.title && (
-                      <h3 className="text-sm font-bold text-brand-navy group-hover:text-brand-green transition-colors line-clamp-1 mb-1">
+                      <h3 className="text-sm font-bold text-brand-navy dark:text-dark-text-primary group-hover:text-brand-green dark:group-hover:text-brand-cyan transition-colors line-clamp-1 mb-1">
                         {item.title}
                       </h3>
                     )}
                     {item.caption && (
-                      <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
+                      <p className="text-xs text-text-secondary dark:text-dark-text-secondary leading-relaxed line-clamp-2">
                         {item.caption}
                       </p>
                     )}

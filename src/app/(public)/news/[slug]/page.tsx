@@ -42,11 +42,11 @@ export default async function NewsPostPage({ params }: Props) {
   const dateStr = post.publishedAt || post.createdAt
 
   return (
-    <article className="min-h-screen bg-brand-warm-white pb-20">
+    <article className="min-h-screen bg-brand-warm-white dark:bg-dark-bg pb-20 transition-colors duration-200">
       {/* Hero Header */}
-      <section className="bg-brand-navy-dark text-brand-warm-white relative overflow-hidden py-12 sm:py-16">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl" aria-hidden="true" />
+      <section className="bg-brand-navy-dark dark:bg-dark-bg text-brand-warm-white relative overflow-hidden py-12 sm:py-16 transition-colors duration-200">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
 
         <Container className="max-w-4xl relative z-10">
           <Link
@@ -60,7 +60,7 @@ export default async function NewsPostPage({ params }: Props) {
           <div className="flex flex-wrap items-center gap-3 mb-4">
             {post.category && (
               <span
-                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-xs bg-white/95 ${catStyle.text} ${catStyle.border}`}
+                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-xs bg-white/95 dark:bg-dark-surface/95 ${catStyle.text} ${catStyle.border}`}
               >
                 {post.category}
               </span>
@@ -97,10 +97,10 @@ export default async function NewsPostPage({ params }: Props) {
 
       {/* Main Content Area */}
       <Container className="max-w-4xl -mt-6 relative z-20">
-        <div className="bg-white rounded-3xl border border-border-soft shadow-xs p-6 sm:p-10 md:p-12 space-y-8">
+        <div className="bg-white dark:bg-dark-card rounded-3xl border border-border-soft dark:border-dark-border shadow-xs p-6 sm:p-10 md:p-12 space-y-8">
           {/* Hero Featured Image */}
           {post.featuredImage && (
-            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-border-soft shadow-2xs">
+            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-border-soft dark:border-dark-border shadow-2xs">
               <Image
                 src={post.featuredImage}
                 alt={post.title}
@@ -113,28 +113,28 @@ export default async function NewsPostPage({ params }: Props) {
 
           {/* Excerpt Lead */}
           {post.excerpt && (
-            <p className="text-lg sm:text-xl text-brand-navy font-semibold leading-relaxed border-l-4 border-brand-green pl-5 py-1 bg-brand-cream/30 rounded-r-xl">
+            <p className="text-lg sm:text-xl text-brand-navy dark:text-dark-text-primary font-semibold leading-relaxed border-l-4 border-brand-green pl-5 py-1 bg-brand-cream/30 dark:bg-dark-surface/40 rounded-r-xl">
               {post.excerpt}
             </p>
           )}
 
           {/* Body Content */}
-          <div className="text-text-primary text-base sm:text-lg leading-relaxed whitespace-pre-wrap space-y-4">
+          <div className="text-text-primary dark:text-dark-text-primary text-base sm:text-lg leading-relaxed whitespace-pre-wrap space-y-4">
             {post.content}
           </div>
 
           {/* Back link & Footer CTA */}
-          <div className="border-t border-border-soft/60 pt-8 mt-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="border-t border-border-soft/60 dark:border-dark-border pt-8 mt-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <Link
               href="/news"
-              className="inline-flex items-center gap-2 text-xs font-bold text-brand-navy hover:text-brand-green transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-bold text-brand-navy dark:text-dark-text-primary hover:text-brand-green dark:hover:text-brand-cyan transition-colors"
             >
               <span>← Back to all stories</span>
             </Link>
 
             <Link
               href="/volunteer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-green hover:bg-brand-green/90 transition-colors shadow-xs"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white dark:text-brand-navy-dark bg-brand-green dark:bg-brand-cyan hover:bg-brand-green/90 dark:hover:bg-brand-cyan/90 transition-colors shadow-xs"
             >
               Join Our Community Mission
             </Link>

@@ -41,20 +41,20 @@ export default async function ProgramDetailPage({ params }: Props) {
   const accent = getCategoryAccent(program.category)
 
   return (
-    <div className="min-h-screen bg-brand-warm-white">
+    <div className="min-h-screen bg-brand-warm-white dark:bg-dark-bg transition-colors duration-200">
       {/* ── Breadcrumb & Top Bar ─────────────────────────────────────────── */}
-      <div className="bg-brand-cream/60 border-b border-border-soft/60 py-3 sm:py-4">
+      <div className="bg-brand-cream/60 dark:bg-dark-surface border-b border-border-soft/60 dark:border-dark-border py-3 sm:py-4 transition-colors duration-200">
         <Container>
-          <nav className="flex items-center gap-2 text-xs sm:text-sm text-text-secondary">
-            <Link href="/" className="hover:text-brand-navy transition-colors">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm text-text-secondary dark:text-dark-text-secondary">
+            <Link href="/" className="hover:text-brand-navy dark:hover:text-dark-text-primary transition-colors">
               Home
             </Link>
             <span>/</span>
-            <Link href="/programs" className="hover:text-brand-navy transition-colors">
+            <Link href="/programs" className="hover:text-brand-navy dark:hover:text-dark-text-primary transition-colors">
               Programs
             </Link>
             <span>/</span>
-            <span className="font-semibold text-brand-navy truncate max-w-[200px] sm:max-w-xs">
+            <span className="font-semibold text-brand-navy dark:text-dark-text-primary truncate max-w-[200px] sm:max-w-xs">
               {program.title}
             </span>
           </nav>
@@ -73,11 +73,11 @@ export default async function ProgramDetailPage({ params }: Props) {
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-navy tracking-tight mb-4 text-balance">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-navy dark:text-dark-text-primary tracking-tight mb-4 text-balance">
               {program.title}
             </h1>
 
-            <p className="text-text-secondary text-base sm:text-lg leading-relaxed font-medium mb-6">
+            <p className="text-text-secondary dark:text-dark-text-secondary text-base sm:text-lg leading-relaxed font-medium mb-6">
               {program.shortDescription}
             </p>
 
@@ -91,7 +91,7 @@ export default async function ProgramDetailPage({ params }: Props) {
         <Container>
           <div className="max-w-3xl mx-auto space-y-8">
             {program.imageUrl && (
-              <div className="relative aspect-[16/9] w-full rounded-2xl lg:rounded-3xl overflow-hidden shadow-card border border-border-soft bg-brand-cream">
+              <div className="relative aspect-[16/9] w-full rounded-2xl lg:rounded-3xl overflow-hidden shadow-card border border-border-soft dark:border-dark-border bg-brand-cream dark:bg-dark-surface">
                 <Image
                   src={program.imageUrl}
                   alt={program.title}
@@ -104,15 +104,15 @@ export default async function ProgramDetailPage({ params }: Props) {
             )}
 
             {/* Description Body */}
-            <div className="prose prose-slate max-w-none text-text-primary text-base sm:text-lg leading-relaxed whitespace-pre-line space-y-4">
+            <div className="prose prose-slate max-w-none text-text-primary dark:text-dark-text-primary text-base sm:text-lg leading-relaxed whitespace-pre-line space-y-4">
               {program.description}
             </div>
 
             {/* Next Steps & Back Link */}
-            <div className="pt-8 border-t border-border-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="pt-8 border-t border-border-soft dark:border-dark-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <Link
                 href="/programs"
-                className="inline-flex items-center gap-2 text-sm font-bold text-brand-navy hover:text-brand-green transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-bold text-brand-navy dark:text-dark-text-primary hover:text-brand-green dark:hover:text-brand-cyan transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
@@ -123,13 +123,13 @@ export default async function ProgramDetailPage({ params }: Props) {
               <div className="flex items-center gap-3">
                 <Link
                   href="/volunteer"
-                  className="px-5 py-2.5 bg-brand-green hover:bg-brand-navy text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-colors"
+                  className="px-5 py-2.5 bg-brand-green dark:bg-brand-cyan hover:bg-brand-navy dark:hover:bg-brand-cyan/90 text-white dark:text-brand-navy-dark text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-colors"
                 >
                   Volunteer for This Program
                 </Link>
                 <Link
                   href="/contact"
-                  className="px-5 py-2.5 bg-white hover:bg-brand-cream text-brand-navy text-xs sm:text-sm font-bold rounded-xl border border-border-soft shadow-xs transition-colors"
+                  className="px-5 py-2.5 bg-white dark:bg-dark-card hover:bg-brand-cream dark:hover:bg-dark-card-hover text-brand-navy dark:text-dark-text-primary text-xs sm:text-sm font-bold rounded-xl border border-border-soft dark:border-dark-border shadow-xs transition-colors"
                 >
                   Inquire
                 </Link>

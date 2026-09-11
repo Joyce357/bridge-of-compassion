@@ -62,13 +62,13 @@ export default async function ProgramsPreview() {
   if (programs.length === 0) return null
 
   return (
-    <section className="section-py bg-[#D1DFC4] border-y border-[#C2D3B2] relative overflow-hidden" aria-labelledby="programs-heading">
+    <section className="section-py bg-[#D1DFC4] dark:bg-[#0F2119] border-y border-[#C2D3B2] dark:border-dark-border relative overflow-hidden transition-colors duration-200" aria-labelledby="programs-heading">
       <Container>
 
         {/* Header with decorative branches matching mockup */}
         <div className="relative flex items-center justify-between mb-6 sm:mb-8">
           {/* Left decorative branch */}
-          <div className="hidden md:block w-14 h-10 text-brand-green shrink-0 pointer-events-none opacity-75" aria-hidden="true">
+          <div className="hidden md:block w-14 h-10 text-brand-green dark:text-brand-cyan shrink-0 pointer-events-none opacity-75" aria-hidden="true">
             <svg viewBox="0 0 64 48" fill="currentColor" className="w-full h-full">
               <path d="M12 36C22 34 32 24 40 12M24 30C28 20 34 16 42 16M14 36C18 30 22 28 26 26" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" />
               <ellipse cx="44" cy="11" rx="6" ry="3.5" transform="rotate(-30 44 11)" />
@@ -79,19 +79,19 @@ export default async function ProgramsPreview() {
 
           {/* Centered Heading */}
           <div className="text-center mx-auto max-w-xl">
-            <span className="eyebrow block mb-1.5 text-brand-green font-extrabold">
+            <span className="eyebrow block mb-1.5 text-brand-green dark:text-brand-cyan font-extrabold">
               WHAT WE DO
             </span>
             <h2
               id="programs-heading"
-              className="text-brand-navy text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight"
+              className="text-brand-navy dark:text-dark-text-primary text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight"
             >
               From Learning to Action
             </h2>
           </div>
 
           {/* Right decorative branch */}
-          <div className="hidden md:block w-14 h-10 text-brand-green shrink-0 pointer-events-none transform -scale-x-100 opacity-75" aria-hidden="true">
+          <div className="hidden md:block w-14 h-10 text-brand-green dark:text-brand-cyan shrink-0 pointer-events-none transform -scale-x-100 opacity-75" aria-hidden="true">
             <svg viewBox="0 0 64 48" fill="currentColor" className="w-full h-full">
               <path d="M12 36C22 34 32 24 40 12M24 30C28 20 34 16 42 16M14 36C18 30 22 28 26 26" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" />
               <ellipse cx="44" cy="11" rx="6" ry="3.5" transform="rotate(-30 44 11)" />
@@ -111,8 +111,8 @@ export default async function ProgramsPreview() {
               <Link
                 key={prog.id}
                 href={`/programs/${prog.slug}`}
-                className="group flex flex-col items-center text-center p-4 sm:p-4.5 rounded-2xl bg-brand-warm-white border border-[#C2D3B2]/80
-                           shadow-xs hover:shadow-card-hover transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-green"
+                className="group flex flex-col items-center text-center p-4 sm:p-4.5 rounded-2xl bg-brand-warm-white dark:bg-dark-card border border-[#C2D3B2]/80 dark:border-dark-border
+                           shadow-xs hover:shadow-card-hover transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-green dark:hover:border-brand-cyan/40"
                 aria-label={`Learn more about ${prog.title}`}
               >
                 {/* Icon Container */}
@@ -123,12 +123,12 @@ export default async function ProgramsPreview() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-brand-navy text-xs sm:text-sm font-bold leading-snug mb-1 group-hover:text-brand-green transition-colors min-h-[2.5rem] flex items-center">
+                <h3 className="text-brand-navy dark:text-dark-text-primary text-xs sm:text-sm font-bold leading-snug mb-1 group-hover:text-brand-green dark:group-hover:text-brand-cyan transition-colors min-h-[2.5rem] flex items-center">
                   {prog.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-text-secondary text-[11.5px] sm:text-xs leading-relaxed flex-1 line-clamp-3">
+                <p className="text-text-secondary dark:text-dark-text-secondary text-[11.5px] sm:text-xs leading-relaxed flex-1 line-clamp-3">
                   {prog.shortDescription}
                 </p>
               </Link>
@@ -138,7 +138,7 @@ export default async function ProgramsPreview() {
 
         {/* View all programs link */}
         <div className="text-center mt-6 sm:mt-8">
-          <Button href="/programs" variant="secondary" size="md">
+          <Button href="/programs" variant="primary" size="md">
             Explore All Programs &amp; Initiatives
           </Button>
         </div>
@@ -147,4 +147,5 @@ export default async function ProgramsPreview() {
     </section>
   )
 }
+
 

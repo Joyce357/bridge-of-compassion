@@ -18,9 +18,9 @@ export default async function GalleryPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-brand-navy-dark section-py text-brand-warm-white relative overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl" aria-hidden="true" />
+      <section className="bg-brand-navy-dark dark:bg-dark-bg section-py text-brand-warm-white relative overflow-hidden transition-colors duration-200">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
         <Container className="text-center relative z-10">
           <p className="eyebrow text-brand-cyan mb-3">Our Community &amp; Work</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-brand-warm-white mb-4 tracking-tight">
@@ -33,7 +33,7 @@ export default async function GalleryPage() {
       </section>
 
       {/* Main Gallery Section */}
-      <section className="section-py bg-brand-warm-white">
+      <section className="section-py bg-brand-warm-white dark:bg-dark-bg transition-colors duration-200">
         <Container>
           <GalleryGrid initialItems={items} />
         </Container>

@@ -44,6 +44,26 @@
   --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.dark {
+  --brand-navy:      #3B82F6;
+  --brand-navy-dark: #0B1628;
+
+  --brand-cyan:      #38BDF8;
+  --brand-sky:       #10203A;
+
+  --brand-green:     #68A342;
+  --brand-leaf:      #86C649;
+  --brand-sage:      #162B20;
+  --section-sage:    #0F2119;
+
+  --brand-cream:     #10203A;
+  --brand-warm-white:#0B1628;
+
+  --text-primary:    #FCFBF6;
+  --text-secondary:  #94A3B8;
+  --border-soft:     #1E3A5F;
+}
+
 /* ─── Base Styles ────────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
@@ -63,9 +83,14 @@
     color: var(--text-primary);
   }
 
+  .dark body {
+    @apply bg-dark-bg text-dark-text-primary;
+    color: var(--text-primary);
+  }
+
   /* Heading hierarchy — Navy anchored */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans font-bold text-brand-navy;
+    @apply font-sans font-bold text-brand-navy dark:text-dark-text-primary;
     line-height: 1.18;
     letter-spacing: -0.015em;
   }
@@ -86,14 +111,25 @@
   }
 
   a:hover {
-    @apply text-brand-navy;
+    @apply text-brand-navy dark:text-brand-cyan;
   }
 
-  /* Focus styles — accessible navy/green */
+  /* Focus styles — accessible navy/cyan */
   :focus-visible {
     outline: 2px solid var(--brand-navy);
     outline-offset: 3px;
     border-radius: 6px;
+  }
+
+  .dark :focus-visible {
+    outline: 2px solid var(--brand-cyan);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  .dark select option {
+    background-color: var(--brand-sky);
+    color: var(--text-primary);
   }
 
   img {
@@ -119,7 +155,7 @@
 
   /* Eyebrow label */
   .eyebrow {
-    @apply text-brand-green text-xs sm:text-sm font-bold tracking-widest uppercase;
+    @apply text-brand-green dark:text-brand-cyan text-xs sm:text-sm font-bold tracking-widest uppercase;
   }
 
   /* Section heading group */
@@ -129,11 +165,11 @@
 
   /* Standardized Card Base */
   .card {
-    @apply bg-brand-warm-white rounded-2xl shadow-2xs overflow-hidden transition-all duration-200 border border-border-soft/90;
+    @apply bg-brand-warm-white dark:bg-dark-card rounded-2xl shadow-2xs overflow-hidden transition-all duration-200 border border-border-soft/90 dark:border-dark-border text-text-primary dark:text-dark-text-primary;
   }
 
   .card:hover {
-    @apply shadow-card-hover border-brand-green/30 -translate-y-0.5;
+    @apply shadow-card-hover border-brand-green/30 dark:border-brand-cyan/40 -translate-y-0.5;
   }
 
   /* Prose content */
@@ -144,14 +180,14 @@
 
   /* ─── Refined Button Sizing System ───────────────────────────────────────── */
 
-  /* Primary Button: Brand Navy fill with warm-white text */
+  /* Primary Button: Brand Navy fill with warm-white text (Cyan in dark mode for accessible high-contrast punch) */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
-           bg-brand-navy text-brand-warm-white font-semibold
+           bg-brand-navy dark:bg-brand-cyan text-brand-warm-white dark:text-brand-navy-dark font-semibold
            px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
-           hover:bg-brand-navy-dark hover:shadow-xs hover:-translate-y-0.5
-           focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
+           hover:bg-brand-navy-dark dark:hover:bg-brand-cyan/90 hover:shadow-xs hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-navy dark:focus-visible:ring-brand-cyan focus-visible:ring-offset-2
            active:translate-y-0 active:shadow-none
            select-none cursor-pointer whitespace-nowrap;
   }
@@ -171,10 +207,10 @@
   /* Secondary / Outline Button: Green border, navy text */
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2
-           border border-brand-green text-brand-navy font-semibold bg-transparent
+           border border-brand-green dark:border-brand-green/80 text-brand-navy dark:text-dark-text-primary font-semibold bg-transparent
            px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
-           hover:bg-brand-sage/30 hover:border-brand-leaf hover:-translate-y-0.5
+           hover:bg-brand-sage/30 dark:hover:bg-brand-green/20 hover:border-brand-leaf hover:-translate-y-0.5
            focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2
            active:translate-y-0
            select-none cursor-pointer whitespace-nowrap;
@@ -188,11 +224,11 @@
   /* Soft Button */
   .btn-soft {
     @apply inline-flex items-center justify-center gap-2
-           bg-brand-sky text-brand-navy font-semibold
+           bg-brand-sky dark:bg-dark-surface text-brand-navy dark:text-dark-text-primary font-semibold
            px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
-           hover:bg-brand-sky/80 hover:-translate-y-0.5
-           focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
+           hover:bg-brand-sky/80 dark:hover:bg-dark-card hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-navy dark:focus-visible:ring-brand-cyan focus-visible:ring-offset-2
            active:translate-y-0
            select-none cursor-pointer whitespace-nowrap;
   }
@@ -204,11 +240,11 @@
   /* Ghost: Warm white outline */
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2
-           border border-brand-navy/30 text-brand-navy font-semibold bg-transparent
+           border border-brand-navy/30 dark:border-dark-border text-brand-navy dark:text-dark-text-primary font-semibold bg-transparent
            px-5 sm:px-6 py-2.5 rounded-xl text-sm
            transition-all duration-200
-           hover:bg-brand-navy hover:text-brand-warm-white hover:-translate-y-0.5
-           focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2
+           hover:bg-brand-navy dark:hover:bg-dark-card hover:text-brand-warm-white hover:-translate-y-0.5
+           focus-visible:ring-2 focus-visible:ring-brand-navy dark:focus-visible:ring-brand-cyan focus-visible:ring-offset-2
            active:translate-y-0
            select-none cursor-pointer whitespace-nowrap;
   }
@@ -243,6 +279,9 @@
     justify-content: center;
   }
 
+  .dark .img-placeholder {
+    background: linear-gradient(135deg, #10203A 0%, #142846 100%);
+  }
 }
 
 /* ─── Utilities ──────────────────────────────────────────────────────────── */

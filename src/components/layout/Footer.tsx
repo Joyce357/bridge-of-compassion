@@ -80,11 +80,12 @@ export default async function Footer() {
   ].filter(Boolean) as { name: string; href: string; icon: React.ReactNode }[]
 
   return (
-    <footer className="bg-brand-navy-dark text-brand-warm-white" role="contentinfo">
+    <footer className="bg-brand-navy-dark dark:bg-dark-bg text-brand-warm-white transition-colors duration-200 border-t border-transparent dark:border-dark-border" role="contentinfo">
 
       {/* ── Newsletter bar ────────────────────────────────────────────── */}
-      <div className="border-b border-white/10">
+      <div className="border-b border-white/10 dark:border-dark-border">
         <div className="container-boc py-4 sm:py-5">
+
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
             <div>
               <h3 className="text-brand-warm-white text-base font-bold mb-0.5">

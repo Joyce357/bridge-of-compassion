@@ -28,10 +28,10 @@ export default async function ProgramsPage() {
 
   if (dbError) {
     return (
-      <div className="min-h-screen bg-brand-warm-white flex items-center justify-center">
+      <div className="min-h-screen bg-brand-warm-white dark:bg-dark-bg flex items-center justify-center transition-colors duration-200">
         <div className="text-center max-w-md px-6 py-12">
-          <p className="text-lg font-bold text-brand-navy mb-2">Programs temporarily unavailable</p>
-          <p className="text-sm text-text-secondary">
+          <p className="text-lg font-bold text-brand-navy dark:text-dark-text-primary mb-2">Programs temporarily unavailable</p>
+          <p className="text-sm text-text-secondary dark:text-dark-text-secondary">
             We&apos;re having trouble loading our programs right now. Please try again shortly.
           </p>
         </div>
@@ -40,17 +40,17 @@ export default async function ProgramsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-warm-white">
+    <div className="min-h-screen bg-brand-warm-white dark:bg-dark-bg transition-colors duration-200">
       {/* ── Page Header / Hero ────────────────────────────────────────────── */}
-      <section className="relative py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-brand-cream/70 via-brand-cream to-brand-warm-white border-b border-border-soft/60">
+      <section className="relative py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-brand-cream/70 via-brand-cream to-brand-warm-white dark:from-dark-bg dark:via-dark-surface dark:to-dark-bg border-b border-border-soft/60 dark:border-dark-border transition-colors duration-200">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <span className="eyebrow block mb-2.5">What We Do</span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-navy tracking-tight text-balance mb-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-navy dark:text-dark-text-primary tracking-tight text-balance mb-4">
               Programs &amp; Environmental Initiatives
             </h1>
             <div className="divider-green mx-auto mb-4" />
-            <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="text-text-secondary dark:text-dark-text-secondary text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
               Empowering children, youth, and families through practical environmental
               education, hands-on conservation, and sustainable community action.
             </p>
@@ -62,14 +62,14 @@ export default async function ProgramsPage() {
       <section className="section-py" aria-labelledby="all-programs-heading">
         <Container>
           {programs.length === 0 ? (
-            <div className="max-w-md mx-auto text-center py-16 px-6 rounded-2xl bg-brand-cream/50 border border-border-soft">
-              <div className="w-12 h-12 rounded-full bg-brand-sage/40 text-brand-green flex items-center justify-center mx-auto mb-4 text-xl">
+            <div className="max-w-md mx-auto text-center py-16 px-6 rounded-2xl bg-brand-cream/50 dark:bg-dark-card border border-border-soft dark:border-dark-border">
+              <div className="w-12 h-12 rounded-full bg-brand-sage/40 dark:bg-dark-surface text-brand-green dark:text-brand-cyan flex items-center justify-center mx-auto mb-4 text-xl">
                 🌿
               </div>
-              <h2 id="all-programs-heading" className="text-lg font-bold text-brand-navy mb-2">
+              <h2 id="all-programs-heading" className="text-lg font-bold text-brand-navy dark:text-dark-text-primary mb-2">
                 No Programs Listed Yet
               </h2>
-              <p className="text-text-secondary text-sm">
+              <p className="text-text-secondary dark:text-dark-text-secondary text-sm">
                 Programs and initiatives will be added here as they become available.
               </p>
             </div>
@@ -82,7 +82,7 @@ export default async function ProgramsPage() {
                   subtitle="Discover our core educational themes and community projects."
                   id="all-programs-heading"
                 />
-                <div className="hidden sm:block text-xs font-semibold text-text-secondary">
+                <div className="hidden sm:block text-xs font-semibold text-text-secondary dark:text-dark-text-secondary">
                   Showing {programs.length} initiatives
                 </div>
               </div>
@@ -93,11 +93,11 @@ export default async function ProgramsPage() {
                   return (
                     <article
                       key={program.id}
-                      className="group flex flex-col rounded-2xl bg-white border border-border-soft hover:border-brand-green/40 hover:shadow-card-hover transition-all duration-200 overflow-hidden"
+                      className="group flex flex-col rounded-2xl bg-white dark:bg-dark-card border border-border-soft dark:border-dark-border hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:shadow-card-hover transition-all duration-200 overflow-hidden"
                     >
                       {/* Image Preview (if present) */}
                       {program.imageUrl && (
-                        <div className="relative aspect-[16/9] w-full bg-brand-cream overflow-hidden">
+                        <div className="relative aspect-[16/9] w-full bg-brand-cream dark:bg-dark-surface overflow-hidden">
                           <Image
                             src={program.imageUrl}
                             alt={program.title}
@@ -128,22 +128,22 @@ export default async function ProgramsPage() {
                             </div>
                           )}
 
-                          <h2 className="text-lg sm:text-xl font-bold text-brand-navy group-hover:text-brand-green transition-colors mb-2">
+                          <h2 className="text-lg sm:text-xl font-bold text-brand-navy dark:text-dark-text-primary group-hover:text-brand-green dark:group-hover:text-brand-cyan transition-colors mb-2">
                             <Link href={`/programs/${program.slug}`} className="focus-visible:outline-none focus-visible:underline">
                               {program.title}
                             </Link>
                           </h2>
 
-                          <p className="text-text-secondary text-sm leading-relaxed line-clamp-3 mb-4">
+                          <p className="text-text-secondary dark:text-dark-text-secondary text-sm leading-relaxed line-clamp-3 mb-4">
                             {program.shortDescription}
                           </p>
                         </div>
 
                         {/* Read More Link */}
-                        <div className="pt-3 border-t border-border-soft/60 flex items-center justify-between">
+                        <div className="pt-3 border-t border-border-soft/60 dark:border-dark-border flex items-center justify-between">
                           <Link
                             href={`/programs/${program.slug}`}
-                            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-green group-hover:text-brand-navy transition-colors"
+                            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-green dark:text-brand-cyan group-hover:text-brand-navy dark:group-hover:text-dark-text-primary transition-colors"
                           >
                             <span>Learn more</span>
                             <svg
@@ -163,7 +163,7 @@ export default async function ProgramsPage() {
                           </Link>
 
                           {program.featured && (
-                            <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                            <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 dark:bg-amber-950/40 dark:text-amber-300 px-2 py-0.5 rounded-md border border-amber-200 dark:border-amber-800">
                               Featured
                             </span>
                           )}
@@ -179,25 +179,25 @@ export default async function ProgramsPage() {
       </section>
 
       {/* ── Bottom CTA ────────────────────────────────────────────────────── */}
-      <section className="py-12 sm:py-16 bg-brand-sky/40 border-t border-brand-sky/70">
+      <section className="py-12 sm:py-16 bg-brand-sky/40 dark:bg-dark-surface border-t border-brand-sky/70 dark:border-dark-border transition-colors duration-200">
         <Container>
           <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-brand-navy mb-3">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-brand-navy dark:text-dark-text-primary mb-3">
               Want to get involved in our programs?
             </h2>
-            <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-6">
+            <p className="text-text-secondary dark:text-dark-text-secondary text-sm sm:text-base leading-relaxed mb-6">
               Join our community volunteer days or partner with us to bring environmental workshops to your school or neighborhood.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
                 href="/volunteer"
-                className="px-6 py-3 bg-brand-green hover:bg-brand-navy text-white text-sm font-bold rounded-xl shadow-xs transition-colors"
+                className="px-6 py-3 bg-brand-green dark:bg-brand-cyan hover:bg-brand-navy dark:hover:bg-brand-cyan/90 text-white dark:text-brand-navy-dark text-sm font-bold rounded-xl shadow-xs transition-colors"
               >
                 Volunteer With Us
               </Link>
               <Link
                 href="/contact"
-                className="px-6 py-3 bg-white hover:bg-brand-cream text-brand-navy text-sm font-bold rounded-xl border border-border-soft shadow-xs transition-colors"
+                className="px-6 py-3 bg-white dark:bg-dark-card hover:bg-brand-cream dark:hover:bg-dark-card-hover text-brand-navy dark:text-dark-text-primary text-sm font-bold rounded-xl border border-border-soft dark:border-dark-border shadow-xs transition-colors"
               >
                 Contact Our Team
               </Link>

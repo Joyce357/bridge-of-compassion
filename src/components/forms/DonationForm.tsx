@@ -239,40 +239,39 @@ export default function DonationForm() {
   // ── Success State ──────────────────────────────────────────────────────────
   if (status === 'success' && completedDetails) {
     return (
-      <div className="bg-[#F8FAF6] border border-border-soft rounded-2xl p-8 sm:p-10 text-center shadow-card animate-fadeIn">
-        <div className="w-16 h-16 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
-          ✓
+      <div className="bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 sm:p-8 text-center animate-fadeIn">
+        <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-xs">
+          💚
         </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-brand-navy mb-2">
-          Thank You, {completedDetails.donorName}!
-        </h2>
-        <p className="text-text-secondary text-sm sm:text-base max-w-lg mx-auto mb-6">
+        <h3 className="text-xl sm:text-2xl font-extrabold text-brand-navy dark:text-dark-text-primary mb-2">
+          Thank You for Your Compassion!
+        </h3>
+        <p className="text-xs sm:text-sm text-text-secondary dark:text-dark-text-secondary max-w-md mx-auto mb-6 leading-relaxed">
           Your gift of <strong>{completedDetails.currency} ${completedDetails.amount?.toFixed(2)}</strong> has been successfully received and confirmed.
         </p>
 
-        <div className="bg-brand-warm-white border border-border-soft rounded-xl p-5 max-w-md mx-auto text-left text-xs sm:text-sm space-y-2 mb-6">
-          <div className="flex justify-between text-text-secondary">
+        <div className="bg-brand-warm-white dark:bg-dark-surface border border-border-soft dark:border-dark-border rounded-xl p-5 max-w-md mx-auto text-left text-xs sm:text-sm space-y-2 mb-6">
+          <div className="flex justify-between text-text-secondary dark:text-dark-text-secondary">
             <span>Reference ID:</span>
-            <span className="font-mono font-semibold text-brand-navy">{completedDetails.captureId || completedDetails.donationId}</span>
+            <span className="font-mono font-semibold text-brand-navy dark:text-dark-text-primary">{completedDetails.captureId || completedDetails.donationId}</span>
           </div>
-          <div className="flex justify-between text-text-secondary">
+          <div className="flex justify-between text-text-secondary dark:text-dark-text-secondary">
             <span>Payment Method:</span>
-            <span className="font-semibold text-brand-navy">PayPal</span>
+            <span className="font-semibold text-brand-navy dark:text-dark-text-primary">PayPal</span>
           </div>
-          <div className="flex justify-between text-text-secondary">
+          <div className="flex justify-between text-text-secondary dark:text-dark-text-secondary">
             <span>Receipt Destination:</span>
-            <span className="font-semibold text-brand-navy truncate max-w-[200px]">{email}</span>
+            <span className="font-semibold text-brand-navy dark:text-dark-text-primary truncate max-w-[200px]">{email}</span>
           </div>
         </div>
 
-        <p className="text-xs text-text-secondary/80 max-w-md mx-auto mb-6 leading-relaxed">
+        <p className="text-xs text-text-secondary/80 dark:text-dark-text-secondary/80 max-w-md mx-auto mb-6 leading-relaxed">
           {completedDetails.receiptSent
             ? 'A donation acknowledgement receipt has been sent to your email.'
             : 'Your donation was successfully received. Your donation acknowledgement email is pending.'}
           <br />
           <em>This acknowledgement confirms your payment and is not represented as an official charitable tax receipt.</em>
         </p>
-
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
@@ -285,13 +284,13 @@ export default function DonationForm() {
               setMessage('')
               setCustom('')
             }}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-green text-brand-warm-white font-semibold text-sm hover:bg-brand-green/90 transition-all shadow-sm"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-green dark:bg-brand-cyan text-brand-warm-white dark:text-brand-navy-dark font-semibold text-sm hover:bg-brand-green/90 dark:hover:bg-brand-cyan/90 transition-all shadow-sm cursor-pointer"
           >
             Make Another Donation
           </button>
           <a
             href="/"
-            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-warm-white border border-border-soft text-brand-navy font-semibold text-sm hover:bg-brand-cream/40 transition-all"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-warm-white dark:bg-dark-surface border border-border-soft dark:border-dark-border text-brand-navy dark:text-dark-text-primary font-semibold text-sm hover:bg-brand-cream/40 dark:hover:bg-dark-card transition-all"
           >
             Return to Home
           </a>
@@ -304,30 +303,30 @@ export default function DonationForm() {
     <div className="space-y-6">
       {/* Sandbox / Configuration Notice if credentials are not configured */}
       {!clientId && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs sm:text-sm text-amber-800" role="status">
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-xl p-4 text-xs sm:text-sm text-amber-800 dark:text-amber-300" role="status">
           <p className="font-semibold mb-1">🌱 PayPal Sandbox Development Setup</p>
-          <p className="text-amber-700">
-            Payment gateway configuration is in progress. To enable live PayPal Sandbox buttons in development, set <code className="bg-amber-100 px-1 py-0.5 rounded font-mono">NEXT_PUBLIC_PAYPAL_CLIENT_ID</code> and server secrets in <code className="bg-amber-100 px-1 py-0.5 rounded font-mono">.env.local</code>.
+          <p className="text-amber-700 dark:text-amber-400">
+            Payment gateway configuration is in progress. To enable live PayPal Sandbox buttons in development, set <code className="bg-amber-100 dark:bg-amber-900/60 px-1 py-0.5 rounded font-mono">NEXT_PUBLIC_PAYPAL_CLIENT_ID</code> and server secrets in <code className="bg-amber-100 dark:bg-amber-900/60 px-1 py-0.5 rounded font-mono">.env.local</code>.
           </p>
         </div>
       )}
 
       {/* Frequency Header — One-Time Only */}
       <div>
-        <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-2">
+        <label className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-2">
           Gift Frequency
         </label>
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-cream/60 border border-border-soft text-brand-navy text-sm font-semibold">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-cream/60 dark:bg-dark-surface border border-border-soft dark:border-dark-border text-brand-navy dark:text-dark-text-primary text-sm font-semibold">
           <span>✨ One-Time Gift</span>
         </div>
-        <p className="text-xs text-text-secondary mt-1">
+        <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-1">
           Development default currency: <strong>CAD</strong>
         </p>
       </div>
 
       {/* Preset / Custom Amount Selection */}
       <div>
-        <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-2">
+        <label className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-2">
           Select Amount ({DEFAULT_DONATION_CURRENCY})
         </label>
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-3">
@@ -340,10 +339,10 @@ export default function DonationForm() {
                 setPreset(amt)
                 setFormErrors((prev) => ({ ...prev, amount: '' }))
               }}
-              className={`py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+              className={`py-3 rounded-xl text-sm font-bold transition-all duration-200 cursor-pointer ${
                 amountType === 'preset' && preset === amt
-                  ? 'bg-brand-green text-brand-warm-white shadow-sm ring-2 ring-brand-green/30'
-                  : 'bg-brand-warm-white border border-border-soft text-brand-navy hover:border-brand-green hover:bg-[#F8FAF6]'
+                  ? 'bg-brand-green dark:bg-brand-cyan text-brand-warm-white dark:text-brand-navy-dark shadow-sm ring-2 ring-brand-green/30 dark:ring-brand-cyan/30'
+                  : 'bg-brand-warm-white dark:bg-dark-surface border border-border-soft dark:border-dark-border text-brand-navy dark:text-dark-text-primary hover:border-brand-green dark:hover:border-brand-cyan hover:bg-[#F8FAF6] dark:hover:bg-dark-card'
               }`}
             >
               ${amt}
@@ -353,7 +352,7 @@ export default function DonationForm() {
 
         {/* Custom Amount Input */}
         <div className="relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary font-semibold">$</span>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary dark:text-dark-text-secondary font-semibold">$</span>
           <input
             id="donation-custom-amount"
             type="number"
@@ -369,26 +368,26 @@ export default function DonationForm() {
             max="100000"
             step="any"
             aria-label="Custom donation amount in CAD"
-            className={`w-full pl-9 pr-4 py-2.5 border rounded-xl text-brand-navy text-sm bg-white shadow-2xs
-              focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green
-              placeholder:text-text-secondary/60 ${
+            className={`w-full pl-9 pr-4 py-2.5 border rounded-xl text-brand-navy dark:text-dark-text-primary text-sm bg-white dark:bg-dark-surface shadow-2xs
+              focus:outline-none focus:ring-2 focus:ring-brand-green/40 dark:focus:ring-brand-cyan/40 focus:border-brand-green dark:focus:border-brand-cyan
+              placeholder:text-text-secondary/60 dark:placeholder:text-dark-text-secondary/50 ${
                 formErrors.amount
-                  ? 'border-red-400 bg-red-50/50 ring-1 ring-red-400'
+                  ? 'border-red-400 bg-red-50/50 dark:bg-red-950/20 ring-1 ring-red-400'
                   : amountType === 'custom'
-                    ? 'border-brand-green ring-1 ring-brand-green'
-                    : 'border-border-soft'
+                    ? 'border-brand-green dark:border-brand-cyan ring-1 ring-brand-green dark:ring-brand-cyan'
+                    : 'border-border-soft dark:border-dark-border'
               }`}
           />
         </div>
         {formErrors.amount && (
-          <p className="mt-1.5 text-xs text-red-600 font-medium" role="alert">
+          <p className="mt-1.5 text-xs text-red-600 dark:text-red-400 font-medium" role="alert">
             {formErrors.amount}
           </p>
         )}
       </div>
 
       {/* Anonymous Checkbox */}
-      <div className="bg-[#F8FAF6] p-3.5 rounded-xl border border-border-soft">
+      <div className="bg-[#F8FAF6] dark:bg-dark-surface p-3.5 rounded-xl border border-border-soft dark:border-dark-border">
         <label className="flex items-start gap-3 cursor-pointer select-none">
           <input
             type="checkbox"
@@ -399,11 +398,11 @@ export default function DonationForm() {
                 setFormErrors((prev) => ({ ...prev, name: '' }))
               }
             }}
-            className="w-4 h-4 mt-0.5 rounded border-border-soft text-brand-green focus:ring-brand-green"
+            className="w-4 h-4 mt-0.5 rounded border-border-soft dark:border-dark-border text-brand-green focus:ring-brand-green"
           />
           <div>
-            <span className="text-xs sm:text-sm font-semibold text-brand-navy">Make this donation anonymous</span>
-            <p className="text-[11px] sm:text-xs text-text-secondary mt-0.5">
+            <span className="text-xs sm:text-sm font-semibold text-brand-navy dark:text-dark-text-primary">Make this donation anonymous</span>
+            <p className="text-[11px] sm:text-xs text-text-secondary dark:text-dark-text-secondary mt-0.5">
               Your name will not be published or displayed publicly. Your email is required and kept private for receipt delivery.
             </p>
           </div>
@@ -414,7 +413,7 @@ export default function DonationForm() {
       <div className="space-y-4">
         {!anonymous && (
           <div>
-            <label htmlFor="donation-donor-name" className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+            <label htmlFor="donation-donor-name" className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
               Your Full Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -426,12 +425,12 @@ export default function DonationForm() {
                 setFormErrors((prev) => ({ ...prev, name: '' }))
               }}
               placeholder="e.g. Jane Doe"
-              className={`w-full px-4 py-2.5 border rounded-xl text-brand-navy text-sm bg-white shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green ${
-                formErrors.name ? 'border-red-400 bg-red-50/50' : 'border-border-soft'
+              className={`w-full px-4 py-2.5 border rounded-xl text-brand-navy dark:text-dark-text-primary text-sm bg-white dark:bg-dark-surface shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 dark:focus:ring-brand-cyan/40 focus:border-brand-green dark:focus:border-brand-cyan ${
+                formErrors.name ? 'border-red-400 bg-red-50/50 dark:bg-red-950/20' : 'border-border-soft dark:border-dark-border'
               }`}
             />
             {formErrors.name && (
-              <p className="mt-1 text-xs text-red-600 font-medium" role="alert">
+              <p className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium" role="alert">
                 {formErrors.name}
               </p>
             )}
@@ -439,7 +438,7 @@ export default function DonationForm() {
         )}
 
         <div>
-          <label htmlFor="donation-donor-email" className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+          <label htmlFor="donation-donor-email" className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
             Email Address (Required for Receipt) <span className="text-red-500">*</span>
           </label>
           <input
@@ -451,23 +450,23 @@ export default function DonationForm() {
               setFormErrors((prev) => ({ ...prev, email: '' }))
             }}
             placeholder="you@example.com"
-            className={`w-full px-4 py-2.5 border rounded-xl text-brand-navy text-sm bg-white shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green ${
-              formErrors.email ? 'border-red-400 bg-red-50/50' : 'border-border-soft'
+            className={`w-full px-4 py-2.5 border rounded-xl text-brand-navy dark:text-dark-text-primary text-sm bg-white dark:bg-dark-surface shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 dark:focus:ring-brand-cyan/40 focus:border-brand-green dark:focus:border-brand-cyan ${
+              formErrors.email ? 'border-red-400 bg-red-50/50 dark:bg-red-950/20' : 'border-border-soft dark:border-dark-border'
             }`}
           />
           {formErrors.email && (
-            <p className="mt-1 text-xs text-red-600 font-medium" role="alert">
+            <p className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium" role="alert">
               {formErrors.email}
             </p>
           )}
-          <p className="text-[11px] text-text-secondary mt-1">
+          <p className="text-[11px] text-text-secondary dark:text-dark-text-secondary mt-1">
             We will email your official payment acknowledgement directly to this address.
           </p>
         </div>
 
         {/* Dedication / Message */}
         <div>
-          <label htmlFor="donation-message" className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
+          <label htmlFor="donation-message" className="block text-xs font-bold text-brand-navy dark:text-dark-text-primary uppercase tracking-wider mb-1.5">
             Optional Note or Dedication
           </label>
           <textarea
@@ -476,21 +475,20 @@ export default function DonationForm() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Leave a message or dedication with your gift…"
-            className="w-full px-4 py-2.5 border border-border-soft rounded-xl text-brand-navy text-sm bg-white shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green placeholder:text-text-secondary/60"
+            className="w-full px-4 py-2.5 border border-border-soft dark:border-dark-border rounded-xl text-brand-navy dark:text-dark-text-primary text-sm bg-white dark:bg-dark-surface shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/40 dark:focus:ring-brand-cyan/40 focus:border-brand-green dark:focus:border-brand-cyan placeholder:text-text-secondary/60 dark:placeholder:text-dark-text-secondary/50"
           />
         </div>
       </div>
 
-
       {/* Error and Status Alerts */}
       {status === 'error' && errorMessage && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm px-4 py-3 rounded-xl" role="alert">
+        <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300 text-xs sm:text-sm px-4 py-3 rounded-xl" role="alert">
           {errorMessage}
         </div>
       )}
 
       {status === 'cancelled' && (
-        <div className="bg-gray-50 border border-gray-200 text-text-secondary text-xs sm:text-sm px-4 py-3 rounded-xl" role="status">
+        <div className="bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-dark-border text-text-secondary dark:text-dark-text-secondary text-xs sm:text-sm px-4 py-3 rounded-xl" role="status">
           Donation checkout was cancelled. You can adjust your amount or details and try again whenever you are ready.
         </div>
       )}
@@ -498,26 +496,26 @@ export default function DonationForm() {
       {/* PayPal Button Container or Pending Configuration */}
       <div className="pt-2">
         <div className="mb-2 text-center">
-          <span className="text-xs font-semibold text-text-secondary">
-            Total Gift: <strong className="text-brand-navy">{DEFAULT_DONATION_CURRENCY} ${selectedAmount ? selectedAmount.toFixed(2) : '0.00'}</strong>
+          <span className="text-xs font-semibold text-text-secondary dark:text-dark-text-secondary">
+            Total Gift: <strong className="text-brand-navy dark:text-dark-text-primary">{DEFAULT_DONATION_CURRENCY} ${selectedAmount ? selectedAmount.toFixed(2) : '0.00'}</strong>
           </span>
         </div>
 
         {clientId ? (
           <div>
             {status === 'processing' ? (
-              <div className="py-8 text-center bg-[#F8FAF6] border border-border-soft rounded-xl">
-                <div className="inline-block animate-spin w-8 h-8 border-3 border-brand-green border-t-transparent rounded-full mb-3" />
-                <p className="text-sm font-semibold text-brand-navy">Confirming your transaction with PayPal…</p>
-                <p className="text-xs text-text-secondary mt-1">Please do not close this window.</p>
+              <div className="py-8 text-center bg-[#F8FAF6] dark:bg-dark-surface border border-border-soft dark:border-dark-border rounded-xl">
+                <div className="inline-block animate-spin w-8 h-8 border-3 border-brand-green dark:border-brand-cyan border-t-transparent rounded-full mb-3" />
+                <p className="text-sm font-semibold text-brand-navy dark:text-dark-text-primary">Confirming your transaction with PayPal…</p>
+                <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-1">Please do not close this window.</p>
               </div>
             ) : (
               <div ref={paypalContainerRef} className="min-h-[50px] relative z-0" />
             )}
           </div>
         ) : (
-          <div className="text-center py-4 px-6 bg-brand-cream/40 border border-border-soft rounded-xl text-xs text-text-secondary">
-            <p className="font-semibold text-brand-navy mb-1">Secure Payment via PayPal</p>
+          <div className="text-center py-4 px-6 bg-brand-cream/40 dark:bg-dark-surface border border-border-soft dark:border-dark-border rounded-xl text-xs text-text-secondary dark:text-dark-text-secondary">
+            <p className="font-semibold text-brand-navy dark:text-dark-text-primary mb-1">Secure Payment via PayPal</p>
             <p>
               PayPal button will activate automatically once Sandbox client credentials are configured.
             </p>
@@ -525,7 +523,7 @@ export default function DonationForm() {
         )}
       </div>
 
-      <p className="text-[11px] text-center text-text-secondary/70">
+      <p className="text-[11px] text-center text-text-secondary/70 dark:text-dark-text-secondary/70">
         🔒 Transactions are securely processed through PayPal. Your sensitive financial credentials are never stored on our servers.
       </p>
     </div>
