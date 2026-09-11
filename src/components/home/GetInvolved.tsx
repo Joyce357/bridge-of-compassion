@@ -113,7 +113,7 @@ export default function GetInvolved() {
                 key={pathway.id}
                 type="button"
                 onClick={openVolunteerModal}
-                className={`group flex flex-col text-left p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white dark:bg-dark-card border border-border-soft dark:border-dark-border
+                className={`group flex flex-col text-left p-5 sm:p-6 rounded-2xl bg-brand-warm-white dark:bg-dark-card border border-border-soft dark:border-dark-border
                            hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:shadow-card-hover hover:-translate-y-0.5
                            transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy dark:focus-visible:ring-brand-cyan cursor-pointer ${pathway.borderColor}`}
                 aria-label={pathway.cta}
@@ -149,7 +149,7 @@ export default function GetInvolved() {
               <Link
                 key={pathway.id}
                 href={pathway.href}
-                className={`group flex flex-col p-4.5 sm:p-5.5 rounded-2xl bg-brand-warm-white dark:bg-dark-card border border-border-soft dark:border-dark-border
+                className={`group flex flex-col p-5 sm:p-6 rounded-2xl bg-brand-warm-white dark:bg-dark-card border border-border-soft dark:border-dark-border
                            hover:border-brand-green/40 dark:hover:border-brand-cyan/40 hover:shadow-card-hover hover:-translate-y-0.5
                            transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-navy dark:focus-visible:ring-brand-cyan ${pathway.borderColor}`}
                 aria-label={pathway.cta}
