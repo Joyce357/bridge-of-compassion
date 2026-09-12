@@ -1,52 +1,40 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { getBaseUrl } from '@/lib/seo'
+import { DEFAULT_SITE_SETTINGS } from '@/lib/settings'
+
+// ─── Global Metadata ──────────────────────────────────────────────────────────
+// SiteSettings is the single source of truth for SEO title and description.
+// The OG image is omitted until an approved 1200×630 social share asset is provided.
+// metadataBase is driven by NEXT_PUBLIC_SITE_URL — must be set in production.
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://bridgeofcompassion.org'),
+  metadataBase: new URL(getBaseUrl()),
   title: {
-    default: 'Bridge of Compassion — Building Bridges, Changing Lives',
+    default: DEFAULT_SITE_SETTINGS.seoTitle!,
     template: '%s | Bridge of Compassion',
   },
+  description: DEFAULT_SITE_SETTINGS.seoDescription!,
+  applicationName: 'Bridge of Compassion',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/icon.png',
   },
-  description:
-    'Bridge of Compassion is a nonprofit organization dedicated to fostering compassion, strengthening communities, and protecting the natural world. Volunteer, donate, and get involved.',
-  keywords: [
-    'nonprofit',
-    'community',
-    'volunteer',
-    'donate',
-    'compassion',
-    'environmental stewardship',
-    'community development',
-    'Bridge of Compassion',
-  ],
-  authors: [{ name: 'Bridge of Compassion' }],
-  creator: 'Bridge of Compassion',
   openGraph: {
     type: 'website',
     locale: 'en_CA',
-    url: 'https://bridgeofcompassion.org',
     siteName: 'Bridge of Compassion',
-    title: 'Bridge of Compassion — Building Bridges, Changing Lives',
-    description:
-      'A nonprofit organization dedicated to fostering compassion, strengthening communities, and protecting the natural world.',
-    images: [
-      {
-        url: '/images/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Bridge of Compassion',
-      },
-    ],
+    title: DEFAULT_SITE_SETTINGS.seoTitle!,
+    description: DEFAULT_SITE_SETTINGS.seoDescription!,
+    // DEFAULT OG IMAGE: WAITING FOR FINAL APPROVED SOCIAL SHARE ASSET
+    // Add images array here once a 1200×630 asset is provided and placed in /public/images/
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Bridge of Compassion',
-    description: 'Building bridges of compassion, connection, and community.',
+    title: DEFAULT_SITE_SETTINGS.seoTitle!,
+    description: DEFAULT_SITE_SETTINGS.seoDescription!,
+    // No Twitter/X handle — not yet configured
   },
   robots: {
     index: true,

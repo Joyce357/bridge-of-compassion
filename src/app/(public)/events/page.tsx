@@ -1,18 +1,16 @@
-// ─── Public Events Page ───────────────────────────────────────────────────
-// Reads real published events directly from Neon PostgreSQL.
-// Zero records displays a polished empty state — static fallback data is never displayed.
-
 import type { Metadata } from 'next'
 import { getPublishedEvents, getCategoryAccent } from '@/lib/events'
 import Container from '@/components/ui/Container'
 import Link from 'next/link'
 import type { Event } from '@/types'
+import { getCanonicalUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Events',
   description:
     'Upcoming events from Bridge of Compassion. Join us for community cleanups, workshops, fundraisers, and environmental stewardship.',
-  alternates: { canonical: 'https://bridgeofcompassion.org/events' },
+  alternates: { canonical: getCanonicalUrl('/events') },
+  openGraph: { url: getCanonicalUrl('/events') },
 }
 
 export const dynamic = 'force-dynamic'

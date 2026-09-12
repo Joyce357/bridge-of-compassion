@@ -3,11 +3,13 @@ import type { Metadata } from 'next'
 import Container from '@/components/ui/Container'
 import { getPublishedGalleryItems } from '@/lib/gallery'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
+import { getCanonicalUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Gallery',
   description: 'Photos from Bridge of Compassion events, programs, and community conservation activities.',
-  alternates: { canonical: 'https://bridgeofcompassion.org/gallery' },
+  alternates: { canonical: getCanonicalUrl('/gallery') },
+  openGraph: { url: getCanonicalUrl('/gallery') },
 }
 
 export const dynamic = 'force-dynamic'

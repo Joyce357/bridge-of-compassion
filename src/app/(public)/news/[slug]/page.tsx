@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import Container from '@/components/ui/Container'
 import { getPublishedNewsBySlug, getNewsCategoryStyle } from '@/lib/news'
 import { formatDate } from '@/lib/utils'
+import { getBaseUrl, getCanonicalUrl } from '@/lib/seo'
 
 interface Props {
   params: { slug: string }
@@ -15,18 +16,43 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPublishedNewsBySlug(params.slug)
-  if (!post) return { title: 'Story Not Found — Bridge of Compassion' }
+
+  // Privacy: missing or unpublished stories return noindex — no content exposed
+  if (!post) {
+    return {
+      title: 'Story Not Found',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  const canonical = getCanonicalUrl(`/news/${post.slug}`)
+  const description = post.excerpt
+    ? post.excerpt.slice(0, 160)
+    : post.content.slice(0, 160)
 
   return {
-    title: `${post.title} — Bridge of Compassion`,
-    description: post.excerpt || `Read ${post.title} on Bridge of Compassion.`,
-    alternates: {
-      canonical: `https://bridgeofcompassion.org/news/${post.slug}`,
-    },
+    title: post.title,
+    description,
+    alternates: { canonical },
     openGraph: {
+      type: 'article',
       title: post.title,
-      description: post.excerpt || undefined,
-      images: post.featuredImage ? [{ url: post.featuredImage }] : undefined,
+      description,
+      url: canonical,
+      images: post.featuredImage
+        ? [{ url: post.featuredImage, alt: post.title }]
+        : undefined,
+      publishedTime: post.publishedAt
+        ? new Date(post.publishedAt as Date | string).toISOString()
+        : post.createdAt
+          ? new Date(post.createdAt as Date | string).toISOString()
+          : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description,
+      images: post.featuredImage ? [post.featuredImage] : undefined,
     },
   }
 }
@@ -41,8 +67,39 @@ export default async function NewsPostPage({ params }: Props) {
   const catStyle = getNewsCategoryStyle(post.category)
   const dateStr = post.publishedAt || post.createdAt
 
+  // Article JSON-LD — only real published fields. Author omitted when absent.
+  const articleJsonLd: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt || undefined,
+    datePublished: post.publishedAt
+      ? new Date(post.publishedAt as Date | string).toISOString()
+      : post.createdAt
+        ? new Date(post.createdAt as Date | string).toISOString()
+        : undefined,
+    dateModified: post.createdAt
+      ? new Date(post.createdAt as Date | string).toISOString()
+      : undefined,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Bridge of Compassion',
+      url: getBaseUrl(),
+    },
+    ...(post.featuredImage ? { image: post.featuredImage } : {}),
+    ...(post.author
+      ? { author: { '@type': 'Person', name: post.author } }
+      : {}),
+  }
+
   return (
-    <article className="min-h-screen bg-brand-warm-white dark:bg-dark-bg pb-20 transition-colors duration-200">
+    <>
+      {/* Article structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <article className="min-h-screen bg-brand-warm-white dark:bg-dark-bg pb-20 transition-colors duration-200">
       {/* Hero Header */}
       <section className="bg-brand-navy-dark dark:bg-dark-bg text-brand-warm-white relative overflow-hidden py-12 sm:py-16 transition-colors duration-200">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-cyan/15 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
@@ -142,5 +199,6 @@ export default async function NewsPostPage({ params }: Props) {
         </div>
       </Container>
     </article>
+    </>
   )
 }

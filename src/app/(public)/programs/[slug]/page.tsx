@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Container from '@/components/ui/Container'
 import { getProgramBySlug, getCategoryAccent } from '@/lib/programs'
 import type { Metadata } from 'next'
+import { getCanonicalUrl } from '@/lib/seo'
 
 interface Props {
   params: { slug: string }
@@ -14,13 +15,44 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const program = await getProgramBySlug(params.slug)
-    if (!program) return { title: 'Program Not Found' }
+
+    // Privacy: missing or unpublished programs return noindex — no content exposed
+    if (!program) {
+      return {
+        title: 'Program Not Found',
+        robots: { index: false, follow: false },
+      }
+    }
+
+    const canonical = getCanonicalUrl(`/programs/${program.slug}`)
+    const description = program.shortDescription
+      ? program.shortDescription.slice(0, 160)
+      : undefined
+
     return {
-      title: `${program.title} — Programs`,
-      description: program.shortDescription,
+      title: program.title,
+      description,
+      alternates: { canonical },
+      openGraph: {
+        title: program.title,
+        description: description ?? undefined,
+        url: canonical,
+        images: program.imageUrl
+          ? [{ url: program.imageUrl, alt: program.title }]
+          : undefined,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: program.title,
+        description: description ?? undefined,
+        images: program.imageUrl ? [program.imageUrl] : undefined,
+      },
     }
   } catch {
-    return { title: 'Program Not Found' }
+    return {
+      title: 'Program Not Found',
+      robots: { index: false, follow: false },
+    }
   }
 }
 

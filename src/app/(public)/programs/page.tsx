@@ -6,11 +6,14 @@ import Container from '@/components/ui/Container'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { getPublishedPrograms, getCategoryAccent } from '@/lib/programs'
 import type { Metadata } from 'next'
+import { getCanonicalUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Programs & Environmental Initiatives',
+  title: 'Programs',
   description:
     'Explore hands-on environmental education, youth leadership, and community sustainability initiatives at Bridge of Compassion.',
+  alternates: { canonical: getCanonicalUrl('/programs') },
+  openGraph: { url: getCanonicalUrl('/programs') },
 }
 
 export const dynamic = 'force-dynamic'

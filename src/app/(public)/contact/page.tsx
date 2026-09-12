@@ -3,11 +3,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import ContactForm from '@/components/forms/ContactForm'
 import { getSiteSettings } from '@/lib/settings'
+import { getCanonicalUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
+  title: 'Contact',
   description: 'Get in touch with Bridge of Compassion. We would love to hear from you regarding environmental programs, volunteering, and community partnerships.',
-  alternates: { canonical: 'https://bridgeofcompassion.org/contact' },
+  alternates: { canonical: getCanonicalUrl('/contact') },
+  openGraph: { url: getCanonicalUrl('/contact') },
 }
 
 export default async function ContactPage() {
