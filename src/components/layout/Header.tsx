@@ -16,6 +16,7 @@ const navItems = [
   { label: 'Get Involved', href: '/get-involved' },
   { label: 'Events',       href: '/events' },
   { label: 'News',         href: '/news' },
+  { label: 'Gallery',      href: '/gallery' },
   { label: 'Contact',      href: '/contact' },
 ]
 
