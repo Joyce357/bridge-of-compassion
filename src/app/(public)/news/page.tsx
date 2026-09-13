@@ -1,15 +1,17 @@
-// ─── News & Stories Listing Page ──────────────────────────────────────────
+// ─── News & Stories Listing Page ──────────────────────────────────────────────
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
 import { getPublishedNews, getNewsCategoryStyle } from '@/lib/news'
 import { formatDate } from '@/lib/utils'
+import { getCanonicalUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'News & Stories',
   description: 'Read the latest environmental impact stories, community updates, and news from Bridge of Compassion.',
-  alternates: { canonical: 'https://bridgeofcompassion.org/news' },
+  alternates: { canonical: getCanonicalUrl('/news') },
+  openGraph: { url: getCanonicalUrl('/news') },
 }
 
 export const dynamic = 'force-dynamic'

@@ -1,4 +1,4 @@
-// ─── Public Event Detail Page ─────────────────────────────────────────────
+// ─── Public Event Detail Page ─────────────────────────────────────────────────
 
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Container from '@/components/ui/Container'
 import { getPublishedEventById, getCategoryAccent } from '@/lib/events'
 import type { Metadata } from 'next'
+import { getBaseUrl, getCanonicalUrl } from '@/lib/seo'
 
 interface Props {
   params: { id: string }
@@ -32,13 +33,44 @@ function formatDateBadge(dateVal: Date | string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const event = await getPublishedEventById(params.id)
-    if (!event) return { title: 'Event Not Found' }
+
+    // Privacy: missing or unpublished events return noindex — no content exposed
+    if (!event) {
+      return {
+        title: 'Event Not Found',
+        robots: { index: false, follow: false },
+      }
+    }
+
+    const canonical = getCanonicalUrl(`/events/${event.id}`)
+    const description = (
+      event.shortDescription || event.description
+    ).slice(0, 160)
+
     return {
-      title: `${event.title} — Events`,
-      description: event.shortDescription || event.description.slice(0, 160),
+      title: event.title,
+      description,
+      alternates: { canonical },
+      openGraph: {
+        title: event.title,
+        description,
+        url: canonical,
+        images: event.featuredImage
+          ? [{ url: event.featuredImage, alt: event.title }]
+          : undefined,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: event.title,
+        description,
+        images: event.featuredImage ? [event.featuredImage] : undefined,
+      },
     }
   } catch {
-    return { title: 'Event Not Found' }
+    return {
+      title: 'Event Not Found',
+      robots: { index: false, follow: false },
+    }
   }
 }
 
@@ -59,9 +91,38 @@ export default async function EventDetailPage({ params }: Props) {
   const accent = getCategoryAccent(event.category)
   const { month, day } = formatDateBadge(event.date)
 
+  // Event JSON-LD — only real published fields included.
+  // No invented author, phone, address, or URLs.
+  const eventDate = new Date(event.date)
+  const eventJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: event.title,
+    description: event.shortDescription || event.description,
+    startDate: eventDate.toISOString().split('T')[0]
+      + (event.startTime ? `T${event.startTime}` : ''),
+    ...(event.endTime ? { endDate: eventDate.toISOString().split('T')[0] + `T${event.endTime}` } : {}),
+    location: {
+      '@type': 'Place',
+      name: event.location,
+    },
+    organizer: {
+      '@type': 'Organization',
+      name: 'Bridge of Compassion',
+      url: getBaseUrl(),
+    },
+    ...(event.featuredImage ? { image: event.featuredImage } : {}),
+  }
+
   return (
-    <div className="min-h-screen bg-brand-warm-white dark:bg-dark-bg transition-colors duration-200">
-      {/* ── Breadcrumb & Top Bar ─────────────────────────────────────────── */}
+    <>
+      {/* Event structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
+      />
+      <div className="min-h-screen bg-brand-warm-white dark:bg-dark-bg transition-colors duration-200">
+        {/* ── Breadcrumb & Top Bar ─────────────────────────────────────────── */}
       <div className="bg-brand-cream/60 dark:bg-dark-surface border-b border-border-soft/60 dark:border-dark-border py-3 sm:py-4 transition-colors duration-200">
         <Container>
           <nav className="flex items-center gap-2 text-xs sm:text-sm text-text-secondary dark:text-dark-text-secondary">
@@ -236,5 +297,6 @@ export default async function EventDetailPage({ params }: Props) {
         </Container>
       </section>
     </div>
+    </>
   )
 }

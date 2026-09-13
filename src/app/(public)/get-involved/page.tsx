@@ -1,14 +1,16 @@
-// ─── Get Involved Landing Page ───────────────────────────────────────────
+// ─── Get Involved Landing Page ────────────────────────────────────────────────
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Container from '@/components/ui/Container'
 import Button from '@/components/ui/Button'
+import { getCanonicalUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Get Involved | Volunteer & Support',
+  title: 'Get Involved',
   description:
     'Discover how you can get involved with Bridge of Compassion through volunteering, donations, and community partnerships for environmental action.',
-  alternates: { canonical: 'https://bridgeofcompassion.org/get-involved' },
+  alternates: { canonical: getCanonicalUrl('/get-involved') },
+  openGraph: { url: getCanonicalUrl('/get-involved') },
 }
 
 export default function GetInvolvedPage() {

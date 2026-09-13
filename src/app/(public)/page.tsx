@@ -8,19 +8,58 @@ import GetInvolved    from '@/components/home/GetInvolved'
 import StoriesPreview  from '@/components/home/StoriesPreview'
 import EventsPreview   from '@/components/home/EventsPreview'
 import FinalCTA        from '@/components/home/FinalCTA'
+import { getBaseUrl, getCanonicalUrl } from '@/lib/seo'
+import { DEFAULT_SITE_SETTINGS } from '@/lib/settings'
 
 export const metadata: Metadata = {
-  title: 'Bridge of Compassion — Environmental Education & Youth Action',
-  description:
-    'Bridge of Compassion supports young people through practical environmental education, sustainability programmes, and community action. Get involved today.',
+  // Absolute title — does not use the template ('%s | Bridge of Compassion') so it
+  // matches the confirmed SiteSettings seoTitle exactly on the homepage.
+  title: {
+    absolute: DEFAULT_SITE_SETTINGS.seoTitle!,
+  },
+  description: DEFAULT_SITE_SETTINGS.seoDescription!,
   alternates: {
-    canonical: 'https://bridgeofcompassion.org',
+    canonical: getCanonicalUrl('/'),
+  },
+  openGraph: {
+    url: getCanonicalUrl('/'),
+    title: DEFAULT_SITE_SETTINGS.seoTitle!,
+    description: DEFAULT_SITE_SETTINGS.seoDescription!,
   },
 }
 
 export default function HomePage() {
+  const baseUrl = getBaseUrl()
+
+  // Organization JSON-LD — only confirmed factual fields.
+  // sameAs: empty — no social URLs are configured in SiteSettings yet.
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: DEFAULT_SITE_SETTINGS.organizationName,
+    url: baseUrl,
+    logo: `${baseUrl}/images/bridgeofcompassion-logo.png`,
+    email: DEFAULT_SITE_SETTINGS.publicEmail,
+    location: {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: DEFAULT_SITE_SETTINGS.city,
+        addressRegion: DEFAULT_SITE_SETTINGS.province,
+        addressCountry: 'CA',
+      },
+    },
+    // sameAs will be populated when social URLs are added to SiteSettings
+  }
+
   return (
     <>
+      {/* Organization structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
+
       {/* Skip to main content — accessibility */}
       <a
         href="#main-content"
@@ -30,7 +69,6 @@ export default function HomePage() {
       >
         Skip to main content
       </a>
-
 
       {/* Homepage sections in order */}
       <Hero />

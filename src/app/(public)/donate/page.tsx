@@ -1,11 +1,13 @@
-// ─── Donate Page ─────────────────────────────────────────────────────────
+// ─── Donate Page ────────────────────────────────────────────────────────────
 import type { Metadata } from 'next'
 import DonationForm from '@/components/forms/DonationForm'
+import { getCanonicalUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Donate',
   description: 'Support Bridge of Compassion with a donation. Every dollar helps us protect ecosystems, educate youth, and strengthen community stewardship.',
-  alternates: { canonical: 'https://bridgeofcompassion.org/donate' },
+  alternates: { canonical: getCanonicalUrl('/donate') },
+  openGraph: { url: getCanonicalUrl('/donate') },
 }
 
 export default function DonatePage() {

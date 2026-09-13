@@ -16,6 +16,7 @@ const navItems = [
   { label: 'Get Involved', href: '/get-involved' },
   { label: 'Events',       href: '/events' },
   { label: 'News',         href: '/news' },
+  { label: 'Gallery',      href: '/gallery' },
   { label: 'Contact',      href: '/contact' },
 ]
 
@@ -71,7 +72,7 @@ export default function Header() {
               <div className="relative w-36 h-8 sm:w-44 sm:h-9 lg:w-48 lg:h-9 dark:bg-white/95 dark:rounded-lg dark:px-1.5 dark:py-0.5 transition-colors">
                 <Image
                   src="/images/bridgeofcompassion-logo.png"
-                  alt="Bridge of Compassion logo"
+                  alt="Bridge of Compassion"
                   fill
                   className="object-contain object-left dark:p-0.5"
                   priority
